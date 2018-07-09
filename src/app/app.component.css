@@ -1,0 +1,49 @@
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    display: flex;
+}
+
+header::after {
+    background: linear-gradient(0.25turn, #80cd3d, #1db6f1, #f1452a, #fbc81e);
+    content: '';
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 50px;
+    height: 4px;
+}
+
+.home_button {
+}
+
+.user_avatar {
+    position: fixed;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 10px 10px 0 0
+}
+
+.user_avatar img {
+    border-radius: 50%;
+}
+
+.search_bar {
+    position: fixed;
+    top: 6px;
+    left: calc(50% - 195px);
+    width: 390px;
+}
+
+.search_bar input {
+    width: 100%;
+    height: 34px;
+    border: 1px solid #CFD7E6;
+    border-radius: 4px;
+    padding-left: 20px;
+}
