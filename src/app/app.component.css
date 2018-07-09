@@ -17,7 +17,8 @@ header::after {
     height: 4px;
 }
 
-.home_button {
+.home_button img {
+    padding: 5px 0 0 5px;
 }
 
 .user_avatar {
