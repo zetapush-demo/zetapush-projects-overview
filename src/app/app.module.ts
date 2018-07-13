@@ -7,17 +7,19 @@ import { ClientProjectComponent } from './client-project/client-project.componen
 import { MainComponent } from './main/main.component';
 
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     imports: [
 	BrowserModule,
-	AppRoutingModule
+	AppRoutingModule,
+	HttpClientModule
     ],
     declarations: [
 	AppComponent,
 	ZetapushProjectComponent,
 	ClientProjectComponent,
-	MainComponent
+	MainComponent,
     ],
     providers: [],
     bootstrap: [ AppComponent ]

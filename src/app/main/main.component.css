@@ -31,11 +31,13 @@
 
 .flipbox p {
     position: relative;
-    top: calc(50% - 30px);
+    top: calc(15%);
     text-align: center;
+    font-size: 5em;
 }
 
-.flipbox #back, #front {
+.flipbox #back,
+#front {
     backface-visibility: hidden;
     transition: all .5s cubic-bezier(0.645, .045, .355, 1);
     position: absolute;
