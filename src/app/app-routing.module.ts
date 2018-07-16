@@ -7,13 +7,13 @@ import { ZetapushProjectComponent }	from './zetapush-project/zetapush-project.co
 import { ClientProjectComponent }	from './client-project/client-project.component';
 
 const routes: Routes = [
-    { path: '',		component: MainComponent },
-    { path: 'zetapush',	component: ZetapushProjectComponent },
-    { path: 'client',	component: ClientProjectComponent }
+	{ path: '',		component: MainComponent },
+	{ path: 'zetapush',	component: ZetapushProjectComponent },
+	{ path: 'client',	component: ClientProjectComponent }
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+	imports: [ RouterModule.forRoot(routes) ],
+	exports: [ RouterModule ]
 })
 export class AppRoutingModule {}

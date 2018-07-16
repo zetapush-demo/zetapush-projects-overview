@@ -1,13 +1,12 @@
-<div style="height: 200px;
-	    width: 200px;
-	    background-color: #000000;">
-</div>
-
+<br>
+<br>
+<br>
+<br>
 <h1 id="repo"> Project : {{ data.repo }} </h1>
-<p id="release"> Last release : {{ data.release }} </p>
+<h3 id="release"> Last release : {{ data.release }} </h3>
 
 <ul>
-    <li *ngFor="let issue of data.issues | async">
+    <li *ngFor="let issue of data.issues">
 	<p id="name"> Name : {{issue.name}} </p>
 	<p id="url"> <a href="{{issue.url}}"> {{issue.url}} </a> </p>
 	<div id="user">
@@ -18,13 +17,13 @@
 	<p class="date"> Updated {{issue.name.updated}} </p>
 	<p> Labels :</p>
 	<ul>
-	    <li id="label" *ngFor="let label of issue.labels | async">
+	    <li id="label" *ngFor="let label of issue.labels">
 		<p style="color: {{label.color}}"> {{label.name}} </p>
 	    </li>
 	</ul>
 	<p> Assignees :</p>
 	<ul>
-	    <li id="assignee" *ngFor="let assignee of issue.assignees | async">
+	    <li id="assignee" *ngFor="let assignee of issue.assignees">
 		<div>
 		    <p> {{assignee.login}} </p>
 		    <img src="{{assignee.avatar_url}}" alt="">
