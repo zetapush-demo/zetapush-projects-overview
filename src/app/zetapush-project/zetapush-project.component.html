@@ -2,6 +2,7 @@
 <br>
 <br>
 <br>
+<div *ngIf="data">
 <h1 id="repo"> Project : {{ data.repo }} </h1>
 <h3 id="release"> Last release : {{ data.release }} </h3>
 
@@ -13,12 +14,12 @@
 	    <p id="username"> User : {{issue.user.name}} </p>
 	    <img src="{{issue.user.avatar}}" alt="">
 	</div>
-	<p class="date"> Created {{issue.name.created}} </p>
-	<p class="date"> Updated {{issue.name.updated}} </p>
+	<p class="date"> Created : {{issue.created}} </p>
+	<p class="date"> Updated : {{issue.updated}} </p>
 	<p> Labels :</p>
 	<ul>
 	    <li id="label" *ngFor="let label of issue.labels">
-		<p style="color: {{label.color}}"> {{label.name}} </p>
+		<p> {{label.name}} </p>
 	    </li>
 	</ul>
 	<p> Assignees :</p>
@@ -33,3 +34,4 @@
 	<p> {{issue.body}} </p>
     </li>
 </ul>
+<div>

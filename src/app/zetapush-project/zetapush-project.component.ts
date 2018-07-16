@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { data_struct, ZetapushProjectService } from './zetapush-project.service';
 
@@ -13,15 +12,18 @@ import { data_struct, ZetapushProjectService } from './zetapush-project.service'
 export class ZetapushProjectComponent implements OnInit {
 
 	constructor(private zetapush_service: ZetapushProjectService) { };
+
 	url: string = 'http://127.0.0.1:1880/github';
-	data: Observable<data_struct>;
+	data: data_struct;
 
 	ngOnInit() {
 		this.zetapush_service.get_data(this.url)
-			.subscribe((tmp: data_struct) => this.data = {
-				release: tmp['release'],
-				repo: tmp['repo'],
-				issues: tmp['issues']
+			.subscribe((tmp: data_struct) => {
+				this.data = {
+					release: tmp['release'],
+					repo: tmp['repo'],
+					issues: tmp['issues']
+				}
 			});
 	}
 }
