@@ -6,17 +6,19 @@ h1#repo i {
     font-size: 1.5vw;
 }
 
+ul#issues_list {
+    padding: 20px;
+}
+
 li#issue {
     border: 1px solid #d1d5da;
     border-radius: 4px;
-}
-
-#issue_header {
+    margin-bottom: 20px;
 }
 
 #issue_name {
     background: linear-gradient(0.25turn, #80cd3d, #1db6f1, #f1452a, #fbc81e);
-    /* this color will be fun */
+    /* ptdr la couleur */
     /*background-color: #eeeeee;*/
     display: flex;
 }
@@ -57,6 +59,10 @@ li#issue {
 #issue_info #username {
     color: #586069;
     font-weight: 600;
+}
+
+#body {
+    padding: 10px;
 }
 
 img {

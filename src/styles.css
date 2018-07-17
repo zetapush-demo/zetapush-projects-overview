@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
-body {
+* {
     font-family: sans-serif;
+    padding: 0;
 }
 
 ul {
@@ -14,4 +15,11 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+router-outlet + * {
+    display: block;
+    height: calc(100% - 50px);
+    overflow: auto;
+    margin-top: 50px;
 }

@@ -1,32 +1,26 @@
-<br>
-<br>
-<br>
-<br>
 <div *ngIf="data">
 
     <h1 id="repo"> {{ data.repo }} <i> {{ data.release }} </i> </h1>
 
-    <ul>
+    <ul id="issues_list">
 	<li id="issue" *ngFor="let issue of data.issues">
-	    <div id="issue_header">
-		<div id="issue_name">
-		    <a href="{{issue.url}}">
+	    <div id="issue_name">
+		<a href="{{issue.url}}">
 		      <img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="wtf l'api est down">
 		    </a>
-		    <h2> {{issue.name}} <i> #{{issue.id}} </i> </h2>
-		    <ul id="label_list" *ngIf="issue.labels">
-			<li id="label" [ngStyle]="{'background-color':label.color}" *ngFor="let label of issue.labels"> {{label.name}}</li>
-		    </ul>
-		</div>
-		<div id="issue_info">
-		    <a href="{{issue.user.url}}">
+		<h2> {{issue.name}} <i> #{{issue.id}} </i> </h2>
+		<ul id="label_list" *ngIf="issue.labels">
+		    <li id="label" [ngStyle]="{'background-color':label.color}" *ngFor="let label of issue.labels"> {{label.name}}</li>
+		</ul>
+	    </div>
+	    <div id="issue_info">
+		<a href="{{issue.user.url}}">
 		      <img src="{{issue.user.avatar}}" alt="wtf l'api est down">
 		    </a>
-		    <a id="username" href="{{issue.user.url}}">
+		<a id="username" href="{{issue.user.url}}">
 		      {{issue.user.name}}
 		    </a>
-		    <p> opened this issue {{issue.created}} </p>
-		</div>
+		<p> opened this issue {{issue.created}} </p>
 	    </div>
 	    <ul *ngIf="issue.assignees">
 		<li id="assignee" *ngFor="let assignee of issue.assignees">
@@ -36,7 +30,7 @@
 		    </div>
 		</li>
 	    </ul>
-	    <p> {{issue.body}} </p>
+	    <p id="body"> {{issue.body}} </p>
 	</li>
     </ul>
 </div>
