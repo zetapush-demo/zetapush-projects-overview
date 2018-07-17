@@ -1,0 +1,64 @@
+h1#repo {
+    text-align: center;
+}
+
+h1#repo i {
+    font-size: 1.5vw;
+}
+
+li#issue {
+    border: 1px solid #d1d5da;
+    border-radius: 4px;
+}
+
+#issue_header {
+}
+
+#issue_name {
+    background: linear-gradient(0.25turn, #80cd3d, #1db6f1, #f1452a, #fbc81e);
+    /* this color will be fun */
+    /*background-color: #eeeeee;*/
+    display: flex;
+}
+
+#issue_name * {
+    align-self: center;
+    margin: 0.5vw;
+}
+
+#issue_name h2 {
+    font-weight: 400;
+    font-size: 32px;
+}
+
+#issue_name h2 i {
+    color: #a3aab1;
+}
+
+#label_list li {
+    padding: 5px;
+    display: inline;
+    margin: 0.5vw;
+    font-weight: 600;
+    border-radius: 2px;
+}
+
+#issue_info {
+    background-color: #d1d5da;
+    color: #586069;
+    display: flex;
+}
+
+#issue_info * {
+    align-self: center;
+    margin: 0.5vw;
+}
+
+#issue_info #username {
+    color: #586069;
+    font-weight: 600;
+}
+
+img {
+    width: 50px;
+}

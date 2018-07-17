@@ -3,35 +3,40 @@
 <br>
 <br>
 <div *ngIf="data">
-<h1 id="repo"> Project : {{ data.repo }} </h1>
-<h3 id="release"> Last release : {{ data.release }} </h3>
 
-<ul>
-    <li *ngFor="let issue of data.issues">
-	<p id="name"> Name : {{issue.name}} </p>
-	<p id="url"> <a href="{{issue.url}}"> {{issue.url}} </a> </p>
-	<div id="user">
-	    <p id="username"> User : {{issue.user.name}} </p>
-	    <img src="{{issue.user.avatar}}" alt="">
-	</div>
-	<p class="date"> Created : {{issue.created}} </p>
-	<p class="date"> Updated : {{issue.updated}} </p>
-	<p> Labels :</p>
-	<ul>
-	    <li id="label" *ngFor="let label of issue.labels">
-		<p> {{label.name}} </p>
-	    </li>
-	</ul>
-	<p> Assignees :</p>
-	<ul>
-	    <li id="assignee" *ngFor="let assignee of issue.assignees">
-		<div>
-		    <p> {{assignee.login}} </p>
-		    <img src="{{assignee.avatar_url}}" alt="">
+    <h1 id="repo"> {{ data.repo }} <i> {{ data.release }} </i> </h1>
+
+    <ul>
+	<li id="issue" *ngFor="let issue of data.issues">
+	    <div id="issue_header">
+		<div id="issue_name">
+		    <a href="{{issue.url}}">
+		      <img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="wtf l'api est down">
+		    </a>
+		    <h2> {{issue.name}} <i> #{{issue.id}} </i> </h2>
+		    <ul id="label_list" *ngIf="issue.labels">
+			<li id="label" [ngStyle]="{'background-color':label.color}" *ngFor="let label of issue.labels"> {{label.name}}</li>
+		    </ul>
 		</div>
-	    </li>
-	</ul>
-	<p> {{issue.body}} </p>
-    </li>
-</ul>
-<div>
+		<div id="issue_info">
+		    <a href="{{issue.user.url}}">
+		      <img src="{{issue.user.avatar}}" alt="wtf l'api est down">
+		    </a>
+		    <a id="username" href="{{issue.user.url}}">
+		      {{issue.user.name}}
+		    </a>
+		    <p> opened this issue {{issue.created}} </p>
+		</div>
+	    </div>
+	    <ul *ngIf="issue.assignees">
+		<li id="assignee" *ngFor="let assignee of issue.assignees">
+		    <div>
+			<p> {{assignee.login}} </p>
+			<img src="{{assignee.avatar_url}}" alt="">
+		    </div>
+		</li>
+	    </ul>
+	    <p> {{issue.body}} </p>
+	</li>
+    </ul>
+</div>
