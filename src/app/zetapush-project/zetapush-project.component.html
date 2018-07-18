@@ -30,7 +30,9 @@
 		    </div>
 		</li>
 	    </ul>
-	    <p id="body"> {{issue.body}} </p>
+	    <div id="body">
+		<markdown class="markdown-body" [data]="issue.body"></markdown>
+	    </div>
 	</li>
     </ul>
 </div>

@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 
+import { MarkdownService } from 'ngx-markdown';
+
 import { data_struct, ZetapushProjectService } from './zetapush-project.service';
 
 @Component({
 	selector: 'app-zetapush-project',
 	templateUrl: './zetapush-project.component.html',
 	styleUrls: ['./zetapush-project.component.css'],
-	providers: [ZetapushProjectService]
+	providers: [ZetapushProjectService],
 })
 
 export class ZetapushProjectComponent implements OnInit {
 
-	constructor(private zetapush_service: ZetapushProjectService) { };
+	constructor(private zetapush_service: ZetapushProjectService,
+		    private md: MarkdownService) { };
 
 	url: string = 'http://127.0.0.1:1880/github';
 	data: data_struct;
