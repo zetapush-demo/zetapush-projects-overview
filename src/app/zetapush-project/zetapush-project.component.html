@@ -2,37 +2,47 @@
 
     <h1 id="repo"> {{ data.repo }} <i> {{ data.release }} </i> </h1>
 
-    <ul id="issues_list">
-	<li id="issue" *ngFor="let issue of data.issues">
-	    <div id="issue_name">
-		<a href="{{issue.url}}">
+    <mat-accordion id="issues_list">
+	<mat-expansion-panel id="issue" *ngFor="let issue of data.issues">
+
+	    <mat-expansion-panel-header>
+
+		<mat-panel-title>
+		    <div id="issue_name">
+			<a href="{{issue.url}}">
 		      <img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="wtf l'api est down">
 		    </a>
-		<h2> {{issue.name}} <i> #{{issue.id}} </i> </h2>
-		<ul id="label_list" *ngIf="issue.labels">
-		    <li id="label" [ngStyle]="{'background-color':label.color}" *ngFor="let label of issue.labels"> {{label.name}}</li>
-		</ul>
-	    </div>
-	    <div id="issue_info">
-		<a href="{{issue.user.url}}">
+			<h2> {{issue.name}} <i> #{{issue.id}} </i> </h2>
+			<ul id="label_list" *ngIf="issue.labels">
+			    <li id="label" [ngStyle]="{'background-color':label.color}" *ngFor="let label of issue.labels"> {{label.name}}</li>
+			</ul>
+		    </div>
+		</mat-panel-title>
+
+		<mat-panel-description>
+		    <div id="issue_info">
+			<a href="{{issue.user.url}}">
 		      <img src="{{issue.user.avatar}}" alt="wtf l'api est down">
 		    </a>
-		<a id="username" href="{{issue.user.url}}">
+			<a id="username" href="{{issue.user.url}}">
 		      {{issue.user.name}}
 		    </a>
-		<p> opened this issue {{issue.created}} </p>
-	    </div>
+			<p> opened this issue {{issue.created}} </p>
+		    </div>
+		</mat-panel-description>
+
+	    </mat-expansion-panel-header>
+
 	    <ul *ngIf="issue.assignees">
 		<li id="assignee" *ngFor="let assignee of issue.assignees">
-		    <div>
-			<p> {{assignee.login}} </p>
-			<img src="{{assignee.avatar_url}}" alt="">
-		    </div>
+		    <p> {{assignee.login}} </p>
+		    <img src="{{assignee.avatar_url}}" alt="">
 		</li>
 	    </ul>
 	    <div id="body">
 		<markdown class="markdown-body" [data]="issue.body"></markdown>
 	    </div>
-	</li>
-    </ul>
+
+	</mat-expansion-panel>
+    </mat-accordion>
 </div>

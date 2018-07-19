@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { MarkdownService } from 'ngx-markdown';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { data_struct, ZetapushProjectService } from './zetapush-project.service';
 

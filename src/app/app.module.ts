@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 import { AppComponent } from './app.component';
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
 import { ClientProjectComponent } from './client-project/client-project.component';
@@ -16,7 +19,9 @@ import { AppRoutingModule } from './app-routing.module';
 		BrowserModule,
 		AppRoutingModule,
 		HttpClientModule,
-		MarkdownModule.forRoot()
+		MarkdownModule.forRoot(),
+		MatExpansionModule,
+		BrowserAnimationsModule
 	],
 	declarations: [
 		AppComponent,
