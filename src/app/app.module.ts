@@ -6,6 +6,7 @@ import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppComponent } from './app.component';
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
@@ -20,8 +21,9 @@ import { AppRoutingModule } from './app-routing.module';
 		AppRoutingModule,
 		HttpClientModule,
 		MarkdownModule.forRoot(),
+		BrowserAnimationsModule,
 		MatExpansionModule,
-		BrowserAnimationsModule
+		MatTabsModule
 	],
 	declarations: [
 		AppComponent,
