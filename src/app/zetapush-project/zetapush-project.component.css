@@ -6,20 +6,21 @@ h1#repo i {
     font-size: 1.5vw;
 }
 
-ul#issues_list {
+#issues_list {
     padding: 20px;
 }
 
-li#issue {
+#issue {
     border: 1px solid #d1d5da;
     border-radius: 4px;
     margin-bottom: 20px;
 }
 
 #issue_name {
-    background: linear-gradient(0.25turn, #80cd3d, #1db6f1, #f1452a, #fbc81e);
-    /* ptdr la couleur */
-    /*background-color: #eeeeee;*/
+/*
+background: linear-gradient(0.25turn, #80cd3d, #1db6f1, #f1452a, #fbc81e);
+ptdr la couleur
+*/
     display: flex;
 }
 
@@ -30,7 +31,7 @@ li#issue {
 
 #issue_name h2 {
     font-weight: 400;
-    font-size: 32px;
+    font-size: 24px;
 }
 
 #issue_name h2 i {
@@ -66,5 +67,5 @@ li#issue {
 }
 
 img {
-    width: 50px;
+    width: 40px;
 }

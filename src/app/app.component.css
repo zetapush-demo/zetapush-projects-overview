@@ -9,7 +9,8 @@ header {
 }
 
 header::after {
-    background: linear-gradient(0.25turn, #80cd3d, #1db6f1, #f1452a, #fbc81e);
+/*    background: linear-gradient(0.25turn, #80cd3d, #1db6f1, #f1452a, #fbc81e);*/
+    background: linear-gradient(0.25turn, #80cd3d 0%, #1db6f1 25%, #f1452a 50%, #fbc81e 75%);
     content: '';
     width: 100%;
     position: absolute;
