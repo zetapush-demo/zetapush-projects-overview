@@ -20,14 +20,19 @@ export class ZetapushProjectComponent implements OnInit {
 	data: data_struct;
 
 	ngOnInit() {
-		this.zetapush_service.get_data(this.url)
-			.subscribe((tmp: data_struct) => {
-				this.data = {
-					release: tmp['release'],
-					repo: tmp['repo'],
-					issues: tmp['issues']
-					pull_request: tmp['pull_request']
-				}
-			});
+		function foo(bar) {
+			bar.zetapush_service.get_data(bar.url)
+				.subscribe((tmp: data_struct) => {
+					bar.data = {
+						release: tmp['release'],
+						repo: tmp['repo'],
+						issues: tmp['issues'],
+						pull_request: tmp['pull_request']
+					}
+				});
+		}
+		setInterval(() => {
+			foo(this);
+		}, 1000);
 	}
 }
