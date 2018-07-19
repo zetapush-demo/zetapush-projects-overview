@@ -26,6 +26,7 @@ export class ZetapushProjectComponent implements OnInit {
 					release: tmp['release'],
 					repo: tmp['repo'],
 					issues: tmp['issues']
+					pull_request: tmp['pull_request']
 				}
 			});
 	}

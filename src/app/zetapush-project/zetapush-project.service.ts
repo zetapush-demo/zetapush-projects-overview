@@ -5,6 +5,7 @@ export interface data_struct {
 	release: string;
 	repo: string;
 	issues: object[];
+	pull_request: object[];
 }
 
 @Injectable()
