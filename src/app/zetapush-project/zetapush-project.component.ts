@@ -19,20 +19,21 @@ export class ZetapushProjectComponent implements OnInit {
 	url: string = 'http://127.0.0.1:1880/github';
 	data: data_struct;
 
+	foo() {
+		this.zetapush_service.get_data(this.url)
+			.subscribe((tmp: data_struct) => {
+				this.data = {
+					release: tmp['release'],
+					repo: tmp['repo'],
+					issues: tmp['issues'],
+					pull_request: tmp['pull_request']
+				}
+			});
+	}
 	ngOnInit() {
-		function foo(bar) {
-			bar.zetapush_service.get_data(bar.url)
-				.subscribe((tmp: data_struct) => {
-					bar.data = {
-						release: tmp['release'],
-						repo: tmp['repo'],
-						issues: tmp['issues'],
-						pull_request: tmp['pull_request']
-					}
-				});
-		}
+		this.foo();
 		setInterval(() => {
-			foo(this);
-		}, 1000);
+			this.foo();
+		}, 900000);
 	}
 }
