@@ -19,7 +19,7 @@ export class ZetapushProjectComponent implements OnInit {
 	url: string = 'http://127.0.0.1:1880/github';
 	data: data_struct;
 
-	foo() {
+	get_data() {
 		this.zetapush_service.get_data(this.url)
 			.subscribe((tmp: data_struct) => {
 				this.data = {
@@ -31,9 +31,9 @@ export class ZetapushProjectComponent implements OnInit {
 			});
 	}
 	ngOnInit() {
-		this.foo();
+		this.get_data();
 		setInterval(() => {
-			this.foo();
+			this.get_data();
 		}, 900000);
 	}
 }
