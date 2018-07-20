@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { MarkdownService } from 'ngx-markdown';
 
-import { data_struct, ZetapushProjectService } from './zetapush-project.service';
+import { github_data_struct, ZetapushProjectService } from './zetapush-project.service';
 
 @Component({
 	selector: 'app-zetapush-project',
@@ -16,13 +16,13 @@ export class ZetapushProjectComponent implements OnInit {
 	constructor(private zetapush_service: ZetapushProjectService,
 		    private md: MarkdownService) { };
 
-	url: string = 'http://127.0.0.1:1880/github';
-	data: data_struct;
+	github_url: string = 'http://127.0.0.1:1880/github';
+	github_data: github_data_struct;
 
-	get_data() {
-		this.zetapush_service.get_data(this.url)
-			.subscribe((tmp: data_struct) => {
-				this.data = {
+	get_github_data() {
+		this.zetapush_service.get_github_data(this.github_url)
+			.subscribe((tmp: github_data_struct) => {
+				this.github_data = {
 					release: tmp['release'],
 					repo: tmp['repo'],
 					issues: tmp['issues'],
@@ -31,9 +31,9 @@ export class ZetapushProjectComponent implements OnInit {
 			});
 	}
 	ngOnInit() {
-		this.get_data();
+		this.get_github_data();
 		setInterval(() => {
-			this.get_data();
+			this.get_github_data();
 		}, 900000);
 	}
 }

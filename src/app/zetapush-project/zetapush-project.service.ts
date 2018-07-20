@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-export interface data_struct {
+export interface github_data_struct {
 	release: string;
 	repo: string;
 	issues: object[];
@@ -13,7 +13,7 @@ export class ZetapushProjectService {
 
 	constructor(private http: HttpClient) { }
 
-	get_data(url: string) {
+	get_github_data(url: string) {
 		return this.http.get(url);
 	};
 }
