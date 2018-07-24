@@ -1,0 +1,19 @@
+<div class="popup" *ngIf="data.new_issues">
+  <h1 class="title" mat-dialog-title > New issue !! </h1>
+
+  <div mat-dialog-content >
+    <h2> {{data.new_issues.name}} <i> #{{data.new_issues.id}} </i> </h2>
+    <p> By {{data.new_issues.user}} </p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">OK</button>
+  </div>
+</div>
+
+<div *ngIf="data.new_pull_request">
+  <h1 mat-dialog-title> New issue : {{data.new_pull_request.name}} <i> #{{data.new_pull_request.id}} </i> </h1>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">OK</button>
+  </div>
+</div>

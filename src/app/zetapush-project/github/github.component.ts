@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MarkdownService } from 'ngx-markdown';
+import { MatDialog } from '@angular/material';
 
 import { GithubDataStruct, ZetapushProjectService } from '../zetapush-project.service';
+import { PopupComponent } from './popup/popup.component';
 
 @Component({
 	selector: 'app-github',
@@ -15,23 +16,33 @@ export class GithubComponent implements OnInit {
 	data: GithubDataStruct;
 	gap_refresh = 900000;
 
-	last_issues: number;
-	last_pull_request: number;
+	new_issues: object;
+	new_pull_request: object;
 
 	constructor(
 		private zetapush_service: ZetapushProjectService,
-		private md: MarkdownService
+		private dialog: MatDialog
 	) { }
 
-	check_new_data(tab) {
+	openDialog() {
+		this.dialog.open(PopupComponent, {
+			width: '500px',
+			data: {
+				new_issues: this.new_issues,
+				new_pull_request: this.new_pull_request
+			}
+		});
+	}
+
+	get_new_data(tab) {
 		const now = new Date().valueOf();
 
 		for (var i = 0; i < tab.length; i++) {
 			const gap = new Date(tab[i].created).valueOf() - now;
-			if (-gap < this.gap_refresh)
-				return (i);
+			if (gap < this.gap_refresh)
+				return (tab[i]);
 		}
-		return (-1);
+		return (undefined);
 	}
 
 	on_get_data(tmp) {
@@ -41,12 +52,12 @@ export class GithubComponent implements OnInit {
 			issues: tmp['issues'],
 			pull_request: tmp['pull_request']
 		};
-		this.last_issues = this.check_new_data(this.data.issues);
-		this.last_pull_request = this.check_new_data(this.data.pull_request);
-		if (this.last_issues !== -1)
-			console.log(this.data.issues[this.last_issues]);
-		if (this.last_pull_request !== -1)
-			console.log(this.data.pull_request[this.last_pull_request]);
+		this.new_issues = this.get_new_data(this.data.issues);
+		this.new_pull_request = this.get_new_data(this.data.pull_request);
+		if (this.new_issues !== undefined)
+			this.openDialog();
+		if (this.new_pull_request !== undefined)
+			this.openDialog();
 	}
 
 	get_data() {
