@@ -1,0 +1,90 @@
+#undefined_data {
+	position: absolute;
+	text-align: center;
+	top: 50%;
+	width: 100%;
+	font-size: 2em;
+}
+
+h1#repo {
+	text-align: center;
+}
+
+h1#repo i {
+	font-size: 1.5vw;
+}
+
+.list {
+	padding: 20px;
+}
+
+.item_list {
+	border: 1px solid #d1d5da;
+	border-radius: 4px;
+	margin-bottom: 20px;
+}
+
+.item_name {
+	/*
+background: linear-gradient(0.25turn, #80cd3d, #1db6f1, #f1452a, #fbc81e);
+ptdr la couleur
+*/
+}
+
+.item_name * {
+	align-self: center;
+	margin: 0.5vw;
+}
+
+.item_name h2 {
+	font-weight: 400;
+	font-size: 24px;
+}
+
+.item_name h2 i {
+	color: #a3aab1;
+}
+
+.label_list li {
+	padding: 5px;
+	display: inline;
+	margin: 0.5vw;
+	font-weight: 600;
+	border-radius: 2px;
+}
+
+.item_info {
+	background-color: #d1d5da;
+	color: #586069;
+	display: flex;
+}
+
+.item_info * {
+	align-self: center;
+	margin: 0.5vw;
+}
+
+.item_info .username {
+	color: #586069;
+	font-weight: 600;
+}
+
+.body {
+	padding: 15px;
+}
+
+img {
+	width: 40px;
+}
+
+.commit-ref {
+	position: relative;
+	display: inline-block;
+	padding: 0 5px;
+	font: 0.75em/2 "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+		Courier, monospace;
+	color: #274466;
+	white-space: nowrap;
+	background-color: #eff7ff;
+	border-radius: 3px;
+}

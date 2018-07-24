@@ -10,6 +10,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppComponent } from './app.component';
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
+import { GithubComponent } from './zetapush-project/github/github.component';
 import { ClientProjectComponent } from './client-project/client-project.component';
 import { MainComponent } from './main/main.component';
 
@@ -28,6 +29,7 @@ import { AppRoutingModule } from './app-routing.module';
 	declarations: [
 		AppComponent,
 		ZetapushProjectComponent,
+		GithubComponent,
 		ClientProjectComponent,
 		MainComponent,
 	],

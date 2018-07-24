@@ -8,7 +8,9 @@ export interface GithubDataStruct {
 	pull_request: object[];
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class ZetapushProjectService {
 	constructor(private http: HttpClient) {}
 
