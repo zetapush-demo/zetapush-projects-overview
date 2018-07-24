@@ -11,8 +11,8 @@ import { GithubDataStruct, ZetapushProjectService } from '../zetapush-project.se
 })
 export class GithubComponent implements OnInit {
 
-	github_url = 'http://127.0.0.1:1880/github';
-	github_data: GithubDataStruct;
+	url = 'http://127.0.0.1:1880/github';
+	data: GithubDataStruct;
 	gap_refresh = 900000;
 
 	last_issues: number;
@@ -35,30 +35,30 @@ export class GithubComponent implements OnInit {
 	}
 
 	on_get_data(tmp) {
-		this.github_data = {
+		this.data = {
 			release: tmp['release'],
 			repo: tmp['repo'],
 			issues: tmp['issues'],
 			pull_request: tmp['pull_request']
 		};
-		this.last_issues = this.check_new_data(this.github_data.issues);
-		this.last_pull_request = this.check_new_data(this.github_data.pull_request);
+		this.last_issues = this.check_new_data(this.data.issues);
+		this.last_pull_request = this.check_new_data(this.data.pull_request);
 		if (this.last_issues !== -1)
-			console.log(this.github_data.issues[this.last_issues]);
+			console.log(this.data.issues[this.last_issues]);
 		if (this.last_pull_request !== -1)
-			console.log(this.github_data.pull_request[this.last_pull_request]);
+			console.log(this.data.pull_request[this.last_pull_request]);
 	}
 
-	get_github_data() {
-		this.zetapush_service.get_github_data(this.github_url).subscribe(
+	get_data() {
+		this.zetapush_service.get_data(this.url).subscribe(
 			(tmp: GithubDataStruct) => this.on_get_data(tmp)
 		);
 	}
 
 	ngOnInit() {
-		this.get_github_data();
+		this.get_data();
 		setInterval(() => {
-			this.get_github_data();
+			this.get_data();
 		}, this.gap_refresh);
 	}
 }

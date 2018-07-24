@@ -1,15 +1,15 @@
-<div id="undefined_data" *ngIf="!github_data">
+<div id="undefined_data" *ngIf="!data">
     mdr bah alors l'api, on se sent pas bien ?
 </div>
-<div *ngIf="github_data">
+<div *ngIf="data">
 
-    <h1 id="repo"> {{ github_data.repo }} <i> {{ github_data.release }} </i> </h1>
+    <h1 id="repo"> {{ data.repo }} <i> {{ data.release }} </i> </h1>
 
     <mat-tab-group>
 
 	<mat-tab label="Issues">
 	    <mat-accordion class="list">
-		<mat-expansion-panel class="item_list" *ngFor="let issue of github_data.issues">
+		<mat-expansion-panel class="item_list" *ngFor="let issue of data.issues">
 
 		    <mat-expansion-panel-header>
 			<mat-panel-title class="item_name">
@@ -48,8 +48,8 @@
 	</mat-tab>
 
 	<mat-tab label="Pull Request">
-	    <mat-accordion class="list">
-		<mat-expansion-panel class="item_list" *ngFor="let pull_request of github_data.pull_request">
+		<mat-accordion class="list">
+		<mat-expansion-panel class="item_list" *ngFor="let pull_request of data.pull_request">
 
 		    <mat-expansion-panel-header>
 			<mat-panel-title class="item_name">

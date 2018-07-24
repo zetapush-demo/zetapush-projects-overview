@@ -14,7 +14,7 @@ export interface GithubDataStruct {
 export class ZetapushProjectService {
 	constructor(private http: HttpClient) {}
 
-	get_github_data(url: string) {
+	get_data(url: string) {
 		return this.http.get(url);
 	}
 }
