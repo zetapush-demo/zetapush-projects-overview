@@ -18,7 +18,10 @@ export class GithubComponent implements OnInit {
 	last_issues: number;
 	last_pull_request: number;
 
-	constructor(private zetapush_service: ZetapushProjectService, private md: MarkdownService) { }
+	constructor(
+		private zetapush_service: ZetapushProjectService,
+		private md: MarkdownService
+	) { }
 
 	check_new_data(tab) {
 		const now = new Date().valueOf();

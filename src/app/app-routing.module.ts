@@ -11,12 +11,13 @@ import { ClientProjectComponent } from './client-project/client-project.componen
 const routes: Routes = [
 	{ path: '', component: MainComponent},
 	{ path: 'zetapush', component: ZetapushProjectComponent, children: [
-		{ path: 'github', component: GithubComponent }
-		{ path: '**', redirectTo: '/zetapush'},
+		{ path: 'github', component: GithubComponent },
 		// 	{ path: 'jenkins', component: JenkinsComponent },
 		// 	{ path: 'jira', component: JiraComponent }
+		{ path: '**', redirectTo: '/zetapush'}
 	]},
 	{ path: 'client', component: ClientProjectComponent},
+	{ path: '**', redirectTo: '/'}
 ];
 
 @NgModule({
