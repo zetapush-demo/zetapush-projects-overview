@@ -57,10 +57,10 @@ h1#repo i {
 	background-color: #d1d5da;
 	color: #586069;
 	display: flex;
+	align-items: center;
 }
 
 .item_info * {
-	align-self: center;
 	margin: 0.5vw;
 }
 

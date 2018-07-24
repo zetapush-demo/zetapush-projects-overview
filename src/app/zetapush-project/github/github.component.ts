@@ -39,7 +39,7 @@ export class GithubComponent implements OnInit {
 
 		for (var i = 0; i < tab.length; i++) {
 			const gap = new Date(tab[i].created).valueOf() - now;
-			if (gap < this.gap_refresh)
+			if (-gap < this.gap_refresh)
 				return (tab[i]);
 		}
 		return (undefined);
@@ -56,7 +56,7 @@ export class GithubComponent implements OnInit {
 		this.new_pull_request = this.get_new_data(this.data.pull_request);
 		if (this.new_issues !== undefined)
 			this.openDialog();
-		if (this.new_pull_request !== undefined)
+		else if (this.new_pull_request !== undefined)
 			this.openDialog();
 	}
 
