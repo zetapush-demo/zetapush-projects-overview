@@ -442,25 +442,6 @@
      "file": "/usr/lib/node_modules/node-red/node_modules/node-red-node-twitter/27-twitter.js"
     }
    }
-  },
-  "node-red-node-mongodb": {
-   "name": "node-red-node-mongodb",
-   "version": "0.0.14",
-   "local": true,
-   "nodes": {
-    "mongo": {
-     "name": "mongo",
-     "types": [
-      "mongodb",
-      "mongodb out",
-      "mongodb in"
-     ],
-     "enabled": true,
-     "local": true,
-     "module": "node-red-node-mongodb",
-     "file": "/home/pacome.francon/.node-red/node_modules/node-red-node-mongodb/66-mongodb.js"
-    }
-   }
   }
  },
  "_credentialSecret": "e2619fb8582eee69b93a08f3e69446545b94491c9803de657f91cf4081ccec9c",
