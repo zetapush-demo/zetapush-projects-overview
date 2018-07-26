@@ -1,6 +1,6 @@
 import { Simple, Messaging, Groups, Injectable, ExistenceCheck, BasicAuthenticatedUser } from '@zetapush/platform';
 
-const CONVERSATION_ID = 'github_conv';
+const CONVERSATION_ID = 'githubConv';
 const CHANNEL_MESSAGING = 'githubChannel';
 
 @Injectable()
