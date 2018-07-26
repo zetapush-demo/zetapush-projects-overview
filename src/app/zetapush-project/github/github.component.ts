@@ -37,11 +37,13 @@ export class GithubComponent implements OnInit {
 	get_new_data(tab) {
 		const now = new Date().valueOf();
 
-		for (var i = 0; i < tab.length; i++) {
-			const gap = new Date(tab[i].created).valueOf() - now;
-			if (-gap < this.gap_refresh)
-				return (tab[i]);
-		}
+		if (tab)
+			for (var i = 0; i < tab.length; i++) {
+				const gap = new Date(tab[i].created).valueOf() - now;
+
+				if (-gap < this.gap_refresh)
+					return (tab[i]);
+			}
 		return (undefined);
 	}
 

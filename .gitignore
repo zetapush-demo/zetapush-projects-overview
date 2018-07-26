@@ -38,3 +38,10 @@ testem.log
 .DS_Store
 Thumbs.db
 .vscode/
+# Vendor
+/node_modules/
+# ZetaPush Config
+.zetarc
+# TypeScript Generated Files
+/worker/**/*.js
+/worker/**/*.d.ts
