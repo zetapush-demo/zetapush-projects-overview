@@ -1,16 +1,16 @@
 {
-    "name": "worker",
-    "version": "0.1.0",
-    "main": "worker/index.ts",
-    "private": true,
-    "scripts": {
-	"deploy": "zeta push",
-	"start": "zeta run",
-	"troubleshoot": "zeta troubleshoot"
-    },
-    "dependencies": {
-	"@zetapush/cli": "^0.31.3",
-	"@zetapush/platform": "^0.31.3",
-	"typescript": "^2.9.2"
-    }
+   "name": "worker",
+   "version": "0.1.0",
+   "main": "worker/index.ts",
+   "private": true,
+   "scripts": {
+      "deploy": "zeta push",
+      "start": "zeta run",
+      "troubleshoot": "zeta troubleshoot"
+   },
+   "dependencies": {
+      "@zetapush/cli": "^0.31.3",
+      "@zetapush/platform": "^0.31.3",
+      "typescript": "^2.9.2"
+   }
 }

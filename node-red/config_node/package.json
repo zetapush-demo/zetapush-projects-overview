@@ -1,0 +1,17 @@
+{
+   "name": "node-red-contrib-config-flow",
+   "version": "0.0.1",
+   "description": "A sample node for node-red",
+   "dependencies": {
+      "@zetapush/client": "^0.31.2",
+      "@zetapush/cometd": "^0.31.2"
+   },
+   "keywords": [
+      "node-red"
+   ],
+   "node-red": {
+      "nodes": {
+         "sample": "config-flow.js"
+      }
+   }
+}
