@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { SmartClient } from '@zetapush/client';
-import { ZetaPushPlatform } from '@zetapush/platform';
+import { Messaging } from '@zetapush/platform';
 import { transports} from '@zetapush/cometd/lib/node/Transports';
 
 export interface GithubDataStruct {
@@ -33,10 +33,10 @@ export class ZetapushProjectService {
 				'login': 'angular',
 				'password': 'angular'
 			});
-			await this.api.addMeToConversation();
+			await this.api.addMeToConversation<void, void>(null);
 		});
 		this.client.createService({
-			Type: ZetaPushPlatform.Messaging,
+			Type: Messaging,
 			listener: {
 				githubChannel: ({ data }) => this.githubdata = data
 			}
