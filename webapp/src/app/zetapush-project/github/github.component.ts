@@ -63,9 +63,8 @@ export class GithubComponent implements OnInit {
 	}
 
 	get_data() {
-		this.zetapush_service.get_data(this.url).subscribe(
-			(tmp: GithubDataStruct) => this.on_get_data(tmp)
-		);
+		const tmp = this.zetapush_service.get_data();
+		this.on_get_data(tmp);
 	}
 
 	ngOnInit() {

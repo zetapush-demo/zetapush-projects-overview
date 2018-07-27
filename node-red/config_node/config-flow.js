@@ -13,7 +13,6 @@ module.exports = function(RED) {
 		    transports,
 		    platformUrl: config.platformUrl,
 		    appName: config.appName,
-		    envName: ""
 		});
 
 		const api = client.createProxyTaskService();
