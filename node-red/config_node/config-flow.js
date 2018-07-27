@@ -1,18 +1,16 @@
 module.exports = function(RED) {
-    function ConfigFlowNode(config) {
+	function ConfigFlowNode(config) {
 		RED.nodes.createNode(this, config);
 		var node = this;
 
-		console.log(config);
-
-		const { SmartClient } = require('@zetapush/client');
+		const {	SmartClient } = require('@zetapush/client');
 		const transports = require('@zetapush/cometd/lib/node/Transports');
 
 		// Create new ZetaPush Client
 		var client = new SmartClient({
-		    transports,
-		    platformUrl: config.platformUrl,
-		    appName: config.appName,
+			transports,
+			platformUrl: config.platformUrl,
+			appName: config.appName,
 		});
 
 		const api = client.createProxyTaskService();
@@ -23,15 +21,16 @@ module.exports = function(RED) {
 		flowContext.set("client", client);
 
 		node.on('input', function(msg) {
-			client.connect().then( async () => {
+			client.connect().then(async () => {
 				node.log('connected');
-				if (await api.checkUser({key: config.login}) == undefined)
+				if (await api.checkUser({ key: config.login }) == undefined) {
 					await api.createUser({
 						'email': config.email,
 						'login': config.login,
 						'password': config.password
 					});
-				await api.addMeToConversation();
+					await api.addMeToConversation();
+				}
 				await api.sendMessage({
 					data: msg.payload
 				});
