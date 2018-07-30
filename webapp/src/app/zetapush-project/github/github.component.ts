@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { MatDialog } from '@angular/material';
 
-import { GithubDataStruct, ZetapushProjectService } from '../zetapush-project.service';
+import { GithubDataStruct, ZetapushProjectService } from './github.service';
 import { PopupComponent } from './popup/popup.component';
 
 @Component({
@@ -44,7 +44,7 @@ export class GithubComponent implements OnInit {
 				if (-gap < this.gap_refresh)
 					return (tab[i]);
 			}
-		return (undefined);
+		return (null);
 	}
 
 	on_get_data(tmp) {
@@ -58,21 +58,18 @@ export class GithubComponent implements OnInit {
 		};
 		this.new_issues = this.get_new_data(this.data.issues);
 		this.new_pull_request = this.get_new_data(this.data.pull_request);
-		if (this.new_issues !== undefined)
+		if (this.new_issues !== null)
 			this.openDialog();
-		else if (this.new_pull_request !== undefined)
+		else if (this.new_pull_request !== null)
 			this.openDialog();
-	}
-
-	get_data() {
-		const tmp = this.zetapush_service.get_data();
-		this.on_get_data(tmp);
 	}
 
 	ngOnInit() {
-		this.get_data();
-		setInterval(() => {
-			this.get_data();
-		}, this.gap_refresh);
+		this.zetapush_service.init_observable();
+		this.zetapush_service.connect();
+		this.zetapush_service.listen();
+		this.zetapush_service.get_data().subscribe(
+			(data) => this.on_get_data(data)
+		);
 	}
 }

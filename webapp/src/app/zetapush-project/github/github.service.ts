@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 
+import { Observable } from 'rxjs';
+
 import { SmartClient } from '@zetapush/client';
-import { Messaging } from '@zetapush/platform';
+import { Messaging } from '@zetapush/platform/lib';
 import { transports} from '@zetapush/cometd/lib/node/Transports';
 
 export interface GithubDataStruct {
@@ -23,23 +25,33 @@ export class ZetapushProjectService {
 		appName: '2qde3WQU'
 	});
 	api = this.client.createProxyTaskService();
-	githubdata: GithubDataStruct;
+	data: GithubDataStruct;
+	obs: Observable<GithubDataStruct>;
+	next;
 
-	get_data() {
+	init_observable() {
+		this.obs = new Observable<GithubDataStruct>((observer) => {
+			this.next = observer.next;
+		});
+	}
+
+	listen() {
 		this.client.createService({
 			Type: Messaging,
 			listener: {
 				githubChannel: ({ data }) => {
-					console.log('data: ', data);
-					this.githubdata = data;
+					console.log(data);
+					this.data = data.data.message.data;
+					this.next(this.data);
 				}
 			}
 		});
-		this.client.connect().then( async () => {
-			const tmp = await this.api.checkUser({key: 'toto'});
-			console.log('tmp: ', tmp);
-			if (tmp === undefined || tmp === {}) {
-				console.log('pk t pas là');
+	}
+
+	connect() {
+		this.client.connect().then(async () => {
+			const tmp: any = await this.api.checkUser({ key: 'angular' });
+			if (tmp.code === 'NO_ACCOUNT') {
 				await this.api.createUser({
 					'email': 'pacome.francon@epitech.eu',
 					'login': 'angular',
@@ -48,6 +60,9 @@ export class ZetapushProjectService {
 				await this.api.addMeToConversation();
 			}
 		});
-		return (this.githubdata);
+	}
+
+	get_data(): Observable<GithubDataStruct> {
+		return (this.obs);
 	}
 }
