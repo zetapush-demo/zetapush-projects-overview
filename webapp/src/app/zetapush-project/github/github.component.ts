@@ -48,6 +48,8 @@ export class GithubComponent implements OnInit {
 	}
 
 	on_get_data(tmp) {
+		if (!tmp)
+			return;
 		this.data = {
 			release: tmp['release'],
 			repo: tmp['repo'],

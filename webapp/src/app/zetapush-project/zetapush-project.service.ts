@@ -26,19 +26,26 @@ export class ZetapushProjectService {
 	githubdata: GithubDataStruct;
 
 	get_data() {
-		this.client.connect().then( async () => {
-			if (await this.api.checkUser({key: 'angular'}) === undefined)
-			await this.api.createUser({
-				'email': 'pacome.francon@epitech.eu',
-				'login': 'angular',
-				'password': 'angular'
-			});
-			await this.api.addMeToConversation<void, void>(null);
-		});
 		this.client.createService({
 			Type: Messaging,
 			listener: {
-				githubChannel: ({ data }) => this.githubdata = data
+				githubChannel: ({ data }) => {
+					console.log('data: ', data);
+					this.githubdata = data;
+				}
+			}
+		});
+		this.client.connect().then( async () => {
+			const tmp = await this.api.checkUser({key: 'toto'});
+			console.log('tmp: ', tmp);
+			if (tmp === undefined || tmp === {}) {
+				console.log('pk t pas là');
+				await this.api.createUser({
+					'email': 'pacome.francon@epitech.eu',
+					'login': 'angular',
+					'password': 'azerty'
+				});
+				await this.api.addMeToConversation();
 			}
 		});
 		return (this.githubdata);

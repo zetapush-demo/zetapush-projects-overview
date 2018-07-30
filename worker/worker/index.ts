@@ -36,6 +36,7 @@ export default class NodeRedGithubApi {
 			group: CONVERSATION_ID,
 			user: context.owner
 		});
+		console.log("addmetoConversation");
 		return output;
 	}
 
@@ -56,15 +57,18 @@ export default class NodeRedGithubApi {
 			channel: CHANNEL_MESSAGING,
 			data: { message }
 		});
-		console.log(message);
+		console.log("msg: ", message);
 		return group;
 	}
 
 	async createUser(user_info: BasicAuthenticatedUser) {
-		await this.simple.createUser(user_info);
+		console.log("createUser: ", user_info);
+		await this.simple.createUser(user_info).catch((err) => console.log('createUser', err));
 	}
 
 	async checkUser(user_info: ExistenceCheck) {
-		await this.simple.checkUser(user_info);
+		const tmp = await this.simple.checkUser(user_info).catch((err) => console.log("checkUser", err));
+		console.log("return value: ", tmp);
+		return (tmp);
 	}
 }
