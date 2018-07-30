@@ -36,7 +36,6 @@ export default class NodeRedGithubApi {
 			group: CONVERSATION_ID,
 			user: context.owner
 		});
-		console.log("addmetoConversation");
 		return output;
 	}
 
@@ -62,13 +61,28 @@ export default class NodeRedGithubApi {
 	}
 
 	async createUser(user_info: BasicAuthenticatedUser) {
-		console.log("createUser: ", user_info);
-		await this.simple.createUser(user_info).catch((err) => console.log('createUser', err));
+		var output;
+		try {
+		  output = await this.simple.createUser(user_info);
+		}
+		catch(err) {
+			console.log('createUser err: ', err);
+			return err;
+		}
+		console.log('createUser output: ', output);
+		return (output);
 	}
 
 	async checkUser(user_info: ExistenceCheck) {
-		const tmp = await this.simple.checkUser(user_info).catch((err) => console.log("checkUser", err));
-		console.log("return value: ", tmp);
-		return (tmp);
+		var output;
+		try {
+		  output = await this.simple.checkUser(user_info);
+		}
+		catch(err) {
+			console.log('checkUser err: ', err);
+			return err;
+		}
+		console.log('checkUser output: ', output);
+		return (output);
 	}
 }
