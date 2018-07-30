@@ -27,11 +27,17 @@ export class ZetapushProjectService {
 	api = this.client.createProxyTaskService();
 	data: GithubDataStruct;
 	obs: Observable<GithubDataStruct>;
-	next;
+	observer;
 
 	init_observable() {
 		this.obs = new Observable<GithubDataStruct>((observer) => {
-			this.next = observer.next;
+			this.observer = observer;
+			observer.next({
+				release: 'v2000',
+				repo: 'mdr',
+				issues: [{name: 'une super issue', body: 'c\'est l\'histoire d\'un mec'}],
+				pull_request: []
+			});
 		});
 	}
 
@@ -40,9 +46,9 @@ export class ZetapushProjectService {
 			Type: Messaging,
 			listener: {
 				githubChannel: ({ data }) => {
-					console.log(data);
+					console.log('data: ', data);
 					this.data = data.data.message.data;
-					this.next(this.data);
+					this.observer.next(this.data);
 				}
 			}
 		});
