@@ -17,8 +17,8 @@ module.exports = function(RED) {
 
 		var flowContext = node.context().flow;
 
-		flowContext.set("api", api);
-		flowContext.set("client", client);
+		flowContext.set('api', api);
+		flowContext.set('client', client);
 
 		node.on('input', function(msg) {
 			client.connect().then(async () => {
@@ -35,8 +35,9 @@ module.exports = function(RED) {
 				await api.sendMessage({
 					data: msg.payload
 				});
+				node.log('data: ' + msg.payload);
 			});
 		});
 	}
-	RED.nodes.registerType("config-flow", ConfigFlowNode);
+	RED.nodes.registerType('config-flow', ConfigFlowNode);
 }
