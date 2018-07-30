@@ -23,7 +23,8 @@ module.exports = function(RED) {
 		node.on('input', function(msg) {
 			client.connect().then(async () => {
 				node.log('connected');
-				if (await api.checkUser({ key: config.login }) == undefined) {
+				const tmp = await api.checkUser({ key: config.login });
+				if (tmp.code === 'NO_ACCOUNT') {
 					await api.createUser({
 						'email': config.email,
 						'login': config.login,
