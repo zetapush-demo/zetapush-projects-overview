@@ -23,7 +23,7 @@
 					</mat-panel-title>
 				</mat-expansion-panel-header>
 
-				<div class="item_info">
+				<div *ngIf="issue.user" class="item_info">
 					<a href="{{issue.user.url}}">
 						<img src="{{issue.user.avatar}}" alt="wtf l'api est down">
 					</a>
@@ -63,7 +63,7 @@
 					</mat-panel-title>
 				</mat-expansion-panel-header>
 
-				<div class="item_info">
+				<div *ngIf="pull_request.user" class="item_info">
 					<a href="{{pull_request.user.url}}">
 						<img src="{{pull_request.user.avatar}}" alt="wtf l'api est down">
 					</a>
