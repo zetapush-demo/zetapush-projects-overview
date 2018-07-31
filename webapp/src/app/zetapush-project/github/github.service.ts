@@ -22,7 +22,7 @@ export class ZetapushProjectService {
 	client = new SmartClient({
 		transports,
 		platformUrl: 'https://celtia.zetapush.com/zbo/pub/business',
-		appName: '2qde3WQU'
+		appName: 'LvQnDoZE'
 	});
 	api = this.client.createProxyTaskService();
 	data: GithubDataStruct;

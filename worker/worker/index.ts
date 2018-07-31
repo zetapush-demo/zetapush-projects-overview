@@ -2,6 +2,7 @@ import { Simple, Messaging, Groups, Injectable, ExistenceCheck, BasicAuthenticat
 
 const CONVERSATION_ID = 'githubConv';
 const CHANNEL_MESSAGING = 'githubChannel';
+const GROUP_OWNER = 'zetapush_owner';
 
 @Injectable()
 export default class NodeRedGithubApi {
@@ -34,8 +35,10 @@ export default class NodeRedGithubApi {
 	async addMeToConversation(parameters: any, context: any) {
 		const output = await this.groups.addUser({
 			group: CONVERSATION_ID,
-			user: context.owner
+			user: context.owner,
+			owner: GROUP_OWNER
 		});
+		console.log('addmetoConv', output);
 		return output;
 	}
 
@@ -43,12 +46,14 @@ export default class NodeRedGithubApi {
 	 * Send a message on the chat
 	 * @param {Object} message
 	 */
-	async sendMessage(message: object = {}) {
+	async sendMessage(message: object = {}, context: any) {
 		// Get all users inside the conversation
 		const group = await this.groups.groupUsers({
 			group: CONVERSATION_ID
 		});
 		const users = group.users || [];
+		console.log(users);
+		console.log('context.owner: ', context.owner);
 
 		// Send the message to each user in the conversation
 		this.messaging.send({
