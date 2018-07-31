@@ -22,12 +22,15 @@ export class ZetapushProjectService {
 	client = new SmartClient({
 		transports,
 		platformUrl: 'https://celtia.zetapush.com/zbo/pub/business',
-		appName: 'LvQnDoZE'
+		appName: 'V-yugXx9'
 	});
 	api = this.client.createProxyTaskService();
 	data: GithubDataStruct;
 	obs: Observable<GithubDataStruct>;
 	observer;
+	email = 'pacome.francon@epitech.eu';
+	login = 'angular';
+	password = 'azerty';
 
 	init_observable() {
 		this.obs = new Observable<GithubDataStruct>((observer) => {
@@ -56,15 +59,20 @@ export class ZetapushProjectService {
 
 	connect() {
 		this.client.connect().then(async () => {
-			const tmp: any = await this.api.checkUser({ key: 'angular' });
+			const tmp: any = await this.api.checkUser({ key: this.login });
 			if (tmp.code === 'NO_ACCOUNT') {
 				await this.api.createUser({
-					'email': 'pacome.francon@epitech.eu',
-					'login': 'angular',
-					'password': 'azerty'
+					'email': this.email,
+					'login': this.login,
+					'password': this.password
 				});
 				await this.api.addMeToConversation();
 			}
+			await this.client.setCredentials({
+				login: this.login,
+				password: this.password
+			});
+			await this.client.connect();
 		});
 	}
 

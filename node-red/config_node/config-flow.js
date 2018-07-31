@@ -32,6 +32,11 @@ module.exports = function(RED) {
 					});
 					await api.addMeToConversation();
 				}
+				await client.setCredentials({
+					login: config.login,
+					password: config.password
+				});
+				await client.connect();
 				await api.sendMessage({
 					data: msg.payload
 				});

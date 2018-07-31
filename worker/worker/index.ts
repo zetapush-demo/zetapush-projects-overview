@@ -33,11 +33,18 @@ export default class NodeRedGithubApi {
 	 * Add the current user in the conversation
 	 */
 	async addMeToConversation(parameters: any, context: any) {
-		const output = await this.groups.addUser({
-			group: CONVERSATION_ID,
-			user: context.owner,
-			owner: GROUP_OWNER
-		});
+		var output;
+		try {
+			output = await this.groups.addUser({
+				group: CONVERSATION_ID,
+				user: context.owner
+//				owner: GROUP_OWNER
+			});
+		}
+		catch(err) {
+			console.log('addmetoConv err: ', err);
+			return err;
+		}
 		console.log('addmetoConv', output);
 		return output;
 	}
