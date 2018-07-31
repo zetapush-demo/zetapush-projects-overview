@@ -24,13 +24,12 @@ module.exports = function(RED) {
 			client.connect().then(async () => {
 				node.log('connected');
 				const tmp = await api.checkUser({ key: config.login });
-				if (tmp && tmp.code === 'NO_ACCOUNT') {
+				if (tmp && tmp.code === 'NO_ACCOUNT')
 					await api.createUser({
 						'email': config.email,
 						'login': config.login,
 						'password': config.password
 					});
-				}
 				await client.setCredentials({
 					login: config.login,
 					password: config.password
