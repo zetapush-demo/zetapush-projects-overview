@@ -60,13 +60,12 @@ export class ZetapushProjectService {
 	connect() {
 		this.client.connect().then(async () => {
 			const tmp: any = await this.api.checkUser({ key: this.login });
-			if (tmp.code === 'NO_ACCOUNT') {
+			if (tmp.code === 'NO_ACCOUNT')
 				await this.api.createUser({
 					'email': this.email,
 					'login': this.login,
 					'password': this.password
 				});
-			}
 			await this.client.setCredentials({
 				login: this.login,
 				password: this.password

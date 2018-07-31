@@ -2,7 +2,6 @@ import { Simple, Messaging, Groups, Injectable, ExistenceCheck, BasicAuthenticat
 
 const CONVERSATION_ID = 'githubConv';
 const CHANNEL_MESSAGING = 'githubChannel';
-const GROUP_OWNER = 'zetapush_owner';
 
 @Injectable()
 export default class NodeRedGithubApi {
@@ -38,7 +37,6 @@ export default class NodeRedGithubApi {
 			output = await this.groups.addUser({
 				group: CONVERSATION_ID,
 				user: context.owner
-//				owner: GROUP_OWNER
 			});
 		}
 		catch(err) {
