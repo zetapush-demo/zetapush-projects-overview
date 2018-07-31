@@ -24,19 +24,21 @@ module.exports = function(RED) {
 			client.connect().then(async () => {
 				node.log('connected');
 				const tmp = await api.checkUser({ key: config.login });
-				if (tmp.code === 'NO_ACCOUNT') {
+				if (tmp && tmp.code === 'NO_ACCOUNT') {
 					await api.createUser({
 						'email': config.email,
 						'login': config.login,
 						'password': config.password
 					});
-					await api.addMeToConversation();
 				}
 				await client.setCredentials({
 					login: config.login,
 					password: config.password
 				});
 				await client.connect();
+				const groups = await api.memberOf();
+				if (groups && !groups.member)
+					await api.addMeToConversation();
 				await api.sendMessage({
 					data: msg.payload
 				});

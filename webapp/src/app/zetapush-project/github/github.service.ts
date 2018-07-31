@@ -66,13 +66,15 @@ export class ZetapushProjectService {
 					'login': this.login,
 					'password': this.password
 				});
-				await this.api.addMeToConversation();
 			}
 			await this.client.setCredentials({
 				login: this.login,
 				password: this.password
 			});
 			await this.client.connect();
+			const groups: any = await this.api.memberOf();
+			if (groups && !groups.member)
+				await this.api.addMeToConversation();
 		});
 	}
 

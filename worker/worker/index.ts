@@ -75,7 +75,7 @@ export default class NodeRedGithubApi {
 	async createUser(user_info: BasicAuthenticatedUser) {
 		var output;
 		try {
-		  output = await this.simple.createUser(user_info);
+			output = await this.simple.createUser(user_info);
 		}
 		catch(err) {
 			console.log('createUser err: ', err);
@@ -88,13 +88,29 @@ export default class NodeRedGithubApi {
 	async checkUser(user_info: ExistenceCheck) {
 		var output;
 		try {
-		  output = await this.simple.checkUser(user_info);
+			output = await this.simple.checkUser(user_info);
 		}
 		catch(err) {
 			console.log('checkUser err: ', err);
 			return err;
 		}
 		console.log('checkUser output: ', output);
+		return (output);
+	}
+
+	async memberOf(toto: any, context: any) {
+		var output;
+		try {
+			output = await this.groups.memberOf({
+				group: CONVERSATION_ID,
+				owner: context.owner
+			});
+		}
+		catch(err) {
+			console.log('memberOf err: ', err);
+			return err;
+		}
+		console.log('memberOf output: ', output);
 		return (output);
 	}
 }
