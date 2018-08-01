@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 
 import { SmartClient } from '@zetapush/client';
 import { Messaging } from '@zetapush/platform/lib';
@@ -22,12 +22,12 @@ export class ZetapushProjectService {
 	client = new SmartClient({
 		transports,
 		platformUrl: 'https://celtia.zetapush.com/zbo/pub/business',
-		appName: 'V-yugXx9'
+		appName: 'oLMBuQid'
 	});
 	api = this.client.createProxyTaskService();
 	data: GithubDataStruct;
 	obs: Observable<GithubDataStruct>;
-	observer;
+	observer: Subscriber<GithubDataStruct>;
 	email = 'pacome.francon@epitech.eu';
 	login = 'angular';
 	password = 'azerty';
@@ -48,7 +48,7 @@ export class ZetapushProjectService {
 		this.client.createService({
 			Type: Messaging,
 			listener: {
-				githubChannel: ({ data }) => {
+				reply: ({ data }) => {
 					console.log('data: ', data);
 					this.data = data.data.message.data;
 					this.observer.next(this.data);

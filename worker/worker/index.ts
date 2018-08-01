@@ -1,7 +1,8 @@
 import { Simple, Messaging, Groups, Injectable, ExistenceCheck, BasicAuthenticatedUser } from '@zetapush/platform';
+import { LoggerConfig} from './logger'
 
-const CONVERSATION_ID = 'githubConv';
-const CHANNEL_MESSAGING = 'githubChannel';
+const GROUP_ID = 'githubGroup';
+const CHANNEL_ID = 'githubChannel';
 
 @Injectable()
 export default class NodeRedGithubApi {
@@ -11,11 +12,11 @@ export default class NodeRedGithubApi {
 	 */
 	async onApplicationBootstrap() {
 		const { exists } = await this.groups.exists({
-			group: CONVERSATION_ID
+			group: GROUP_ID
 		});
 		if (!exists)
 			await this.groups.createGroup({
-				group: CONVERSATION_ID
+				group: GROUP_ID
 			});
 	}
 
@@ -25,7 +26,8 @@ export default class NodeRedGithubApi {
 	constructor(
 		private messaging: Messaging,
 		private groups: Groups,
-		private simple: Simple
+		private simple: Simple,
+		logger: LoggerConfig
 	) { }
 
 	/**
@@ -35,7 +37,7 @@ export default class NodeRedGithubApi {
 		var output;
 		try {
 			output = await this.groups.addUser({
-				group: CONVERSATION_ID,
+				group: GROUP_ID,
 				user: context.owner
 			});
 		}
@@ -54,7 +56,7 @@ export default class NodeRedGithubApi {
 	async sendMessage(message: object = {}, context: any) {
 		// Get all users inside the conversation
 		const group = await this.groups.groupUsers({
-			group: CONVERSATION_ID
+			group: GROUP_ID
 		});
 		const users = group.users || [];
 		console.log(users);
@@ -63,7 +65,6 @@ export default class NodeRedGithubApi {
 		// Send the message to each user in the conversation
 		this.messaging.send({
 			target: users,
-			channel: CHANNEL_MESSAGING,
 			data: { message }
 		});
 		console.log("msg: ", message);
@@ -100,7 +101,7 @@ export default class NodeRedGithubApi {
 		var output;
 		try {
 			output = await this.groups.memberOf({
-				group: CONVERSATION_ID,
+				group: GROUP_ID,
 				owner: context.owner
 			});
 		}
