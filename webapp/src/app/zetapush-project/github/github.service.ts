@@ -48,33 +48,30 @@ export class ZetapushProjectService {
 		this.client.createService({
 			Type: Messaging,
 			listener: {
-				reply: ({ data }) => {
-					console.log('data: ', data);
-					this.data = data.data.message.data;
-					this.observer.next(this.data);
-				}
+				reply: ({ data }) => this.observer.next(data.data.message.data)
 			}
 		});
 	}
 
 	connect() {
-		this.client.connect().then(async () => {
-			const tmp: any = await this.api.checkUser({ key: this.login });
-			if (tmp.code === 'NO_ACCOUNT')
-				await this.api.createUser({
-					'email': this.email,
-					'login': this.login,
-					'password': this.password
-				});
-			await this.client.setCredentials({
-				login: this.login,
-				password: this.password
+		return new Promise((resolve) => {
+			this.client.connect().then(async () => {
+				if (!this.client.isStronglyAuthenticated())
+					await this.weakly_connect();
 			});
-			await this.client.connect();
-			const groups: any = await this.api.memberOf();
-			if (groups && !groups.member)
-				await this.api.addMeToConversation();
+			resolve();
 		});
+	}
+
+	async weakly_connect() {
+		await this.client.setCredentials({
+			login: this.login,
+			password: this.password
+		});
+		await this.client.connect();
+		const groups: any = await this.api.memberOf();
+		if (groups && !groups.member)
+			await this.api.addMeToConversation();
 	}
 
 	get_data(): Observable<GithubDataStruct> {

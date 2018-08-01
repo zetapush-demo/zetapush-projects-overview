@@ -66,8 +66,8 @@ export class GithubComponent implements OnInit {
 
 	ngOnInit() {
 		this.zetapush_service.init_observable();
-		this.zetapush_service.listen();
 		this.zetapush_service.connect();
+		this.zetapush_service.listen();
 		this.zetapush_service.get_data().subscribe(
 			(data) => this.on_get_data(data)
 		);
