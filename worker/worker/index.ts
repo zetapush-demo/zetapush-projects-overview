@@ -1,8 +1,6 @@
 import { Simple, Messaging, Groups, Injectable, ExistenceCheck, BasicAuthenticatedUser } from '@zetapush/platform';
-import { LoggerConfig} from './logger'
 
 const GROUP_ID = 'githubGroup';
-const CHANNEL_ID = 'githubChannel';
 
 @Injectable()
 export default class NodeRedGithubApi {
@@ -26,8 +24,7 @@ export default class NodeRedGithubApi {
 	constructor(
 		private messaging: Messaging,
 		private groups: Groups,
-		private simple: Simple,
-		logger: LoggerConfig
+		private simple: Simple
 	) { }
 
 	/**
@@ -42,10 +39,8 @@ export default class NodeRedGithubApi {
 			});
 		}
 		catch(err) {
-			console.log('addmetoConv err: ', err);
 			return err;
 		}
-		console.log('addmetoConv', output);
 		return output;
 	}
 
@@ -60,7 +55,6 @@ export default class NodeRedGithubApi {
 		});
 		const users = group.users || [];
 		console.log(users);
-		console.log('context.owner: ', context.owner);
 
 		// Send the message to each user in the conversation
 		this.messaging.send({
@@ -77,10 +71,8 @@ export default class NodeRedGithubApi {
 			output = await this.simple.createUser(user_info);
 		}
 		catch(err) {
-			console.log('createUser err: ', err);
 			return err;
 		}
-		console.log('createUser output: ', output);
 		return (output);
 	}
 
@@ -90,10 +82,8 @@ export default class NodeRedGithubApi {
 			output = await this.simple.checkUser(user_info);
 		}
 		catch(err) {
-			console.log('checkUser err: ', err);
 			return err;
 		}
-		console.log('checkUser output: ', output);
 		return (output);
 	}
 
@@ -106,10 +96,8 @@ export default class NodeRedGithubApi {
 			});
 		}
 		catch(err) {
-			console.log('memberOf err: ', err);
 			return err;
 		}
-		console.log('memberOf output: ', output);
 		return (output);
 	}
 }

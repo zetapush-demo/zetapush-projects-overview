@@ -64,9 +64,9 @@ export class GithubComponent implements OnInit {
 			this.openDialog();
 	}
 
-	ngOnInit() {
+	async ngOnInit() {
 		this.zetapush_service.init_observable();
-		this.zetapush_service.connect();
+		await this.zetapush_service.connect();
 		this.zetapush_service.listen();
 		this.zetapush_service.get_data().subscribe(
 			(data) => this.on_get_data(data)

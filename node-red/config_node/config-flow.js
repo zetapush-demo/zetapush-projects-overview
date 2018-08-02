@@ -1,3 +1,11 @@
+async function weakly_connect(client, api, credentials) {
+	await client.setCredentials(credentials);
+	await client.connect();
+	const groups  = await api.memberOf();
+	if (groups && !groups.member)
+		await api.addMeToConversation();
+}
+
 module.exports = function(RED) {
 	function ConfigFlowNode(config) {
 		RED.nodes.createNode(this, config);
@@ -20,29 +28,18 @@ module.exports = function(RED) {
 		flowContext.set('api', api);
 		flowContext.set('client', client);
 
-		node.on('input', function(msg) {
-			client.connect().then(async () => {
-				node.log('connected');
-				const tmp = await api.checkUser({ key: config.login });
-				if (tmp && tmp.code === 'NO_ACCOUNT')
-					await api.createUser({
-						'email': config.email,
-						'login': config.login,
-						'password': config.password
-					});
-				await client.setCredentials({
+		node.on('input', async function(msg) {
+			await client.connect();
+			if (!await client.isStronglyAuthenticated())
+				await weakly_connect(client, api, {
 					login: config.login,
 					password: config.password
 				});
-				await client.connect();
-				const groups = await api.memberOf();
-				if (groups && !groups.member)
-					await api.addMeToConversation();
-				await api.sendMessage({
-					data: msg.payload
-				});
-				node.log('data: ' + msg.payload);
+			node.log('connected');
+			await api.sendMessage({
+				data: msg.payload
 			});
+			node.log('data: ' + msg.payload);
 		});
 	}
 	RED.nodes.registerType('config-flow', ConfigFlowNode);
