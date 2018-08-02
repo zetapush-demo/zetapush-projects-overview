@@ -35,12 +35,6 @@ export class ZetapushProjectService {
 	init_observable() {
 		this.obs = new Observable<GithubDataStruct>((observer) => {
 			this.observer = observer;
-			observer.next({
-				release: 'v2000',
-				repo: 'mdr',
-				issues: [{name: 'une super issue', body: 'c\'est l\'histoire d\'un mec'}],
-				pull_request: []
-			});
 		});
 	}
 
@@ -53,16 +47,6 @@ export class ZetapushProjectService {
 		});
 	}
 
-	connect() {
-		return new Promise((resolve) => {
-			this.client.connect().then(async () => {
-				if (!this.client.isStronglyAuthenticated())
-					await this.weakly_connect();
-			});
-			resolve();
-		});
-	}
-
 	async weakly_connect() {
 		await this.client.setCredentials({
 			login: this.login,
@@ -72,6 +56,16 @@ export class ZetapushProjectService {
 		const groups: any = await this.api.memberOf();
 		if (groups && !groups.member)
 			await this.api.addMeToConversation();
+	}
+
+	connect() {
+		return new Promise((resolve) => {
+			this.client.connect().then(async () => {
+				if (!this.client.isStronglyAuthenticated())
+					await this.weakly_connect();
+			});
+			resolve();
+		});
 	}
 
 	get_data(): Observable<GithubDataStruct> {
