@@ -22,7 +22,7 @@ export class ZetapushProjectService {
 	client = new SmartClient({
 		transports,
 		platformUrl: 'https://celtia.zetapush.com/zbo/pub/business',
-		appName: 'oLMBuQid'
+		appName: 'p2O7rg2w'
 	});
 	api = this.client.createProxyTaskService();
 	data: GithubDataStruct;
@@ -38,9 +38,8 @@ export class ZetapushProjectService {
 		});
 	}
 
-	get_last_data() {
-		const tmp = this.api.get_last_data()
-			.catch((err) => console.log('err: ', err));
+	async get_last_data() {
+		const tmp = await this.api.get_last_data();
 		console.log('data: ', tmp);
 		return (tmp);
 	}
@@ -55,11 +54,16 @@ export class ZetapushProjectService {
 	}
 
 	async weakly_connect() {
+		await this.api.createUser({
+			'email': this.email,
+			'login': this.login,
+			'password': this.password
+		});
 		await this.client.setCredentials({
 			login: this.login,
 			password: this.password
 		});
-		await this.client.connect();
+		await this.client.connect().catch((err) => console.log(err));
 		const groups: any = await this.api.memberOf();
 		if (groups && !groups.member)
 			await this.api.addMeToConversation();
@@ -68,8 +72,10 @@ export class ZetapushProjectService {
 	connect() {
 		return new Promise((resolve) => {
 			this.client.connect().then(async () => {
-				if (!this.client.isStronglyAuthenticated())
+				if (!this.client.isStronglyAuthenticated()) {
+					console.log('dedzed');
 					await this.weakly_connect();
+				}
 			});
 			resolve();
 		});

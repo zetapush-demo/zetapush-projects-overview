@@ -1,5 +1,13 @@
-async function smart_connect(client, api, credentials) {
-	await client.setCredentials(credentials);
+async function smart_connect(client, api, config) {
+	await api.createUser({
+		'email': config.email,
+		'login': config.login,
+		'password': config.password
+	});
+	await client.setCredentials({
+		login: config.login,
+		password: config.password
+	});
 	await client.connect();
 	const groups  = await api.memberOf();
 	if (groups && !groups.member)
@@ -31,10 +39,7 @@ module.exports = function(RED) {
 		node.on('input', async function(msg) {
 			await client.connect();
 			if (!await client.isStronglyAuthenticated())
-				await smart_connect(client, api, {
-					login: config.login,
-					password: config.password
-				});
+				await smart_connect(client, api, config);
 			node.log('connected');
 			await api.sendMessage({
 				data: msg.payload
