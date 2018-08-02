@@ -5,6 +5,8 @@ const GROUP_ID = 'githubGroup';
 @Injectable()
 export default class NodeRedGithubApi {
 
+	last_data: object;
+
 	/**
 	 * Create the conversation of the chat, if doesn't already exists
 	 */
@@ -61,6 +63,7 @@ export default class NodeRedGithubApi {
 			target: users,
 			data: { message }
 		});
+		this.last_data = message;
 		console.log("msg: ", message);
 		return group;
 	}
@@ -99,5 +102,10 @@ export default class NodeRedGithubApi {
 			return err;
 		}
 		return (output);
+	}
+
+	get_last_data() {
+//		console.log(this.last_data);
+		return (this.last_data);
 	}
 }

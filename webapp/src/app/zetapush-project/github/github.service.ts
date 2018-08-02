@@ -38,6 +38,13 @@ export class ZetapushProjectService {
 		});
 	}
 
+	get_last_data() {
+		const tmp = this.api.get_last_data()
+			.catch((err) => console.log('err: ', err));
+		console.log('data: ', tmp);
+		return (tmp);
+	}
+
 	listen() {
 		this.client.createService({
 			Type: Messaging,
