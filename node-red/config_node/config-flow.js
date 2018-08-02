@@ -1,4 +1,4 @@
-async function weakly_connect(client, api, credentials) {
+async function smart_connect(client, api, credentials) {
 	await client.setCredentials(credentials);
 	await client.connect();
 	const groups  = await api.memberOf();
@@ -31,7 +31,7 @@ module.exports = function(RED) {
 		node.on('input', async function(msg) {
 			await client.connect();
 			if (!await client.isStronglyAuthenticated())
-				await weakly_connect(client, api, {
+				await smart_connect(client, api, {
 					login: config.login,
 					password: config.password
 				});
