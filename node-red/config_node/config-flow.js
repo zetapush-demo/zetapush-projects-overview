@@ -9,9 +9,7 @@ async function smart_connect(client, api, config) {
 		password: config.password
 	});
 	await client.connect();
-	const groups  = await api.memberOf();
-	if (groups && !groups.member)
-		await api.addMeToConversation();
+	await api.addMeToConversation();
 }
 
 module.exports = function(RED) {
@@ -38,9 +36,8 @@ module.exports = function(RED) {
 
 		node.on('input', async function(msg) {
 			await client.connect();
-			if (!await client.isStronglyAuthenticated())
+			if (!client.isStronglyAuthenticated())
 				await smart_connect(client, api, config);
-			node.log('connected');
 			await api.sendMessage({
 				data: msg.payload
 			});
