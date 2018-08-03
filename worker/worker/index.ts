@@ -1,4 +1,4 @@
-import { Simple, Messaging, Groups, Injectable, ExistenceCheck, BasicAuthenticatedUser } from '@zetapush/platform';
+import { Simple, Messaging, Groups, Injectable, BasicAuthenticatedUser } from '@zetapush/platform';
 
 const GROUP_ID = 'githubGroup';
 
@@ -79,33 +79,7 @@ export default class NodeRedGithubApi {
 		return (output);
 	}
 
-	async checkUser(user_info: ExistenceCheck) {
-		var output;
-		try {
-			output = await this.simple.checkUser(user_info);
-		}
-		catch(err) {
-			return err;
-		}
-		return (output);
-	}
-
-	async memberOf(toto: any, context: any) {
-		var output;
-		try {
-			output = await this.groups.memberOf({
-				group: GROUP_ID,
-				owner: context.owner
-			});
-		}
-		catch(err) {
-			return err;
-		}
-		return (output);
-	}
-
 	get_last_data() {
-//		console.log(this.last_data);
 		return (this.last_data);
 	}
 }
