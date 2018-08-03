@@ -4,7 +4,6 @@ import { Observable, Subscriber } from 'rxjs';
 
 import { SmartClient } from '@zetapush/client';
 import { Messaging } from '@zetapush/platform/lib';
-import { transports} from '@zetapush/cometd/lib/node/Transports';
 
 export interface GithubDataStruct {
 	release: string;
@@ -20,17 +19,16 @@ export class ZetapushProjectService {
 	constructor() {}
 
 	client = new SmartClient({
-		transports,
 		platformUrl: 'https://celtia.zetapush.com/zbo/pub/business',
-		appName: 'p2O7rg2w'
+		appName: '1H5WJI_-'
 	});
 	api = this.client.createProxyTaskService();
 	data: GithubDataStruct;
 	obs: Observable<GithubDataStruct>;
 	observer: Subscriber<GithubDataStruct>;
-	email = 'pacome.francon@epitech.eu';
+	email = 'pacome.francon@zetapush.com';
 	login = 'angular';
-	password = 'azerty';
+	password = 'angular';
 
 	init_observable() {
 		this.obs = new Observable<GithubDataStruct>((observer) => {
@@ -39,9 +37,7 @@ export class ZetapushProjectService {
 	}
 
 	async get_last_data() {
-		const tmp = await this.api.get_last_data();
-		console.log('data: ', tmp);
-		return (tmp);
+		return (await this.api.get_last_data());
 	}
 
 	listen() {
@@ -53,7 +49,7 @@ export class ZetapushProjectService {
 		});
 	}
 
-	async weakly_connect() {
+	async smart_connect() {
 		await this.api.createUser({
 			'email': this.email,
 			'login': this.login,
@@ -63,22 +59,14 @@ export class ZetapushProjectService {
 			login: this.login,
 			password: this.password
 		});
-		await this.client.connect().catch((err) => console.log(err));
-		const groups: any = await this.api.memberOf();
-		if (groups && !groups.member)
-			await this.api.addMeToConversation();
+		await this.client.connect();
+		await this.api.addMeToConversation();
 	}
 
-	connect() {
-		return new Promise((resolve) => {
-			this.client.connect().then(async () => {
-				if (!this.client.isStronglyAuthenticated()) {
-					console.log('dedzed');
-					await this.weakly_connect();
-				}
-			});
-			resolve();
-		});
+	async connect() {
+		await this.client.connect();
+		if (!this.client.isStronglyAuthenticated())
+			await this.smart_connect();
 	}
 
 	get_data(): Observable<GithubDataStruct> {

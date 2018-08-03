@@ -68,8 +68,8 @@ export class GithubComponent implements OnInit {
 		this.zetapush_service.init_observable();
 		await this.zetapush_service.connect();
 		this.zetapush_service.listen();
-		const tmp = this.zetapush_service.get_last_data();
-		this.on_get_data(tmp);
+		const tmp = await this.zetapush_service.get_last_data();
+		this.on_get_data(tmp['data']);
 		this.zetapush_service.get_data().subscribe(
 			(data) => this.on_get_data(data)
 		);
