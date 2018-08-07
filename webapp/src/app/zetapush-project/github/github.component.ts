@@ -13,7 +13,7 @@ import { PopupComponent } from './popup/popup.component';
 export class GithubComponent implements OnInit {
 
 	url = 'http://127.0.0.1:1880/github';
-	data: any;
+	data: GithubDataStruct;
 	gap_refresh = 900000;
 
 	new_issues: object;
@@ -51,12 +51,7 @@ export class GithubComponent implements OnInit {
 		console.log(tmp);
 		if (!tmp)
 			return;
-		this.data = {
-			release: tmp.release,
-			repo: tmp.repo,
-			issues: tmp.issues,
-			pull_request: tmp.pull_request
-		};
+		this.data = tmp;
 		this.new_issues = this.get_new_data(this.data.issues);
 		this.new_pull_request = this.get_new_data(this.data.pull_request);
 		if (this.new_issues !== null)
