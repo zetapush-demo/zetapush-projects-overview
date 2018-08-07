@@ -20,6 +20,7 @@ import { PopupComponent } from './zetapush-project/github/popup/popup.component'
 import { ClientProjectComponent } from './client-project/client-project.component';
 
 import { AppRoutingModule } from './app-routing.module';
+import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
 
 @NgModule({
 	imports: [
@@ -41,6 +42,7 @@ import { AppRoutingModule } from './app-routing.module';
 		ClientProjectComponent,
 		MainComponent,
 		PopupComponent,
+		JenkinsComponent,
 	],
 	providers: [],
 	entryComponents: [PopupComponent],
