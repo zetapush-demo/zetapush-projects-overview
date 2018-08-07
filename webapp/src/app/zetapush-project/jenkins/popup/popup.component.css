@@ -1,0 +1,33 @@
+.popup {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-bottom: 50px;
+}
+
+.title {
+        font-size: 2em;
+}
+
+.item_info {
+	background-color: #d1d5da;
+	color: #586069;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+}
+
+.item_info * {
+	margin: 0.5vw;
+}
+
+.item_info .username {
+	color: #586069;
+	font-weight: 600;
+}
+
+img {
+	width: 40px;
+}

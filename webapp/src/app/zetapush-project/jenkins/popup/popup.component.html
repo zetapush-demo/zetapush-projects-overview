@@ -1,0 +1,39 @@
+<div class="popup" *ngIf="data.new_issues">
+	<h1 class="title" mat-dialog-title > New issue !! </h1>
+
+	<div mat-dialog-content>
+		<h2> {{data.new_issues.name}} <i> #{{data.new_issues.id}} </i> </h2>
+		<div class="item_info">
+			<p> Created by </p>
+			<a class="username" href="{{data.new_issues.user.url}}">
+				{{data.new_issues.user.name}}
+			</a>
+			<a href="{{data.new_issues.user.url}}">
+				<img src="{{data.new_issues.user.avatar}}" alt="wtf l'api est down">
+			</a>
+		</div>
+	</div>
+	<div mat-dialog-actions>
+		<button mat-button (click)="closeDialog()">OK</button>
+	</div>
+</div>
+
+<div class="popup" *ngIf="!data.new_issues && data.new_pull_request">
+	<h1 class="title" mat-dialog-title > New Pull Request !! </h1>
+
+	<div mat-dialog-content>
+		<h2> {{data.new_pull_request.name}} <i> #{{data.new_pull_request.id}} </i> </h2>
+		<div class="item_info">
+			<p> Created by </p>
+			<a class="username" href="{{data.new_pull_request.user.url}}">
+				{{data.new_pull_request.user.name}}
+			</a>
+			<a href="{{data.new_pull_request.user.url}}">
+				<img src="{{data.new_pull_request.user.avatar}}" alt="wtf l'api est down">
+			</a>
+		</div>
+	</div>
+	<div mat-dialog-actions>
+		<button mat-button (click)="closeDialog()" cdkFocusInitial>OK</button>
+	</div>
+</div>

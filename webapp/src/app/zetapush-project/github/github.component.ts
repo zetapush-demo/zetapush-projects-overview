@@ -12,7 +12,6 @@ import { PopupComponent } from './popup/popup.component';
 })
 export class GithubComponent implements OnInit {
 
-	url = 'http://127.0.0.1:1880/github';
 	data: GithubDataStruct;
 	gap_refresh = 900000;
 
