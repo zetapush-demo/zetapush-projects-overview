@@ -3,8 +3,8 @@
    "version": "0.0.1",
    "description": "A sample node for node-red",
    "dependencies": {
-      "@zetapush/client": "^0.31.3",
-      "@zetapush/cometd": "^0.31.3"
+      "@zetapush/client": "^0.31.4",
+      "@zetapush/cometd": "^0.31.4"
    },
    "keywords": [
       "node-red"
