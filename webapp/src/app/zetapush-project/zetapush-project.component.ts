@@ -11,7 +11,7 @@ export class ZetapushProjectComponent implements OnInit {
 
 	navlinks = ['github', 'jenkins', 'jira'];
 
-	constuctor(
+	constructor(
 		private zetapush_service: ZetapushProjectService
 	) {}
 
@@ -19,5 +19,9 @@ export class ZetapushProjectComponent implements OnInit {
 		this.zetapush_service.init_observable();
 		await this.zetapush_service.connect();
 		await this.zetapush_service.listen();
+	}
+
+	mdr() {
+		return 'ptdr les components';
 	}
 }
