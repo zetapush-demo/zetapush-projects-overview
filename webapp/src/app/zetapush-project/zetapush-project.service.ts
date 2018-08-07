@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable, Subscriber } from 'rxjs';
 
-import { SmartClient } from '@zetapush/client';
+import { SmartClient, ProxyService } from '@zetapush/client';
 import { Messaging } from '@zetapush/platform/lib';
 
 export interface GithubDataStruct {
@@ -10,6 +10,16 @@ export interface GithubDataStruct {
 	repo: string;
 	issues: object[];
 	pull_request: object[];
+}
+
+export interface JenkinsDataStruct {
+	documentation: object;
+	zetapush: object;
+}
+
+export interface DataStruct {
+	github: GithubDataStruct;
+	jenkins: JenkinsDataStruct;
 }
 
 @Injectable({
@@ -22,31 +32,31 @@ export class ZetapushProjectService {
 		platformUrl: 'https://celtia.zetapush.com/zbo/pub/business',
 		appName: '1H5WJI_-'
 	});
-	api = this.client.createProxyTaskService();
-	data: GithubDataStruct;
-	obs: Observable<GithubDataStruct>;
-	observer: Subscriber<GithubDataStruct>;
+	api: ProxyService = this.client.createProxyTaskService();
+	data: DataStruct;
+	obs: Observable<DataStruct>;
+	observer: Subscriber<DataStruct>;
 	email = 'pacome.francon@zetapush.com';
 	login = 'angular';
 	password = 'angular';
 
 	init_observable() {
-		this.obs = new Observable<GithubDataStruct>((observer) => {
+		this.obs = new Observable((observer) => {
 			this.observer = observer;
 		});
 	}
 
 	async get_last_data() {
-		return (await this.api.get_last_data());
 	}
 
-	listen() {
-		this.client.createService({
+	async listen() {
+		await this.client.createService({
 			Type: Messaging,
 			listener: {
 				reply: ({ data }) => this.observer.next(data.data.message.data)
 			}
 		});
+		return (await this.api.get_last_data());
 	}
 
 	async smart_connect() {
@@ -69,7 +79,7 @@ export class ZetapushProjectService {
 			await this.smart_connect();
 	}
 
-	get_data(): Observable<GithubDataStruct> {
+	get_data(): Observable<DataStruct> {
 		return (this.obs);
 	}
 }

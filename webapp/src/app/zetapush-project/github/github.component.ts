@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { MatDialog } from '@angular/material';
 
-import { GithubDataStruct, ZetapushProjectService } from './github.service';
+import { GithubDataStruct, ZetapushProjectService, DataStruct } from '../zetapush-project.service';
 import { PopupComponent } from './popup/popup.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { PopupComponent } from './popup/popup.component';
 export class GithubComponent implements OnInit {
 
 	url = 'http://127.0.0.1:1880/github';
-	data: GithubDataStruct;
+	data: any;
 	gap_refresh = 900000;
 
 	new_issues: object;
@@ -47,14 +47,15 @@ export class GithubComponent implements OnInit {
 		return (null);
 	}
 
-	on_get_data(tmp: object) {
+	on_get_data(tmp: GithubDataStruct) {
+		console.log(tmp);
 		if (!tmp)
 			return;
 		this.data = {
-			release: tmp['release'],
-			repo: tmp['repo'],
-			issues: tmp['issues'],
-			pull_request: tmp['pull_request']
+			release: tmp.release,
+			repo: tmp.repo,
+			issues: tmp.issues,
+			pull_request: tmp.pull_request
 		};
 		this.new_issues = this.get_new_data(this.data.issues);
 		this.new_pull_request = this.get_new_data(this.data.pull_request);
@@ -67,11 +68,10 @@ export class GithubComponent implements OnInit {
 	async ngOnInit() {
 		this.zetapush_service.init_observable();
 		await this.zetapush_service.connect();
-		this.zetapush_service.listen();
-		const tmp = await this.zetapush_service.get_last_data();
-		this.on_get_data(tmp['data']);
+		const tmp = await this.zetapush_service.listen();
+		this.on_get_data(tmp['data'].github);
 		this.zetapush_service.get_data().subscribe(
-			(data) => this.on_get_data(data)
+			(data: DataStruct) => this.on_get_data(data.github)
 		);
 	}
 }
