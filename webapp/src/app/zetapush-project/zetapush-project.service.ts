@@ -46,6 +46,10 @@ export class ZetapushProjectService {
 		});
 	}
 
+	async get_last_data() {
+		return (await this.api.get_last_data());
+	}
+
 	async listen() {
 		await this.client.createService({
 			Type: Messaging,
@@ -53,7 +57,6 @@ export class ZetapushProjectService {
 				reply: ({ data }) => this.observer.next(data.data.message.data)
 			}
 		});
-		return (await this.api.get_last_data());
 	}
 
 	async smart_connect() {

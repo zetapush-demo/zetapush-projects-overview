@@ -9,18 +9,18 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule, MatButtonModule} from '@angular/material';
 
-
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
 
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
 import { GithubComponent } from './zetapush-project/github/github.component';
+import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
+
 import { PopupComponent } from './zetapush-project/github/popup/popup.component';
 
 import { ClientProjectComponent } from './client-project/client-project.component';
 
 import { AppRoutingModule } from './app-routing.module';
-import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
 
 @NgModule({
 	imports: [

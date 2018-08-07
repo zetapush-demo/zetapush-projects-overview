@@ -55,9 +55,7 @@ export class JenkinsComponent implements OnInit {
 	}
 
 	async ngOnInit() {
-		this.zetapush_service.init_observable();
-		await this.zetapush_service.connect();
-		const tmp = await this.zetapush_service.listen();
+		const tmp = await this.zetapush_service.get_last_data();
 		this.on_get_data(tmp['data'].jenkins);
 		this.zetapush_service.get_data().subscribe(
 			(data: DataStruct) => this.on_get_data(data.jenkins)
