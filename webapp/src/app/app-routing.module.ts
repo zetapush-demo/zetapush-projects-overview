@@ -7,21 +7,27 @@ import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.co
 import { GithubComponent } from './zetapush-project/github/github.component';
 import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
 
+import { ZetapushProjectService } from './zetapush-project/zetapush-project.service';
+
 import { ClientProjectComponent } from './client-project/client-project.component';
 
 @Injectable()
-export class Resolver implements Resolve<any> {
+class Resolver implements Resolve<any> {
 	constructor(
-		private zetapush: ZetapushProjectComponent
+		private zetapush_service: ZetapushProjectService
 	) {}
 
-	resolve() {
+	async resolve() {
+		this.zetapush_service.init_observable();
+		await this.zetapush_service.connect();
+		await this.zetapush_service.listen();
 	}
 }
 
 const routes: Routes = [
 	{ path: '', component: MainComponent},
-	{ path: 'zetapush', component: ZetapushProjectComponent, resolve: {zetapush: Resolver },
+	{ path: 'zetapush', component: ZetapushProjectComponent,
+		resolve: {zetapush: Resolver },
 		children: [
 			{ path: 'github', component: GithubComponent },
 			{ path: 'jenkins', component: JenkinsComponent },
@@ -35,9 +41,6 @@ const routes: Routes = [
 @NgModule({
 	imports: [RouterModule.forRoot(routes)],
 	exports: [RouterModule],
-	providers: [{
-		provide: Resolver,
-		useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => 'zetapush'
-	}]
+	providers: [Resolver]
 })
 export class AppRoutingModule {}

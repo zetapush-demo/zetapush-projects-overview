@@ -1,27 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-
-import { ZetapushProjectService } from './zetapush-project.service';
+import { Component } from '@angular/core';
 
 @Component({
 	selector: 'app-zetapush-project',
 	templateUrl: './zetapush-project.component.html',
 	styleUrls: ['./zetapush-project.component.css']
 })
-export class ZetapushProjectComponent implements OnInit {
+export class ZetapushProjectComponent {
 
 	navlinks = ['github', 'jenkins', 'jira'];
 
-	constructor(
-		private zetapush_service: ZetapushProjectService
-	) {}
-
-	async ngOnInit() {
-		this.zetapush_service.init_observable();
-		await this.zetapush_service.connect();
-		await this.zetapush_service.listen();
-	}
-
-	mdr() {
-		return 'ptdr les components';
-	}
+	constructor() {}
 }
