@@ -44,10 +44,15 @@ export class JenkinsComponent implements OnInit {
 		return (null);
 	}
 
-	on_get_data(tmp: JenkinsDataStruct) {
+	on_get_data(tmp) {
 		console.log(tmp);
 		if (!tmp)
 			return;
+		tmp.forEach(app => {
+			app.branchs.forEach(branch => {
+				branch.time = new Date(branch.time).toDateString();
+			});
+		});
 		this.data = tmp;
 		this.new_build = this.get_new_data(this.data);
 		if (this.new_build !== null)
