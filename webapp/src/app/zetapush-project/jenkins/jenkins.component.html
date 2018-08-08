@@ -1,3 +1,24 @@
-<p>
-  jenkins works!
-</p>
+<div id="undefined_data" *ngIf="!data || !data.length">
+	mdr bah alors l'api, on se sent pas bien ?
+</div>
+<div *ngIf="data && data.length">
+	<mat-tab-group>
+		<mat-tab *ngFor="let app of data" label="{{app.name}}">
+			<h2> {{app.description}} </h2>
+			<mat-accordion class="list">
+				<mat-expansion-panel *ngFor="let branch of app.branchs">
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+							<a href="{{branch.last_build.url}}">
+								<img src="{{branch.last_build.icon}}" alt="wtf bah l'image est plus sur le repo" />
+							</a>
+							<h2> {{branch.name}}</h2>
+						</mat-panel-title>
+				</mat-expansion-panel-header>
+
+				</mat-expansion-panel>
+			</mat-accordion>
+		</mat-tab>
+	</mat-tab-group>
+
+</div>

@@ -13,8 +13,7 @@ export interface GithubDataStruct {
 }
 
 export interface JenkinsDataStruct {
-	documentation: object;
-	zetapush: object;
+	data: object[];
 }
 
 export interface DataStruct {
