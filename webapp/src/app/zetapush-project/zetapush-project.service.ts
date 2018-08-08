@@ -46,7 +46,7 @@ export class ZetapushProjectService {
 	}
 
 	async get_last_data() {
-		return (await this.api.get_last_data());
+		return await this.api.get_last_data();
 	}
 
 	async listen() {
@@ -79,6 +79,6 @@ export class ZetapushProjectService {
 	}
 
 	get_data(): Observable<DataStruct> {
-		return (this.obs);
+		return this.obs;
 	}
 }

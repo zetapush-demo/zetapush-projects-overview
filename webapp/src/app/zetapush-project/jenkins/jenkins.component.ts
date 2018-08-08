@@ -15,49 +15,55 @@ export class JenkinsComponent implements OnInit {
 	data: JenkinsDataStruct;
 	gap_refresh = 900000;
 
-	new_build: object;
+	branch_new_build: object;
 
 	constructor(
 		private zetapush_service: ZetapushProjectService,
 		private dialog: MatDialog
 	) { }
 
-	openDialog() {
+	openDialog(branch_new_build) {
 		this.dialog.open(PopupComponent, {
 			width: '500px',
-			data: {
-				new_build: this.new_build,
-			}
+			data: branch_new_build
 		});
 	}
 
 	get_new_data(tab) {
 		const now = new Date().valueOf();
 
-		if (tab)
-			for (var i = 0; i < tab.length; i++) {
-				const gap = new Date(tab[i].time).valueOf() - now;
+		if (!tab)
+			return null;
+		tab.forEach(app => {
+			app.branchs.forEach(branch => {
+				const gap = branch.time - now;
 
 				if (-gap < this.gap_refresh)
-					return (tab[i]);
-			}
-		return (null);
+					return branch;
+			})
+		});
+		return null;
+	}
+
+	stringify_date(tmp: any) {
+		tmp.forEach(app => {
+			app.branchs.forEach(branch => {
+				branch.time = new Date(branch.time).toDateString();
+			});
+		});
 	}
 
 	on_get_data(tmp) {
 		console.log(tmp);
 		if (!tmp)
 			return;
-		tmp.forEach(app => {
-			app.branchs.forEach(branch => {
-				branch.time = new Date(branch.time).toDateString();
-			});
-		});
+		this.stringify_date(tmp);
 		this.data = tmp;
-		this.new_build = this.get_new_data(this.data);
-		if (this.new_build !== null)
-			this.openDialog();
+		const branch_new_build = this.get_new_data(this.data);
+		if (branch_new_build !== null)
+			this.openDialog(branch_new_build);
 	}
+
 
 	async ngOnInit() {
 		const tmp = await this.zetapush_service.get_last_data();

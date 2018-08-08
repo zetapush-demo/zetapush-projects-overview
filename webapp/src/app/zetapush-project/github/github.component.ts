@@ -41,9 +41,9 @@ export class GithubComponent implements OnInit {
 				const gap = new Date(tab[i].created).valueOf() - now;
 
 				if (-gap < this.gap_refresh)
-					return (tab[i]);
+					return tab[i];
 			}
-		return (null);
+		return null;
 	}
 
 	on_get_data(tmp: GithubDataStruct) {
