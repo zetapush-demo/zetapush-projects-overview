@@ -4,6 +4,9 @@
 <div *ngIf="data && data.length">
 	<mat-tab-group>
 		<mat-tab *ngFor="let app of data" label="{{app.name}}">
+			<a href="{{app.url}}">
+				<img src="http://ci.zpush.io:28702/static/45740046/images/headshot.png" alt="wtf jean-kins é casser" />
+			</a>
 			<h2> {{app.description}} </h2>
 			<mat-accordion class="list">
 				<mat-expansion-panel *ngFor="let branch of app.branchs">
@@ -12,10 +15,12 @@
 							<a href="{{branch.last_build.url}}">
 								<img src="{{branch.last_build.icon}}" alt="wtf bah l'image est plus sur le repo" />
 							</a>
-							<h2> {{branch.name}}</h2>
-						</mat-panel-title>
+								<h2> {{branch.name}}</h2>
+							</mat-panel-title>
 				</mat-expansion-panel-header>
-
+				<a href="{{branch.branch_url}}"> Go to Branch </a>
+				<p> {{branch.last_build.description}} </p>
+				<p> Time: {{branch.time}}</p>
 				</mat-expansion-panel>
 			</mat-accordion>
 		</mat-tab>
