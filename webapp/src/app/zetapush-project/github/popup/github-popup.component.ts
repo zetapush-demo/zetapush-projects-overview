@@ -2,14 +2,14 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
-	selector: 'app-popup',
-	templateUrl: './popup.component.html',
-	styleUrls: ['./popup.component.css']
+	selector: 'github-popup',
+	templateUrl: './github-popup.component.html',
+	styleUrls: ['./github-popup.component.css']
 })
-export class PopupComponent {
+export class GithubPopupComponent {
 
 	constructor(
-		public dialogRef: MatDialogRef<PopupComponent>,
+		public dialogRef: MatDialogRef<GithubPopupComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: object
 	) { }
 

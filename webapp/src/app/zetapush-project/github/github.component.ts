@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import { GithubDataStruct, ZetapushProjectService, DataStruct } from '../zetapush-project.service';
-import { PopupComponent } from './popup/popup.component';
+import { GithubPopupComponent } from './popup/github-popup.component';
 
 @Component({
 	selector: 'app-github',
@@ -24,7 +24,7 @@ export class GithubComponent implements OnInit {
 	) { }
 
 	openDialog() {
-		this.dialog.open(PopupComponent, {
+		this.dialog.open(GithubPopupComponent, {
 			width: '500px',
 			data: {
 				new_issues: this.new_issues,

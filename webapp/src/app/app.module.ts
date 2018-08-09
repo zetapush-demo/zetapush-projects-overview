@@ -14,8 +14,9 @@ import { ClientProjectComponent } from './client-project/client-project.componen
 
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
 import { GithubComponent } from './zetapush-project/github/github.component';
+import { GithubPopupComponent } from './zetapush-project/github/popup/github-popup.component';
 import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
-import { PopupComponent } from './zetapush-project/github/popup/popup.component';
+import { JenkinsPopupComponent } from './zetapush-project/jenkins/popup/jenkins-popup.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -38,11 +39,12 @@ import { AppRoutingModule } from './app-routing.module';
 		ClientProjectComponent,
 		ZetapushProjectComponent,
 		GithubComponent,
+		GithubPopupComponent,
 		JenkinsComponent,
-		PopupComponent,
+		JenkinsPopupComponent,
 	],
 	providers: [],
-	entryComponents: [PopupComponent],
+	entryComponents: [GithubPopupComponent, JenkinsPopupComponent],
 	bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import { JenkinsDataStruct, ZetapushProjectService, DataStruct } from '../zetapush-project.service';
-import { PopupComponent } from './popup/popup.component';
+import { JenkinsPopupComponent } from './popup/jenkins-popup.component';
 
 @Component({
 	selector: 'app-jenkins',
@@ -23,7 +23,7 @@ export class JenkinsComponent implements OnInit {
 	) { }
 
 	openDialog(branch_new_build) {
-		this.dialog.open(PopupComponent, {
+		this.dialog.open(JenkinsPopupComponent, {
 			width: '500px',
 			data: branch_new_build
 		});
@@ -34,21 +34,21 @@ export class JenkinsComponent implements OnInit {
 
 		if (!tab)
 			return null;
-		tab.forEach(app => {
-			app.branchs.forEach(branch => {
-				const gap = branch.time - now;
+		for (let i = 0; i < tab.length; i++) {
+			for (let j = 0; j < tab[i].branchs.length; j++) {
+				var gap = tab[i].branchs[j].time - now;
 
 				if (-gap < this.gap_refresh)
-					return branch;
-			})
-		});
+					return tab[i].branchs[j];
+			}
+		}
 		return null;
 	}
 
 	stringify_date(tmp: any) {
 		tmp.forEach(app => {
 			app.branchs.forEach(branch => {
-				branch.time = new Date(branch.time).toDateString();
+				branch.time = new Date(branch.time).toUTCString().slice(0, -4);
 			});
 		});
 	}
@@ -57,9 +57,9 @@ export class JenkinsComponent implements OnInit {
 		console.log(tmp);
 		if (!tmp)
 			return;
-		this.stringify_date(tmp);
 		this.data = tmp;
 		const branch_new_build = this.get_new_data(this.data);
+		this.stringify_date(this.data);
 		if (branch_new_build !== null)
 			this.openDialog(branch_new_build);
 	}
