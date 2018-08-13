@@ -49,7 +49,6 @@ export default class NodeRedGithubApi {
 		});
 		console.log('Done: ', new Date().toUTCString().slice(0, -4));
 		this.last_data = message;
-//		console.log("msg: ", message);
 	}
 
 	async createUser(user_info: BasicAuthenticatedUser) {
