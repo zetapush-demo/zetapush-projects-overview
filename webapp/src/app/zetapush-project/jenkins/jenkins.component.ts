@@ -12,7 +12,7 @@ import { JenkinsPopupComponent } from './popup/jenkins-popup.component';
 })
 export class JenkinsComponent implements OnInit {
 
-	data: JenkinsDataStruct;
+	data: JenkinsDataStruct[];
 	gap_refresh = 900000;
 	branch_new_build: object;
 
@@ -52,7 +52,7 @@ export class JenkinsComponent implements OnInit {
 		});
 	}
 
-	on_get_data(tmp: JenkinsDataStruct) {
+	on_get_data(tmp: JenkinsDataStruct[]) {
 		console.log(tmp);
 		if (!tmp)
 			return;

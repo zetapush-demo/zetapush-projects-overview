@@ -13,12 +13,15 @@ export interface GithubDataStruct {
 }
 
 export interface JenkinsDataStruct {
-	data: object[];
+	branchs: object[],
+	name: string,
+	description: string,
+	url: string
 }
 
 export interface DataStruct {
 	github: GithubDataStruct;
-	jenkins: JenkinsDataStruct;
+	jenkins: JenkinsDataStruct[];
 }
 
 @Injectable({
@@ -29,7 +32,7 @@ export class ZetapushProjectService {
 
 	client = new SmartClient({
 		platformUrl: 'https://celtia.zetapush.com/zbo/pub/business',
-		appName: 'Tz_QwHOS'
+		appName: 'YcBd4O_X'
 	});
 	api: ProxyService = this.client.createProxyTaskService();
 	data: DataStruct;
