@@ -23,17 +23,17 @@ async function get_branch_array(branch_url_array)
 	var res;
 
 	for (var i = 0; i < branch_url_array.length; i++) {
-		res = (await axios.get(branch_url_array[i] + 'api/json?pretty')).data;
+		res = await axios.get(branch_url_array[i].url + 'api/json?pretty');
 		branchs.push({
-			name: res.displayName,
+			name: res.data.displayName,
 			last_build: {
-				description: res.healthReport[0],
-				url: res.lastBuild.url,
-				icon: 'https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/48x48/' + res.healthReport[0].iconUrl,
-				score: res.healthReport[0].score,
-				time: await get_timestamp_last_build(res.lastBuild.url)
+				description: res.data.healthReport[0],
+				url: res.data.lastBuild.url,
+				icon: 'https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/48x48/' + res.data.healthReport[0].iconUrl,
+				score: res.data.healthReport[0].score,
+				time: await get_timestamp_last_build(res.data.lastBuild.url)
 			},
-			branch_url: res.url
+			branch_url: res.data.url
 		});
 	}
 	return branchs;
@@ -45,13 +45,13 @@ module.exports = async function()
 	var repo_list = await get_repo_list();
 
 	for (var i = 0; i < repo_list.length; i++) {
-		var res = (await axios.get(repo_list[i])).data;
+		var res = await axios.get(repo_list[i]);
 
 		data.push({
-			name: res.name,
-			description: res.description,
-			url: res.url,
-			branch: await get_branch_array(res.jobs)
+			name: res.data.name,
+			description: res.data.description,
+			url: res.data.url,
+			branch: await get_branch_array(res.data.jobs)
 		});
 	}
 	return data;
