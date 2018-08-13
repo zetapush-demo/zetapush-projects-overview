@@ -42,4 +42,5 @@ Thumbs.db
 .zetarc
 # TypeScript Generated Files
 /worker/**/*.js
+!/worker/http/**/*.js
 /worker/**/*.d.ts
