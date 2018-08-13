@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { MatDialog } from '@angular/material';
 
-import { JenkinsDataStruct, ZetapushProjectService, DataStruct } from '../zetapush-project.service';
+import { ZetapushProjectService, DataStruct, JenkinsDataStruct } from '../zetapush-project.service';
 import { JenkinsPopupComponent } from './popup/jenkins-popup.component';
 
 @Component({
@@ -14,7 +14,6 @@ export class JenkinsComponent implements OnInit {
 
 	data: JenkinsDataStruct;
 	gap_refresh = 900000;
-
 	branch_new_build: object;
 
 	constructor(
@@ -45,7 +44,7 @@ export class JenkinsComponent implements OnInit {
 		return null;
 	}
 
-	stringify_date(tmp: any) {
+	stringify_date(tmp) {
 		tmp.forEach(app => {
 			app.branchs.forEach(branch => {
 				branch.time = new Date(branch.time).toUTCString().slice(0, -4);
@@ -53,7 +52,7 @@ export class JenkinsComponent implements OnInit {
 		});
 	}
 
-	on_get_data(tmp) {
+	on_get_data(tmp: JenkinsDataStruct) {
 		console.log(tmp);
 		if (!tmp)
 			return;
@@ -67,7 +66,7 @@ export class JenkinsComponent implements OnInit {
 
 	async ngOnInit() {
 		const tmp = await this.zetapush_service.get_last_data();
-		this.on_get_data(tmp['data'].jenkins);
+		this.on_get_data(tmp['jenkins']);
 		this.zetapush_service.get_data().subscribe(
 			(data: DataStruct) => this.on_get_data(data.jenkins)
 		);

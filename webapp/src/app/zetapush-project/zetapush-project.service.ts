@@ -29,7 +29,7 @@ export class ZetapushProjectService {
 
 	client = new SmartClient({
 		platformUrl: 'https://celtia.zetapush.com/zbo/pub/business',
-		appName: '1H5WJI_-'
+		appName: 'Tz_QwHOS'
 	});
 	api: ProxyService = this.client.createProxyTaskService();
 	data: DataStruct;
@@ -53,7 +53,7 @@ export class ZetapushProjectService {
 		await this.client.createService({
 			Type: Messaging,
 			listener: {
-				reply: ({ data }) => this.observer.next(data.data.message.data)
+				reply: ({ data }) => this.observer.next(data.data)
 			}
 		});
 	}

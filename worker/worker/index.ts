@@ -9,9 +9,6 @@ export default class NodeRedGithubApi {
 
 	last_data: object;
 
-	/**
-	 * Create the conversation of the chat, if doesn't already exists
-	 */
 	async onApplicationBootstrap() {
 		const { exists } = await this.groups.exists({
 			group: GROUP_ID
@@ -22,18 +19,12 @@ export default class NodeRedGithubApi {
 			});
 	}
 
-	/**
-	 * Constructor of our API
-	 */
 	constructor(
 		private messaging: Messaging,
 		private groups: Groups,
 		private simple: Simple
 	) { }
 
-	/**
-	 * Add the current user in the conversation
-	 */
 	async addMeToConversation(parameters: any, context: any) {
 		await this.groups.addUser({
 			group: GROUP_ID,
@@ -41,32 +32,27 @@ export default class NodeRedGithubApi {
 		});
 	}
 
-	/**
-	 * Send a message on the chat
-	 * @param {Object} message
-	 */
-	async sendMessage(message: object = {}, context: any) {
+	async sendMessage(message: any, context: any) {
 		const group = await this.groups.groupUsers({
 			group: GROUP_ID
 		});
 		const users = group.users || [];
-		console.log(users);
 
+		console.log('Start sending: ', new Date().toUTCString().slice(0, -4));
 		message = {
 			github: await Github(),
 			jenkins: await Jenkins()
 		}
 		this.messaging.send({
 			target: users,
-			data: { message }
+			data: message
 		});
+		console.log('Done: ', new Date().toUTCString().slice(0, -4));
 		this.last_data = message;
-		console.log("msg: ", message);
-		return group;
+//		console.log("msg: ", message);
 	}
 
 	async createUser(user_info: BasicAuthenticatedUser) {
-		console.log('dans le worker');
 		try {
 			await this.simple.createUser(user_info);
 		}
