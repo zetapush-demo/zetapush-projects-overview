@@ -1,4 +1,6 @@
 import { Simple, Messaging, Groups, Injectable, BasicAuthenticatedUser } from '@zetapush/platform';
+import * as Github from './github';
+import * as Jenkins from './jenkins';
 
 const GROUP_ID = 'githubGroup';
 
@@ -33,17 +35,10 @@ export default class NodeRedGithubApi {
 	 * Add the current user in the conversation
 	 */
 	async addMeToConversation(parameters: any, context: any) {
-		var output;
-		try {
-			output = await this.groups.addUser({
-				group: GROUP_ID,
-				user: context.owner
-			});
-		}
-		catch(err) {
-			return err;
-		}
-		return output;
+		await this.groups.addUser({
+			group: GROUP_ID,
+			user: context.owner
+		});
 	}
 
 	/**
@@ -51,14 +46,16 @@ export default class NodeRedGithubApi {
 	 * @param {Object} message
 	 */
 	async sendMessage(message: object = {}, context: any) {
-		// Get all users inside the conversation
 		const group = await this.groups.groupUsers({
 			group: GROUP_ID
 		});
 		const users = group.users || [];
 		console.log(users);
 
-		// Send the message to each user in the conversation
+		message = {
+			github: await Github(),
+			jenkins: await Jenkins()
+		}
 		this.messaging.send({
 			target: users,
 			data: { message }
@@ -69,14 +66,13 @@ export default class NodeRedGithubApi {
 	}
 
 	async createUser(user_info: BasicAuthenticatedUser) {
-		var output;
+		console.log('dans le worker');
 		try {
-			output = await this.simple.createUser(user_info);
+			await this.simple.createUser(user_info);
 		}
 		catch(err) {
-			return err;
+			console.log(err);
 		}
-		return (output);
 	}
 
 	get_last_data() {

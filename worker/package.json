@@ -11,6 +11,7 @@
    "dependencies": {
       "@zetapush/cli": "^0.31.4",
       "@zetapush/platform": "^0.31.4",
+      "axios": "^0.18.0",
       "typescript": "^2.9.2"
    }
 }
