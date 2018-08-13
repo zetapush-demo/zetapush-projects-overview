@@ -5,45 +5,38 @@ async function get_repo_list()
 	var url = [];
 	var res = await axios.get('http://ci.zpush.io:28702/job/ZetaPush%20Github/api/json?pretty');
 
-	for (var i = 0; i < res.jobs.length; i++)
-		url.push(res.jobs[i] + 'api/json?pretty');
+	for (var i = 0; i < res.data.jobs.length; i++)
+		url.push(res.data.jobs[i].url + 'api/json?pretty');
 	return url;
 }
 
-async function get_branch_info(repo_url)
+async function get_timestamp_last_build(build_url)
 {
-	var res = await axios.get(repo_url);
-	var branch = {
-		name: res.displayName,
-		last_build: {
-			description: res.healthReport[0],
-			url: res.lastBuild.url,
-			icon: 'https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/48x48/' + res.healthReport[0].iconUrl,
-			score: res.healthReport[0].score,
-		},
-		branch_url: res.url
-	};
-	return branch;
+	var res = await axios.get(build_url + 'api/json?pretty');
+
+	return res.data.timestamp;
 }
 
-async function put_time_last_build(branchs, mdr)
+async function get_branch_array(branch_url_array)
 {
-	var res = await axios.get();
+	var branchs = [];
+	var res;
 
-	branchs.find((branch) => {
-		if (mdr.fullDisplayName.indexOf(branch.name) != -1)
-			branch.time = mdr.timestamp;
-	});
-}
-
-function get_branch_array(url_array)
-{
-	var branch_url;
-	var res = await axios.get(url);
-
-	for (var i = 0; i < res.jobs.length; i++)
-		branch_url.push(res.jobs[i] + 'api/json?pretty');
-	return branch_url;
+	for (var i = 0; i < branch_url_array.length; i++) {
+		res = (await axios.get(branch_url_array[i] + 'api/json?pretty')).data;
+		branchs.push({
+			name: res.displayName,
+			last_build: {
+				description: res.healthReport[0],
+				url: res.lastBuild.url,
+				icon: 'https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/48x48/' + res.healthReport[0].iconUrl,
+				score: res.healthReport[0].score,
+				time: await get_timestamp_last_build(res.lastBuild.url)
+			},
+			branch_url: res.url
+		});
+	}
+	return branchs;
 }
 
 module.exports = async function()
@@ -52,7 +45,7 @@ module.exports = async function()
 	var repo_list = await get_repo_list();
 
 	for (var i = 0; i < repo_list.length; i++) {
-		var res = await axios.get(repo_list[i]);
+		var res = (await axios.get(repo_list[i])).data;
 
 		data.push({
 			name: res.name,
