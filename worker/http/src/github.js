@@ -75,7 +75,6 @@ async function get_pull_request(repo_name)
 			labels: utils.get_good_color(utils.obj_tab_filter(data[i].labels, ["name", "color"])),
 			body: data[i].body,
 			requested_reviewers: utils.obj_tab_filter(data[i].requested_reviewers, ["login", "avatar_url"]),
-			commit: data[i].commits,
 			head: data[i].head.ref,
 			base: data[i].base.ref
 		};
