@@ -7,25 +7,26 @@ var config = {
 	},
 };
 
-var project = ['BiOSENCY Tracker', 'BiOSENCY'];
+var project = ['BiOSENCY Tracker'];
 var api = 'https://zetapush.atlassian.net/rest/api/2';
 
 async function get_project_key_list()
 {
-	var key = [];
+	var keys = [];
 	var res = await axios.get(`${api}/project/`, config);
 
-	for (var i = 0; i < res.data.length; i++) {
-		project.find((name) => {
-			if (name == res.data[i].name)
-				key.push(res.data[i].key);
-		});
+	for (var j = 0; j < project.length; j++)
+		for (var i = 0; i < res.data.length; i++) {
+			if (res.data[i].name === project[j])
+				keys.push(res.data[i].key);
 	}
-	return key;
+	return keys;
 }
 
 function filter_data(res) {
 	res.data.issues.forEach((elem) => {
+		delete elem.expand;
+		delete elem.id;
 		for (var key in elem.fields)
 			if (key.match(/customfield_/))
 				delete elem.fields[key];
@@ -45,7 +46,8 @@ async function get_issues_list(project_key)
 		filter_data(res);
 		issues = issues.concat(res.data.issues);
 	}
-	return issues.filter((issue) => issue.fields.status.name != 'Delivered');
+	issues = issues.filter((issue) => issue.fields.status.name != 'Delivered');
+	return issues;
 }
 
 module.exports = async function()
@@ -53,6 +55,7 @@ module.exports = async function()
 	var data = [];
 	var keys = await get_project_key_list();
 
+	console.log(keys)
 	for (var i = 0; i < keys.length; i++) {
 		var issues = await get_issues_list(keys[i]);
 
