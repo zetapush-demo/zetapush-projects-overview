@@ -23,14 +23,33 @@ async function get_project_key_list()
 	return keys;
 }
 
-function filter_data(res) {
-	res.data.issues.forEach((elem) => {
+function filter_data(issues) {
+	issues.forEach((elem) => {
+		elem.priority = {
+			id: elem.fields.priority.id,
+			icon: elem.fields.priority.iconUrl,
+		};
+		elem.status = {
+			name: elem.fields.status.name,
+			id: elem.fields.status.id
+		};
+		elem.summary = elem.fields.summary;
+		elem.description = elem.fields.description;
+		elem.created = elem.fields.created;
+		if (elem.fields.reporter == null)
+			console.log(elem);
+//		elem.reporter = elem.fields.reporter['self'];
+//			email: elem.fields.reporter.emailAddress,
+//			avatar: elem.fields.reporter.avatarUrls['48x48']
+		// elem.issuetype = {
+		// 	name: elem.fields.issuetype.name,
+		// 	icon: elem.fields.issuetype.iconUrl
+		// };
 		delete elem.expand;
 		delete elem.id;
-		for (var key in elem.fields)
-			if (key.match(/customfield_/))
-				delete elem.fields[key];
+		delete elem.fields;
 	});
+	return issues;
 }
 
 async function get_issues_list(project_key)
@@ -39,14 +58,11 @@ async function get_issues_list(project_key)
 	var res = await axios.get(`${api}/search?jql=project=${project_key}&maxResults=1`, config);
 	var max = res.data.total;
 
-	filter_data(res);
-	issues.push(res.data.issues[0]);
 	for (var i = 0; i < max; i += 100) {
-		res = await axios.get(`${api}/search?jql=project=${project_key}&startAt=${i + 1}&maxResults=100`, config);
-		filter_data(res);
-		issues = issues.concat(res.data.issues);
+		res = await axios.get(`${api}/search?jql=project=${project_key}&startAt=${i}&maxResults=100`, config);
+		res.data.issues = res.data.issues.filter(issue => issue.status.name != 'Delivered');
+		issues = issues.concat(filter_data(res.data.issues));
 	}
-	issues = issues.filter((issue) => issue.fields.status.name != 'Delivered');
 	return issues;
 }
 
@@ -55,7 +71,7 @@ module.exports = async function()
 	var data = [];
 	var keys = await get_project_key_list();
 
-	console.log(keys)
+	console.log(keys);
 	for (var i = 0; i < keys.length; i++) {
 		var issues = await get_issues_list(keys[i]);
 
@@ -65,6 +81,6 @@ module.exports = async function()
 			issues: issues
 		});
 	}
-	return data[0];
+	return 'mdr';//data[0].issues[0].reporter;
 }
 
