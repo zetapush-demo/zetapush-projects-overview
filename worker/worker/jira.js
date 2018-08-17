@@ -36,15 +36,16 @@ function filter_data(issues) {
 		elem.summary = elem.fields.summary;
 		elem.description = elem.fields.description;
 		elem.created = elem.fields.created;
-		if (elem.fields.reporter == null)
-			console.log(elem);
-//		elem.reporter = elem.fields.reporter['self'];
-//			email: elem.fields.reporter.emailAddress,
-//			avatar: elem.fields.reporter.avatarUrls['48x48']
-		// elem.issuetype = {
-		// 	name: elem.fields.issuetype.name,
-		// 	icon: elem.fields.issuetype.iconUrl
-		// };
+		if (elem.fields.reporter != null)
+			elem.reporter = {
+				email: elem.fields.reporter.emailAddress,
+				avatar: elem.fields.reporter.avatarUrls['48x48']
+			};
+		elem.issuetype = {
+			name: elem.fields.issuetype.name,
+			icon: elem.fields.issuetype.iconUrl
+		};
+		delete elem.self;
 		delete elem.expand;
 		delete elem.id;
 		delete elem.fields;
@@ -60,7 +61,7 @@ async function get_issues_list(project_key)
 
 	for (var i = 0; i < max; i += 100) {
 		res = await axios.get(`${api}/search?jql=project=${project_key}&startAt=${i}&maxResults=100`, config);
-		res.data.issues = res.data.issues.filter(issue => issue.status.name != 'Delivered');
+		res.data.issues = res.data.issues.filter(issue => issue.fields.status.name != 'Delivered');
 		issues = issues.concat(filter_data(res.data.issues));
 	}
 	return issues;
@@ -81,6 +82,6 @@ module.exports = async function()
 			issues: issues
 		});
 	}
-	return 'mdr';//data[0].issues[0].reporter;
+	return data[0].issues;
 }
 
