@@ -46,7 +46,13 @@ function filter_data(issues)
 async function get_issues_list(project_key)
 {
 	var issues = [];
-	var res = await axios.get(`${api}/search?jql=project=${project_key}&maxResults=1`, config);
+	var res = await axios.get(`${api}/search?jql=project=${project_key}&maxResults=1`, config).catch((err) => {
+		if (err.response.status != 200) {
+			console.log(err.response.status, err.response.statusText);
+			console.log('The authenticated account is not allowed to see that.');
+			process.exit(1);
+		}
+	});
 	var max = res.data.total;
 
 	for (var i = 0; i < max; i += 100) {
