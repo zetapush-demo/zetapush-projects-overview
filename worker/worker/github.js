@@ -88,8 +88,15 @@ module.exports = async function()
 	var data = {};
 
 	data.repo = await get_repo_list();
-	data.tag = await get_tag(data.repo);
-	data.issues = await get_issues(data.repo);
-	data.pull_request = await get_pull_request(data.repo);
+
+	await Promise.all([
+		get_tag(data.repo),
+		get_issues(data.repo),
+		get_pull_request(data.repo)
+	]).then((res) => {
+		data.tag = res[0];
+		data.issues = res[1];
+		data.pull_request = res[2];
+	});
 	return data;
 }
