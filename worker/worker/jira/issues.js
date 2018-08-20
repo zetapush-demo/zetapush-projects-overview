@@ -23,41 +23,23 @@ async function get_project_key_list()
 	return keys;
 }
 
-function extract_data(src, key_array)
-{
-	var dest = {};
-
-	if (!src)
-		return undefined;
-	for (var i = 0; i < key_array.length; i++)
-		dest[`${key_array[i]}`] = src[`${key_array[i]}`];
-	return dest;
-}
-
 function filter_data(issues)
 {
-	issues.forEach((elem) => {
-		elem.priority = extract_data(elem.fields.priority, ['id', 'iconUrl']);
-		elem.issuetype = extract_data(elem.fields.issuetype, ['name', 'iconUrl']);
-		elem.status = extract_data(elem.fields.status, ['name', 'id']);
-		elem.summary = elem.fields.summary;
-		elem.created = utils.parse_time(elem.fields.created);
-		if (elem.fields.description)
-			elem.description = elem.fields.description;
-		if (elem.fields.reporter) {
-			elem.reporter = extract_data(elem.fields.reporter, ['displayName', 'emailAddress']);
-			elem.reporter.avatar = elem.fields.reporter.avatarUrls['48x48'];
-		}
-		if (elem.fields.assignee) {
-			elem.assignee = extract_data(elem.fields.assignee, ['displayName', 'emailAddress']);
-			elem.assignee.avatar = elem.fields.assignee.avatarUrls['48x48'];
-		}
-		elem.mdr = undefined;
-		delete elem.self;
-		delete elem.expand;
-		delete elem.id;
-		delete elem.fields;
-	});
+	for (var i = 0; i < issues.length; i++) {
+		issues[i] = {
+			priority:	utils.extract_data(issues[i].fields.priority, ['id', 'iconUrl']),
+			issuetype:	utils.extract_data(issues[i].fields.issuetype, ['name', 'iconUrl']),
+			status:		utils.extract_data(issues[i].fields.status, ['name', 'id']),
+			summary:	issues[i].fields.summary,
+			created:	utils.parse_time(issues[i].fields.created),
+			description:	issues[i].fields.description,
+			reporter:	issues[i].fields.reporter && utils.extract_data(issues[i].fields.reporter, ['displayName', 'emailAddress', 'avatarUrls[48x48]']),
+			assignee:	issues[i].fields.assignee && utils.extract_data(issues[i].fields.assignee, ['displayName', 'emailAddress', 'avatarUrls[48x48]'])
+		};
+		for (var tmp in issues[i])
+			if (!issues[i][`${tmp}`])
+				delete issues[i][`${tmp}`];
+	}
 	return issues;
 }
 

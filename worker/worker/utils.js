@@ -1,5 +1,34 @@
 var exports = module.exports = {};
 
+function get_substring(str, regex) {
+	var tmp = str.split(regex);
+
+	tmp.splice(-1, 1);
+	return tmp.splice(-1, 1).join();
+}
+
+function check_bracket(str) {
+	var tmp1 = str.indexOf('[');
+	var tmp2 = str.indexOf(']');
+
+	return tmp1 != -1 && tmp2 != -1 && tmp1 < tmp2;
+}
+
+exports.extract_data = function extract_data(src, keys) {
+	var dest = {};
+
+	for (var i = 0; i < keys.length; i++) {
+		if (check_bracket(keys[i])) {
+			var obj = keys[i].substring(0, keys[i].indexOf('['));
+			var key = get_substring(keys[i], /[\[\]]/);
+
+			dest[`${obj}`] = extract_data(src[`${obj}`], [key])[`${key}`];
+		} else
+			dest[`${keys[i]}`] = src[`${keys[i]}`];
+	}
+	return dest;
+}
+
 exports.obj_tab_filter = function obj_tab_filter(obj, accept) {
 	var tab = [];
 
