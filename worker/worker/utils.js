@@ -16,9 +16,9 @@ exports.obj_tab_filter = function obj_tab_filter(obj, accept) {
 }
 
 exports.parse_time = function parse_time(time) {
-	var split = time.split("T");
+	var tmp = new Date(time);
 
-	return (split[0] + " " + split[1].slice(0, -1));
+	return (tmp.toString().split(' ').slice(0, -2).join(' '));
 }
 
 exports.get_good_color = function get_good_color(objtab) {

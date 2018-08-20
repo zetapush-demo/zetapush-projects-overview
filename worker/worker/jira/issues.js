@@ -1,4 +1,5 @@
 var axios = require('axios');
+var utils = require('../utils');
 
 var config = {
 	auth: {
@@ -37,7 +38,7 @@ function filter_data(issues) {
 			id: elem.fields.status.id
 		};
 		elem.summary = elem.fields.summary;
-		elem.created = elem.fields.created;
+		elem.created = utils.parse_time(elem.fields.created);
 		elem.description = elem.fields.description;
 		if (elem.fields.reporter != null)
 			elem.reporter = {

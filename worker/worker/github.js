@@ -24,7 +24,7 @@ async function get_tag(repo_name)
 {
 	var res = await axios.get(`https://api.github.com/repos/zetapush/${repo_name}/tags`, config);
 
-	return res.data[0].name;
+	return res.data[0].name || '';
 }
 
 async function get_issues(repo_name)
