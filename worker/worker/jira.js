@@ -16,10 +16,9 @@ async function get_project_key_list()
 	var res = await axios.get(`${api}/project/`, config);
 
 	for (var j = 0; j < project.length; j++)
-		for (var i = 0; i < res.data.length; i++) {
+		for (var i = 0; i < res.data.length; i++)
 			if (res.data[i].name === project[j])
 				keys.push(res.data[i].key);
-	}
 	return keys;
 }
 
@@ -29,22 +28,29 @@ function filter_data(issues) {
 			id: elem.fields.priority.id,
 			icon: elem.fields.priority.iconUrl,
 		};
+		elem.issuetype = {
+			name: elem.fields.issuetype.name,
+			icon: elem.fields.issuetype.iconUrl
+		};
 		elem.status = {
 			name: elem.fields.status.name,
 			id: elem.fields.status.id
 		};
 		elem.summary = elem.fields.summary;
-		elem.description = elem.fields.description;
 		elem.created = elem.fields.created;
+		elem.description = elem.fields.description;
 		if (elem.fields.reporter != null)
 			elem.reporter = {
-				email: elem.fields.reporter.emailAddress,
+				name: elem.fields.reporter.displayName,
+				email: elem.fields.reporter.emailAddress, // maybe useless
 				avatar: elem.fields.reporter.avatarUrls['48x48']
-			};
-		elem.issuetype = {
-			name: elem.fields.issuetype.name,
-			icon: elem.fields.issuetype.iconUrl
-		};
+			}
+		if (elem.fields.assignee != null)
+			elem.assignee = {
+				name: elem.fields.assignee.displayName,
+				email: elem.fields.assignee.emailAddress, // maybe useless
+				avatar: elem.fields.assignee.avatarUrls['48x48']
+			}
 		delete elem.self;
 		delete elem.expand;
 		delete elem.id;
