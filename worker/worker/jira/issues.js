@@ -23,35 +23,36 @@ async function get_project_key_list()
 	return keys;
 }
 
-function filter_data(issues) {
+function extract_data(src, key_array)
+{
+	var dest = {};
+
+	if (!src)
+		return undefined;
+	for (var i = 0; i < key_array.length; i++)
+		dest[`${key_array[i]}`] = src[`${key_array[i]}`];
+	return dest;
+}
+
+function filter_data(issues)
+{
 	issues.forEach((elem) => {
-		elem.priority = {
-			id: elem.fields.priority.id,
-			icon: elem.fields.priority.iconUrl,
-		};
-		elem.issuetype = {
-			name: elem.fields.issuetype.name,
-			icon: elem.fields.issuetype.iconUrl
-		};
-		elem.status = {
-			name: elem.fields.status.name,
-			id: elem.fields.status.id
-		};
+		elem.priority = extract_data(elem.fields.priority, ['id', 'iconUrl']);
+		elem.issuetype = extract_data(elem.fields.issuetype, ['name', 'iconUrl']);
+		elem.status = extract_data(elem.fields.status, ['name', 'id']);
 		elem.summary = elem.fields.summary;
 		elem.created = utils.parse_time(elem.fields.created);
-		elem.description = elem.fields.description;
-		if (elem.fields.reporter != null)
-			elem.reporter = {
-				name: elem.fields.reporter.displayName,
-				email: elem.fields.reporter.emailAddress, // maybe useless
-				avatar: elem.fields.reporter.avatarUrls['48x48']
-			}
-		if (elem.fields.assignee != null)
-			elem.assignee = {
-				name: elem.fields.assignee.displayName,
-				email: elem.fields.assignee.emailAddress, // maybe useless
-				avatar: elem.fields.assignee.avatarUrls['48x48']
-			}
+		if (elem.fields.description)
+			elem.description = elem.fields.description;
+		if (elem.fields.reporter) {
+			elem.reporter = extract_data(elem.fields.reporter, ['displayName', 'emailAddress']);
+			elem.reporter.avatar = elem.fields.reporter.avatarUrls['48x48'];
+		}
+		if (elem.fields.assignee) {
+			elem.assignee = extract_data(elem.fields.assignee, ['displayName', 'emailAddress']);
+			elem.assignee.avatar = elem.fields.assignee.avatarUrls['48x48'];
+		}
+		elem.mdr = undefined;
 		delete elem.self;
 		delete elem.expand;
 		delete elem.id;
