@@ -5,7 +5,7 @@ import * as Jenkins from './jenkins';
 const GROUP_ID = 'githubGroup';
 
 @Injectable()
-export default class NodeRedGithubApi {
+export default class Api {
 
 	last_data: object;
 

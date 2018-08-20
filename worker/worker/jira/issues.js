@@ -91,4 +91,3 @@ module.exports = async function()
 	}
 	return data[0].issues;
 }
-
