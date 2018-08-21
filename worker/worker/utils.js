@@ -58,7 +58,7 @@ exports.get_good_color = function get_good_color(objtab) {
 }
 
 exports.get_config = function get_config(data_field) {
-        var data = fs.readFileSync('.zetarc');
+        var data = fs.readFileSync('../.zetarc');
 
 	data = JSON.parse(data);
 	return data[`${data_field}`] || `'${data_field}' doesn't exist in '.zetarc'...`;
