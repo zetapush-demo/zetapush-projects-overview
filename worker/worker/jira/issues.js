@@ -15,10 +15,10 @@ async function get_project_key_list(project_list, config)
 		};
 	});
 
-	for (var j = 0; j < project_list.length; j++)
-		for (var i = 0; i < res.data.length; i++)
-			if (res.data[i].name === project_list[j])
-				keys.push(res.data[i].key);
+	for (var i = 0; i < project_list.length; i++)
+		for (var j = 0; j < res.data.length; j++)
+			if (res.data[j].name === project_list[i])
+				keys.push(res.data[j].key);
 	return keys;
 }
 

@@ -16,10 +16,10 @@ async function get_board_list(project_list, config)
 	});
 
 	res = res.data.values;
-	for (var j = 0; j < project_list.length; j++)
-		for (var i = 0; i < res.length; i++)
-			if (res[i].location.name === project_list[j])
-				list.push(res[i].id);
+	for (var i = 0; i < project_list.length; i++)
+		for (var j = 0; j < res.length; j++)
+			if (res[j].location.name === project_list[i])
+				list.push(res[j].id);
 	return list;
 }
 
