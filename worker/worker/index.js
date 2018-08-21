@@ -5,7 +5,7 @@ const jira = {
 const github = require('./github');
 const jenkins = require('./jenkins');
 
-jira.issues().then((res) => console.log(res));
-//jira.sprint().then((res) => console.log(res));
+//jira.issues().then((res) => console.log(res));
+jira.sprint().then((res) => console.log(res));
 //github().then((res) => console.log(res));
 //jenkins().then((res) => console.log(res));
