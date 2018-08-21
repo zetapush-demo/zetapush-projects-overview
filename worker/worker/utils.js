@@ -1,3 +1,4 @@
+const fs = require('fs');
 var exports = module.exports = {};
 
 function get_substring(str, regex) {
@@ -54,4 +55,11 @@ exports.get_good_color = function get_good_color(objtab) {
 	for (var i = 0; i < objtab.length; i++)
 		objtab[i].color = "#" + objtab[i].color;
 	return (objtab);
+}
+
+exports.get_config = function get_config(data_field) {
+        var data = fs.readFileSync('.zetarc');
+
+	data = JSON.parse(data);
+	return data[`${data_field}`] || `'${data_field}' doesn't exist in '.zetarc'...`;
 }

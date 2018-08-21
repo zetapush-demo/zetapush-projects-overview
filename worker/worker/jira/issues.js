@@ -1,24 +1,23 @@
-var axios = require('axios');
-var utils = require('../utils');
+const axios = require('axios');
+const utils = require('../utils');
 
-var config = {
-	auth: {
-		username: 'damien@zetapush.com',
-		password: 'j6KsTYttwnwiuYbQoCDWA55F'
-	},
-};
+const api = 'https://zetapush.atlassian.net/rest/api/2';
 
-var project = ['BiOSENCY Tracker'];
-var api = 'https://zetapush.atlassian.net/rest/api/2';
-
-async function get_project_key_list()
+async function get_project_key_list(project_list, config)
 {
 	var keys = [];
-	var res = await axios.get(`${api}/project/`, config);
+	var res = await axios.get(`${api}/project/`, config).catch((err) => {
+		if (err.response.status != 200) {
+			console.log(err.response.status, err.response.statusText);
+			console.log('Bad credentials => .zetarc =>');
+			console.log('jira: {\n\t email || password => .zetarc');
+			process.exit(1);
+		};
+	});
 
-	for (var j = 0; j < project.length; j++)
+	for (var j = 0; j < project_list.length; j++)
 		for (var i = 0; i < res.data.length; i++)
-			if (res.data[i].name === project[j])
+			if (res.data[i].name === project_list[j])
 				keys.push(res.data[i].key);
 	return keys;
 }
@@ -43,7 +42,7 @@ function filter_data(issues)
 	return issues;
 }
 
-async function get_issues_list(project_key)
+async function get_issues_list(project_key, config)
 {
 	var issues = [];
 	var res = await axios.get(`${api}/search?jql=project=${project_key}&maxResults=1`, config).catch((err) => {
@@ -66,14 +65,15 @@ async function get_issues_list(project_key)
 module.exports = async function()
 {
 	var data = [];
-	var keys = await get_project_key_list();
+	const config = utils.get_config('jira');
+	const keys = await get_project_key_list(config.project_list, config.http);
 
 	console.log(keys);
 	for (var i = 0; i < keys.length; i++) {
-		var issues = await get_issues_list(keys[i]);
+		var issues = await get_issues_list(keys[i], config.http);
 
 		data.push({
-			project: project[i],
+			project: config.project_list[i],
 			key: keys[i],
 			issues: issues
 		});
