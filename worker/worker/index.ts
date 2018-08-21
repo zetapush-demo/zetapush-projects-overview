@@ -17,7 +17,10 @@ export default class Api {
 			await this.groups.createGroup({
 				group: GROUP_ID
 			});
-		this.sendMessage();
+		await this.sendMessage();
+		setInterval(async () => {
+			await this.sendMessage();
+		}, 900000);
 	}
 
 	constructor(

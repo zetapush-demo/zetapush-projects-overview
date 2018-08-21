@@ -53,9 +53,9 @@ export class JenkinsComponent implements OnInit {
 	}
 
 	on_get_data(tmp: JenkinsDataStruct[]) {
-		console.log(tmp);
 		if (!tmp)
 			return;
+		console.log(tmp);
 		this.data = tmp;
 		const branch_new_build = this.get_new_data(this.data);
 		this.stringify_date(this.data);

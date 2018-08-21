@@ -47,9 +47,9 @@ export class GithubComponent implements OnInit {
 	}
 
 	on_get_data(tmp: GithubDataStruct) {
-		console.log(tmp);
 		if (!tmp)
 			return;
+		console.log(tmp);
 		this.data = tmp;
 		this.new_issues = this.get_new_data(this.data.issues);
 		this.new_pull_request = this.get_new_data(this.data.pull_request);
