@@ -66,14 +66,14 @@ module.exports = async function()
 {
 	var data = [];
 	const config = utils.get_config('jira');
-	const keys = await get_project_key_list(config.project_list, config.http);
+	const keys = await get_project_key_list(config.issues.project_list, config.http);
 
 	console.log(keys);
 	for (var i = 0; i < keys.length; i++) {
 		var issues = await get_issues_list(keys[i], config.http);
 
 		data.push({
-			project: config.project_list[i],
+			project: config.issues.project_list[i],
 			key: keys[i],
 			issues: issues
 		});
