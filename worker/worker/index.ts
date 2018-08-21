@@ -17,6 +17,7 @@ export default class Api {
 			await this.groups.createGroup({
 				group: GROUP_ID
 			});
+		this.sendMessage();
 	}
 
 	constructor(
@@ -32,14 +33,14 @@ export default class Api {
 		});
 	}
 
-	async sendMessage(message: any, context: any) {
+	async sendMessage() {
 		const group = await this.groups.groupUsers({
 			group: GROUP_ID
 		});
 		const users = group.users || [];
 
 		console.log('Start sending: ', new Date().toUTCString().slice(0, -4));
-		message = {
+		const message = {
 			github: await Github(),
 			jenkins: await Jenkins()
 		}
