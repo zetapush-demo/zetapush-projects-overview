@@ -1,4 +1,6 @@
+const axios = require('axios');
 const fs = require('fs');
+
 var exports = module.exports = {};
 
 function get_substring(str, regex) {
@@ -32,7 +34,7 @@ exports.extract_data = function extract_data(src, keys) {
 	return dest;
 }
 
-exports.filter_data = function filter_data(issues)
+function filter_data(issues)
 {
 	for (var i = 0; i < issues.length; i++) {
 		issues[i] = {
@@ -48,6 +50,27 @@ exports.filter_data = function filter_data(issues)
 		for (var tmp in issues[i])
 			if (!issues[i][`${tmp}`])
 				delete issues[i][`${tmp}`];
+	}
+	return issues;
+}
+
+exports.get_issues_list = async function get_issues_list(project_config, config)
+{
+	const api_url = `https://zetapush.atlassian.net/rest/api/2/search?jql=project=${project_config.key}`;
+	var res = await axios.get(`${api_url}&maxResults=1`, config).catch((err) => {
+		if (err.response.status != 200) {
+			console.log(err.response.status, err.response.statusText);
+			console.log(`The authenticated account is not allowed to see\n\t => ${project_config.name}`);
+			process.exit(1);
+		}
+	});
+	const max = res.data.total;
+	var issues = [];
+
+	for (var i = 0; i < max; i += 100) {
+		res = await axios.get(`${api_url}&startAt=${i}&maxResults=100`, config);
+		res.data.issues = res.data.issues.filter(issue => issue.fields.status.name !== project_config.close_state);
+		issues = issues.concat(filter_data(res.data.issues));
 	}
 	return issues;
 }
