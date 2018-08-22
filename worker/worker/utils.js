@@ -18,6 +18,8 @@ function check_bracket(str) {
 exports.extract_data = function extract_data(src, keys) {
 	var dest = {};
 
+	if (typeof keys === 'undefined')
+		return null;
 	for (var i = 0; i < keys.length; i++) {
 		if (check_bracket(keys[i])) {
 			var obj = keys[i].substring(0, keys[i].indexOf('['));
@@ -28,6 +30,26 @@ exports.extract_data = function extract_data(src, keys) {
 			dest[`${keys[i]}`] = src[`${keys[i]}`];
 	}
 	return dest;
+}
+
+exports.filter_data = function filter_data(issues)
+{
+	for (var i = 0; i < issues.length; i++) {
+		issues[i] = {
+			priority:	exports.extract_data(issues[i].fields.priority, ['id', 'iconUrl']),
+			issuetype:	exports.extract_data(issues[i].fields.issuetype, ['name', 'iconUrl']),
+			status:		exports.extract_data(issues[i].fields.status, ['name', 'id']),
+			summary:	issues[i].fields.summary,
+			created:	exports.parse_time(issues[i].fields.created),
+			description:	issues[i].fields.description,
+			reporter:	issues[i].fields.reporter && exports.extract_data(issues[i].fields.reporter, ['displayName', 'emailAddress', 'avatarUrls[48x48]']),
+			assignee:	issues[i].fields.assignee && exports.extract_data(issues[i].fields.assignee, ['displayName', 'emailAddress', 'avatarUrls[48x48]'])
+		};
+		for (var tmp in issues[i])
+			if (!issues[i][`${tmp}`])
+				delete issues[i][`${tmp}`];
+	}
+	return issues;
 }
 
 exports.obj_tab_filter = function obj_tab_filter(obj, accept) {

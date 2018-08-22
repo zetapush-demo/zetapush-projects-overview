@@ -22,26 +22,6 @@ async function get_project_key_list(project_list, config)
 	return keys;
 }
 
-function filter_data(issues)
-{
-	for (var i = 0; i < issues.length; i++) {
-		issues[i] = {
-			priority:	utils.extract_data(issues[i].fields.priority, ['id', 'iconUrl']),
-			issuetype:	utils.extract_data(issues[i].fields.issuetype, ['name', 'iconUrl']),
-			status:		utils.extract_data(issues[i].fields.status, ['name', 'id']),
-			summary:	issues[i].fields.summary,
-			created:	utils.parse_time(issues[i].fields.created),
-			description:	issues[i].fields.description,
-			reporter:	issues[i].fields.reporter && utils.extract_data(issues[i].fields.reporter, ['displayName', 'emailAddress', 'avatarUrls[48x48]']),
-			assignee:	issues[i].fields.assignee && utils.extract_data(issues[i].fields.assignee, ['displayName', 'emailAddress', 'avatarUrls[48x48]'])
-		};
-		for (var tmp in issues[i])
-			if (!issues[i][`${tmp}`])
-				delete issues[i][`${tmp}`];
-	}
-	return issues;
-}
-
 async function get_issues_list(project_key, config)
 {
 	var issues = [];
@@ -57,7 +37,7 @@ async function get_issues_list(project_key, config)
 	for (var i = 0; i < max; i += 100) {
 		res = await axios.get(`${api}/search?jql=project=${project_key}&startAt=${i}&maxResults=100`, config);
 		res.data.issues = res.data.issues.filter(issue => issue.fields.status.name != 'Delivered');
-		issues = issues.concat(filter_data(res.data.issues));
+		issues = issues.concat(utils.filter_data(res.data.issues));
 	}
 	return issues;
 }
