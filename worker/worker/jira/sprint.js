@@ -35,6 +35,7 @@ async function get_current_sprint(project_config, board_id, config)
 		end: utils.parse_time(res.endDate).slice(0, -9),
 		issues: await utils.get_issues_list(project_config, config)
 	};
+	sprint.issues = sprint.issues.filter(issue => issue.subtasks);
 	return sprint;
 }
 
@@ -59,5 +60,5 @@ module.exports = async function()
 			sprint: sprint
 		});
 	}
-	return data[0].sprint.issues;
+	return data;
 }

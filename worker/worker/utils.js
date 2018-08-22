@@ -49,7 +49,7 @@ function filter_data(issues)
 			description:	issues[i].fields.description,
 			reporter:	issues[i].fields.reporter && exports.extract_data(issues[i].fields.reporter, ['displayName', 'emailAddress', 'avatarUrls[48x48]']),
 			assignee:	issues[i].fields.assignee && exports.extract_data(issues[i].fields.assignee, ['displayName', 'emailAddress', 'avatarUrls[48x48]']),
-			subtasks:	issues[i].fields.subtasks && issues[i].fields.subtasks.map(task => task.self)
+			subtasks:	issues[i].fields.subtasks.map(task => task.self)
 		};
 		for (var tmp in issues[i])
 			if (!issues[i][tmp] || issues[i][tmp].length === 0)
