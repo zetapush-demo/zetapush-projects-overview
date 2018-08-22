@@ -5,7 +5,7 @@ const api = 'https://zetapush.atlassian.net/rest/agile/1.0';
 
 async function get_board_list(project_list, config)
 {
-	var list = [];
+	var boards_id = [];
 	var res = await axios.get(`${api}/board/`, config).catch((err) => {
 		if (err.response.status != 200) {
 			console.log(err.response.status, err.response.statusText);
@@ -19,8 +19,8 @@ async function get_board_list(project_list, config)
 	for (var i = 0; i < project_list.length; i++)
 		for (var j = 0; j < res.length; j++)
 			if (res[j].location.name === `${project_list[i].name} (${project_list[i].key})`)
-				list.push(res[j].id);
-	return list;
+				boards_id.push(res[j].id);
+	return boards_id;
 }
 
 async function get_current_sprint(project_config, board_id, config)
