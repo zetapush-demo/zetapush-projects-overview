@@ -11,13 +11,22 @@ async function get_repo_list(config)
 			console.error('Bad credentials => .zetarc =>');
 			console.error('github: {\n\t User-Agent || Authorisation\n}');
 			process.exit(1);
-		};
+		}
 	});
+	var repo_list = [];
 
-	for (var i = 0; i < res.data.length; i++)
-		if (res.data[i].open_issues && res.data[i].name === config.repo)
-			return res.data[i].name;
-	return null;
+	for (var i = 0; i < config.repo.length; i++)
+		for (var j = 0; j < res.data.length; j++) {
+			if (res.data[j].name === config.repo[i] && res.data[j].open_issues) {
+				repo_list.push(res.data[j].name);
+				break;
+			}
+			if (j === res.data.length - 1) {
+				console.error(`Repository "${config.repo[i]}" not found.`);
+				process.exit(1);
+			}
+		}
+	return repo_list;
 }
 
 async function get_tag(config, repo_name)
@@ -86,21 +95,22 @@ async function get_pull_request(config, repo_name)
 module.exports = async function()
 {
 	const config = utils.get_config('github');
-	var data = {};
+	const repo_list = await get_repo_list(config);
+	var data = [];
 
-	data.repo = await get_repo_list(config);
-	if (!data.repo) {
-		console.error(`Repository "${config.repo}" not found.`);
-		process.exit(1);
+	for (var i = 0; i < repo_list.length; i++) {
+		await Promise.all([
+			get_tag(config, repo_list[i]),
+			get_issues(config, repo_list[i]),
+			get_pull_request(config, repo_list[i])
+		]).then((res) => {
+			data.push({
+				repo: repo_list[i],
+				tag: res[0],
+				issues: res[1],
+				pull_request: res[2]
+			});
+		});
 	}
-	await Promise.all([
-		get_tag(config, data.repo),
-		get_issues(config, data.repo),
-		get_pull_request(config, data.repo)
-	]).then((res) => {
-		data.tag = res[0];
-		data.issues = res[1];
-		data.pull_request = res[2];
-	});
 	return data;
 }
