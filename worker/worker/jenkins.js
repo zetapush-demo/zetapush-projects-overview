@@ -1,29 +1,37 @@
-var axios = require('axios');
+const axios = require('axios');
+const utils = require('./utils');
 
-async function get_repo_list()
+async function get_repo_list(jenkins_url)
 {
 	var url = [];
-	var res = await axios.get('http://ci.zpush.io:28702/job/ZetaPush%20Github/api/json?pretty');
+	const res = await axios.get(jenkins_url).catch((err) => {
+		if (err.response.status != 200) {
+			console.log(err.response.status, err.response.statusText);
+			console.log(`Url : ${jenkins_url}`);
+			process.exit(1);
+		}
+	});
 
 	for (var i = 0; i < res.data.jobs.length; i++)
-		url.push(res.data.jobs[i].url + 'api/json?pretty');
+		url.push(`${res.data.jobs[i].url}/api/json`);
 	return url;
 }
 
 async function get_timestamp_last_build(build_url)
 {
-	var res = await axios.get(build_url + 'api/json?pretty');
+	const res = await axios.get(build_url + 'api/json');
 
-	return res.data.timestamp;
+	return utils.parse_time(res.data.timestamp);
 }
 
 async function get_branch_array(branch_url_array)
 {
 	var branchs = [];
-	var res;
 
+	if (!branch_url_array)
+		return '0 branch';
 	for (var i = 0; i < branch_url_array.length; i++) {
-		res = await axios.get(branch_url_array[i].url + 'api/json?pretty');
+		const res = await axios.get(`${branch_url_array[i].url}/api/json`);
 		branchs.push({
 			name: res.data.displayName,
 			last_build: {
@@ -42,7 +50,9 @@ async function get_branch_array(branch_url_array)
 module.exports = async function()
 {
 	var data = [];
-	var repo_list = await get_repo_list();
+	const config = utils.get_config('jenkins');
+	const jenkins_url = `${config.url}/api/json`;
+	var repo_list = await get_repo_list(jenkins_url);
 
 	for (var i = 0; i < repo_list.length; i++) {
 		var res = await axios.get(repo_list[i]);

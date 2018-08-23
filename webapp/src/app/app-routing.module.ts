@@ -1,5 +1,5 @@
 import { NgModule, Injectable } from '@angular/core';
-import { Routes, RouterModule, Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Routes, RouterModule, Resolve } from '@angular/router';
 
 import { MainComponent } from './main/main.component';
 

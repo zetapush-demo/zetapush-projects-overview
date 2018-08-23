@@ -44,25 +44,15 @@ export class JenkinsComponent implements OnInit {
 		return null;
 	}
 
-	stringify_date(tmp) {
-		tmp.forEach(app => {
-			app.branchs.forEach(branch => {
-				branch.time = new Date(branch.time).toUTCString().slice(0, -4);
-			});
-		});
-	}
-
 	on_get_data(tmp: JenkinsDataStruct[]) {
 		if (!tmp)
 			return;
 		console.log(tmp);
 		this.data = tmp;
 		const branch_new_build = this.get_new_data(this.data);
-		this.stringify_date(this.data);
 		if (branch_new_build !== null)
 			this.openDialog(branch_new_build);
 	}
-
 
 	async ngOnInit() {
 		const tmp = await this.zetapush_service.get_last_data();
