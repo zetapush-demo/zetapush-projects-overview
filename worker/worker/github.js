@@ -1,9 +1,11 @@
 var axios = require('axios');
 var utils = require('./utils');
 
+const api_url = 'https://api.github.com/repos/zetapush';
+
 async function get_repo_list(config)
 {
-	var res = await axios.get('https://api.github.com/orgs/zetapush/repos', config).catch((err) => {
+	const res = await axios.get('https://api.github.com/orgs/zetapush/repos', config.http).catch((err) => {
 		if (err.response.status != 200) {
 			console.log(err.response.status, err.response.statusText);
 			console.log('Bad credentials => .zetarc =>');
@@ -11,25 +13,24 @@ async function get_repo_list(config)
 			process.exit(1);
 		};
 	});
-	var data = res.data;
-	var list = [];
+	var repo_list = [];
 
-	for (var i = 0; i < data.length; i++)
-		if (data[i].open_issues && data[i].name == 'zetapush')
-			list.push(data[i].name);
-	return list;
+	for (var i = 0; i < res.data.length; i++)
+		if (res.data[i].open_issues && res.data[i].name === config.repo)
+			repo_list.push(res.data[i].name);
+	return repo_list;
 }
 
 async function get_tag(config, repo_name)
 {
-	var res = await axios.get(`https://api.github.com/repos/zetapush/${repo_name}/tags`, config);
+	const res = await axios.get(`${api_url}/${repo_name}/tags`, config.http);
 
 	return res.data[0].name || '';
 }
 
 async function get_issues(config, repo_name)
 {
-	var res = await axios.get(`https://api.github.com/repos/zetapush/${repo_name}/issues`, config);
+	const res = await axios.get(`${api_url}/${repo_name}/issues`, config.http);
 	var data = res.data;
 	var issues = [];
 
@@ -57,7 +58,7 @@ async function get_issues(config, repo_name)
 
 async function get_pull_request(config, repo_name)
 {
-	var res = await axios.get(`https://api.github.com/repos/zetapush/${repo_name}/pulls`, config);
+	const res = await axios.get(`${api_url}/${repo_name}/pulls`, config.http);
 	var data = res.data;
 	var pull_request = [];
 
