@@ -8,9 +8,9 @@ async function get_board_list(project_list, config)
 	var boards_id = [];
 	var res = await axios.get(`${api}/board/`, config).catch((err) => {
 		if (err.response.status != 200) {
-			console.log(err.response.status, err.response.statusText);
-			console.log('Bad credentials => .zetarc =>');
-			console.log('jira: {\n\t email || password => .zetarc');
+			console.error(err.response.status, err.response.statusText);
+			console.error('Bad credentials => .zetarc =>');
+			console.error('jira: {\n\t email || password => .zetarc');
 			process.exit(1);
 		};
 	});
@@ -49,8 +49,8 @@ module.exports = async function()
 	const boards_id = await get_board_list(projects_config, config.http);
 
 	if (boards_id.length == 0) {
-		console.log('No valid projects were found =>');
-		console.log('jira: {\n\tproject_list: {name || key}\n} => .zetarc');
+		console.error('No valid projects were found =>');
+		console.error('jira: {\n\tproject_list: {name || key}\n} => .zetarc');
 		process.exit(1);
 	}
 	for (var i = 0; i < boards_id.length; i++) {

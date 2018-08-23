@@ -62,8 +62,8 @@ exports.get_issues_list = async function get_issues_list(api_url, project_config
 {
 	var res = await axios.get(`${api_url}&maxResults=1`, config).catch((err) => {
 		if (err.response.status != 200) {
-			console.log(err.response.status, err.response.statusText);
-			console.log(`The authenticated account is not allowed to see\n\t => ${project_config.name}`);
+			console.error(err.response.status, err.response.statusText);
+			console.error(`The authenticated account is not allowed to see\n\t => ${project_config.name}`);
 			process.exit(1);
 		}
 	});
@@ -82,6 +82,7 @@ exports.obj_tab_filter = function obj_tab_filter(obj, accept)
 {
 	return obj.map(x => {
 		var tmp = {};
+
 		accept.forEach(key => tmp[key] = x[key]);
 		return tmp;
 	});
