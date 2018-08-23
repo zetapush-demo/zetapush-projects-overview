@@ -17,9 +17,20 @@ async function get_board_list(project_list, config)
 
 	res = res.data.values;
 	for (var i = 0; i < project_list.length; i++)
-		for (var j = 0; j < res.length; j++)
-			if (res[j].location.name === `${project_list[i].name} (${project_list[i].key})`)
+		for (var j = 0; j < res.length; j++) {
+			if (res[j].location.name === `${project_list[i].name} (${project_list[i].key})`) {
 				boards_id.push(res[j].id);
+				break;
+			}
+			if (j === res.length - 1) {
+				console.error('Something bad in .zetarc =>\njira: { \n\t sprint: {');
+				console.error(`\t\t project_list: [{\n\t\t\t name: "${project_list[i].name}"`);
+				console.error(`\t\t\t key: "${project_list[i].key}"`);
+				console.error(`\t\t\t close_state: "${project_list[i].close_state}"`);
+				console.error(`\t\t}]\n\t}\n}`);
+				process.exit(1);
+			}
+		}
 	return boards_id;
 }
 
@@ -31,8 +42,8 @@ async function get_current_sprint(project_config, board_id, config)
 	res = res.data.values[0];
 	api_url = `${api}/sprint/${res.id}/issue?jql`;
 	var sprint = {
-		id: res.id,
-		name: res.name,
+		project: project_config.name,
+		sprint: res.name,
 		start: utils.parse_time(res.startDate).slice(0, -9),
 		end: utils.parse_time(res.endDate).slice(0, -9),
 		issues: await utils.get_issues_list(api_url, project_config, config)
@@ -45,22 +56,19 @@ module.exports = async function()
 {
 	var data = [];
 	const config = utils.get_config('jira');
-	const projects_config = config.sprint.project_list;
-	const boards_id = await get_board_list(projects_config, config.http);
+	const project_list = config.sprint.project_list;
+	const boards_id = await get_board_list(project_list, config.http);
 
+	console.assert(boards_id.length === project_list.length);
 	if (boards_id.length == 0) {
 		console.error('No valid projects were found =>');
 		console.error('jira: {\n\tproject_list: {name || key}\n} => .zetarc');
 		process.exit(1);
 	}
 	for (var i = 0; i < boards_id.length; i++) {
-		var sprint = await get_current_sprint(projects_config[i], boards_id[i], config.http)
+		const sprint = await get_current_sprint(project_list[i], boards_id[i], config.http);
 
-		data.push({
-			project: projects_config[i].name,
-			id: boards_id[i],
-			sprint: sprint
-		});
+		data.push(sprint);
 	}
 	return data;
 }
