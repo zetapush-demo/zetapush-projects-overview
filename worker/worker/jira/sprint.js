@@ -25,15 +25,17 @@ async function get_board_list(project_list, config)
 
 async function get_current_sprint(project_config, board_id, config)
 {
+	var api_url;
 	var res = await axios.get(`${api}/board/${board_id}/sprint?state=active`, config)
 
 	res = res.data.values[0];
+	api_url = `${api}/sprint/${res.id}/issue?jql`;
 	var sprint = {
 		id: res.id,
 		name: res.name,
 		start: utils.parse_time(res.startDate).slice(0, -9),
 		end: utils.parse_time(res.endDate).slice(0, -9),
-		issues: await utils.get_issues_list(project_config, config)
+		issues: await utils.get_issues_list(api_url, project_config, config)
 	};
 	sprint.issues = sprint.issues.filter(issue => issue.subtasks);
 	return sprint;

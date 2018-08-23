@@ -58,9 +58,8 @@ exports.extract_data = function extract_data(src, keys)
 	return dest;
 }
 
-exports.get_issues_list = async function get_issues_list(project_config, config)
+exports.get_issues_list = async function get_issues_list(api_url, project_config, config)
 {
-	const api_url = `https://zetapush.atlassian.net/rest/api/2/search?jql=project=${project_config.key}`;
 	var res = await axios.get(`${api_url}&maxResults=1`, config).catch((err) => {
 		if (err.response.status != 200) {
 			console.log(err.response.status, err.response.statusText);

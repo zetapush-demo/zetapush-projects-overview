@@ -11,4 +11,3 @@ node_modules
 
 # ZetaPush Config
 .zetarc
-worker/worker/index.js
