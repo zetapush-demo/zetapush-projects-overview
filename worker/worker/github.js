@@ -7,18 +7,17 @@ async function get_repo_list(config)
 {
 	const res = await axios.get('https://api.github.com/orgs/zetapush/repos', config.http).catch((err) => {
 		if (err.response.status != 200) {
-			console.log(err.response.status, err.response.statusText);
-			console.log('Bad credentials => .zetarc =>');
-			console.log('github: {\n\t User-Agent || Authorisation\n}');
+			console.error(err.response.status, err.response.statusText);
+			console.error('Bad credentials => .zetarc =>');
+			console.error('github: {\n\t User-Agent || Authorisation\n}');
 			process.exit(1);
 		};
 	});
-	var repo_list = [];
 
 	for (var i = 0; i < res.data.length; i++)
 		if (res.data[i].open_issues && res.data[i].name === config.repo)
-			repo_list.push(res.data[i].name);
-	return repo_list;
+			return res.data[i].name;
+	return null;
 }
 
 async function get_tag(config, repo_name)
@@ -90,7 +89,10 @@ module.exports = async function()
 	var data = {};
 
 	data.repo = await get_repo_list(config);
-
+	if (!data.repo) {
+		console.error(`Repository "${config.repo}" not found.`);
+		process.exit(1);
+	}
 	await Promise.all([
 		get_tag(config, data.repo),
 		get_issues(config, data.repo),
