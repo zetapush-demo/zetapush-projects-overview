@@ -12,7 +12,7 @@ async function get_board_list(project_list, config)
 			console.error('Bad credentials => .zetarc =>');
 			console.error('jira: {\n\t email || password => .zetarc');
 			process.exit(1);
-		};
+		}
 	});
 
 	res = res.data.values;

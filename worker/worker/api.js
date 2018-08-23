@@ -7,7 +7,7 @@ var exports = module.exports = {
 	jenkins: require('./jenkins')
 };
 
-(async function foo()
+(async function()
 {
 	var data = {
 		jira: {}
