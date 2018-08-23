@@ -80,18 +80,11 @@ exports.get_issues_list = async function get_issues_list(api_url, project_config
 
 exports.obj_tab_filter = function obj_tab_filter(obj, accept)
 {
-	var tab = [];
-
-	obj.forEach(function(elem) {
-		tab.push(Object.keys(elem)
-			.filter(key => accept.includes(key))
-			.reduce((tmp, key) => {
-				tmp[key] = elem[key];
-				return tmp;
-			}, {})
-		);
+	return obj.map(x => {
+		var tmp = {};
+		accept.forEach(key => tmp[key] = x[key]);
+		return tmp;
 	});
-	return (tab);
 }
 
 exports.parse_time = function parse_time(time)
