@@ -19,7 +19,7 @@ function check_bracket(str)
 	return tmp1 != -1 && tmp2 != -1 && tmp1 < tmp2;
 }
 
-function filter_data(issues)
+exports.filter_data = function filter_data(issues)
 {
 	for (var i = 0; i < issues.length; i++) {
 		issues[i] = {
@@ -73,7 +73,7 @@ exports.get_issues_list = async function get_issues_list(api_url, project_config
 	for (var i = 0; i < max; i += 100) {
 		res = await axios.get(`${api_url}&startAt=${i}&maxResults=100`, config);
 		res.data.issues = res.data.issues.filter(issue => issue.fields.status.name !== project_config.close_state);
-		issues = issues.concat(filter_data(res.data.issues));
+		issues = issues.concat(exports.filter_data(res.data.issues));
 	}
 	return issues;
 }

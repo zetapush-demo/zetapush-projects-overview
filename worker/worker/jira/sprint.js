@@ -34,6 +34,22 @@ async function get_board_list(project_list, config)
 	return boards_id;
 }
 
+async function put_sub_issues(issues, project_config, config)
+{
+	var res;
+	var subtasks = [];
+
+	for (var i = 0; i < issues.length; i++) {
+		for (var j = 0; j < issues[i].subtasks.length; j++) {
+			res = await axios.get(issues[i].subtasks[j], config);
+			subtasks.push(res.data);
+		}
+		subtasks = subtasks.filter(task => task.fields.status.name !== project_config.close_state);
+		issues[i].subtasks = utils.filter_data(subtasks);
+		subtasks = [];
+	}
+}
+
 async function get_current_sprint(project_config, board_id, config)
 {
 	var api_url;
@@ -49,6 +65,7 @@ async function get_current_sprint(project_config, board_id, config)
 		issues: await utils.get_issues_list(api_url, project_config, config)
 	};
 	sprint.issues = sprint.issues.filter(issue => issue.subtasks);
+	await put_sub_issues(sprint.issues, project_config, config);
 	return sprint;
 }
 
