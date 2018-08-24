@@ -5,13 +5,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule, MatButtonModule} from '@angular/material';
-
 import { MarkdownModule } from 'ngx-markdown';
 
 import { AppComponent } from './app.component';
-import { MainComponent } from './main/main.component';
-import { ClientProjectComponent } from './client-project/client-project.component';
-
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
 import { GithubComponent } from './zetapush-project/github/github.component';
 import { GithubPopupComponent } from './zetapush-project/github/popup/github-popup.component';
@@ -35,8 +31,6 @@ import { AppRoutingModule } from './app-routing.module';
 	],
 	declarations: [
 		AppComponent,
-		MainComponent,
-		ClientProjectComponent,
 		ZetapushProjectComponent,
 		GithubComponent,
 		GithubPopupComponent,

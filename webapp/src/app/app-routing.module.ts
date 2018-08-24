@@ -1,15 +1,11 @@
 import { NgModule, Injectable } from '@angular/core';
 import { Routes, RouterModule, Resolve } from '@angular/router';
 
-import { MainComponent } from './main/main.component';
-
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
 import { GithubComponent } from './zetapush-project/github/github.component';
 import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
 
 import { ZetapushProjectService } from './zetapush-project/zetapush-project.service';
-
-import { ClientProjectComponent } from './client-project/client-project.component';
 
 @Injectable()
 class Resolver implements Resolve<any> {
@@ -25,16 +21,15 @@ class Resolver implements Resolve<any> {
 }
 
 const routes: Routes = [
-	{ path: '', component: MainComponent},
-	{ path: 'zetapush', component: ZetapushProjectComponent,
+	{ path: '', component: ZetapushProjectComponent,
 		resolve: {zetapush: Resolver },
 		children: [
 			{ path: 'github', component: GithubComponent },
 			{ path: 'jenkins', component: JenkinsComponent },
 			// 	{ path: 'jira', component: JiraComponent }
-			{ path: '**', redirectTo: '/zetapush'}
-	]},
-	{ path: 'client', component: ClientProjectComponent},
+			{ path: '**', redirectTo: '/'}
+		]
+},
 	{ path: '**', redirectTo: '/'}
 ];
 
