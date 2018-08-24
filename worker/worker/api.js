@@ -9,9 +9,8 @@ var exports = module.exports = {
 
 (async function()
 {
-	var data = {
-		jira: {}
-	};
+	var data = {};
+
 	await Promise.all([
 		exports.github(),
 		exports.jenkins(),
@@ -20,8 +19,10 @@ var exports = module.exports = {
 	]).then((res) => {
 		data.github = res[0];
 		data.jenkins = res[1];
-		data.jira.issues = res[2];
-		data.jira.sprint = res[3];
+		data.jira = {
+			issues: res[0],
+			sprint: res[0]
+		}
 	});
 	console.log(data);
 })();
