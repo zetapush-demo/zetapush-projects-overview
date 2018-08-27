@@ -24,13 +24,6 @@ h1#repo i {
 	margin-bottom: 20px;
 }
 
-/*
-.item_name {
-	background: linear-gradient(0.25turn, #80cd3d, #1db6f1, #f1452a, #fbc81e);
-	ptdr la couleur
-}
-*/
-
 .item_name * {
 	align-self: center;
 	margin: 0.5vw;

@@ -1,7 +1,6 @@
 <nav id="nav_bar" mat-tab-nav-bar>
-    <a mat-tab-link
-        *ngFor="let link of navlinks"
-        [routerLink]="link"> {{link}}
+    <a mat-tab-link *ngFor="let link of navlinks" [routerLink]="link">
+        {{link}}
     </a>
 </nav>
 <router-outlet></router-outlet>
