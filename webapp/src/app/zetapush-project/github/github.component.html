@@ -3,7 +3,17 @@
 </div>
 <div *ngIf="data">
 
-    <h1 id="repo"> {{ data.repo }} <i> {{ data.tag }} </i> </h1>
+	<mat-form-field>
+		<mat-select [(value)]="selected_assignee" placeholder="Assignee">
+			<mat-option> None </mat-option>
+			<mat-option *ngFor="let assignee of assignees_list" [value]="assignee">
+			{{assignee}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<p *ngIf="selected_assignee">You selected: {{selected_assignee}}</p>
+
+	<h1 id="repo"> {{ data.repo }} <i> {{ data.tag }} </i> </h1>
 
     <mat-tab-group>
 

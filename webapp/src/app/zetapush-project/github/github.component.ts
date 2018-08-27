@@ -15,7 +15,7 @@ export class GithubComponent implements OnInit {
 	data: GithubDataStruct;
 	gap_refresh = 900000;
 
-	selected_login: string;
+	selected_assignee: string;
 	assignees_list: string[];
 	new_issues: object;
 	new_pull_request: object;
@@ -71,8 +71,8 @@ export class GithubComponent implements OnInit {
 		if (!tmp)
 			return;
 		// console.log(tmp);
-		console.log(this.get_assignees_list(tmp));
 		// console.log('filter: ', this.filter_data_by_assignees(tmp.issues, 'damienld22'));
+		this.assignees_list = this.get_assignees_list(tmp);
 		this.data = tmp;
 		this.new_issues = this.get_new_data(this.data.issues);
 		this.new_pull_request = this.get_new_data(this.data.pull_request);

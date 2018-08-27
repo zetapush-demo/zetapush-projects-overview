@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatDialogModule, MatButtonModule} from '@angular/material';
+import { MatDialogModule, MatButtonModule, MatSelectModule} from '@angular/material';
 import { MarkdownModule } from 'ngx-markdown';
 
 import { AppComponent } from './app.component';
@@ -27,7 +27,7 @@ import { AppRoutingModule } from './app-routing.module';
 		MatTabsModule,
 		MatDialogModule,
 		MatButtonModule,
-
+		MatSelectModule
 	],
 	declarations: [
 		AppComponent,
