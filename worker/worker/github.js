@@ -74,7 +74,7 @@ async function get_pull_request(config, repo_name)
 			created: utils.parse_time(data[i].created_at),
 			labels: utils.get_good_color(utils.obj_tab_filter(data[i].labels, ["name", "color"])),
 			body: data[i].body,
-			requested_reviewers: utils.obj_tab_filter(data[i].requested_reviewers, ["login", "avatar_url"]),
+			assignees: utils.obj_tab_filter(data[i].requested_reviewers, ["login", "avatar_url"]),
 			head: data[i].head.ref,
 			base: data[i].base.ref
 		};
