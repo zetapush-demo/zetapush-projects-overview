@@ -1,6 +1,6 @@
 {
   "name": "zetapush-projects-overview",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -26,7 +26,7 @@
     "@zetapush/platform": "^0.31.4",
     "core-js": "^2.5.4",
     "github-markdown-css": "^2.10.0",
-    "ngx-markdown": "^6.1.0",
+    "ngx-markdown": "^6.2.0",
     "prismjs": "^1.15.0",
     "rxjs": "^6.2.2",
     "zone.js": "^0.8.26"
@@ -44,7 +44,7 @@
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
     "karma-chrome-launcher": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "~2.0.0",
+    "karma-coverage-istanbul-reporter": "^2.0.2",
     "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.3.0",
