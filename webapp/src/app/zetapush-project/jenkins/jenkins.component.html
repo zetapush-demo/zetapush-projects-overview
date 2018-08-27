@@ -16,6 +16,7 @@
 								<img src="{{branch.last_build.icon}}" alt="wtf bah l'image est plus sur le repo" />
 							</a>
 							<h2> {{branch.name}}</h2>
+							<i *ngIf="branch.last_build.in_progress"> BUILD IN PROGRESS</i>
 						</mat-panel-title>
 					</mat-expansion-panel-header>
 					<a href="{{branch.branch_url}}"> Go to Branch </a>
