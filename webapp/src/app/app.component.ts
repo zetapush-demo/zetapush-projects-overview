@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-	title = 'Zetapush Projets Overview';
+	title = 'Zetapush Projects Overview';
 }
