@@ -3,7 +3,7 @@ var utils = require('./utils');
 
 const api_url = 'https://api.github.com/repos/zetapush';
 
-async function get_repo_list(config)
+async function get_repo_name(config)
 {
 	const res = await axios.get('https://api.github.com/orgs/zetapush/repos', config.http).catch((err) => {
 		if (err.response.status != 200) {
@@ -13,20 +13,11 @@ async function get_repo_list(config)
 			process.exit(1);
 		}
 	});
-	var repo_list = [];
 
-	for (var i = 0; i < config.repo.length; i++)
-		for (var j = 0; j < res.data.length; j++) {
-			if (res.data[j].name === config.repo[i] && res.data[j].open_issues) {
-				repo_list.push(res.data[j].name);
-				break;
-			}
-			if (j === res.data.length - 1) {
-				console.error(`Repository "${config.repo[i]}" not found.`);
-				process.exit(1);
-			}
-		}
-	return repo_list;
+	for (var i = 0; i < res.data.length; i++)
+		if (res.data[i].name === config.repo && res.data[i].open_issues)
+			return res.data[i].name;
+	return null;
 }
 
 async function get_tag(config, repo_name)
@@ -95,22 +86,24 @@ async function get_pull_request(config, repo_name)
 module.exports = async function()
 {
 	const config = utils.get_config('github');
-	const repo_list = await get_repo_list(config);
-	var data = [];
+	const repo_name = await get_repo_name(config);
+	var data = {};
 
-	for (var i = 0; i < repo_list.length; i++) {
-		await Promise.all([
-			get_tag(config, repo_list[i]),
-			get_issues(config, repo_list[i]),
-			get_pull_request(config, repo_list[i])
-		]).then((res) => {
-			data.push({
-				repo: repo_list[i],
-				tag: res[0],
-				issues: res[1],
-				pull_request: res[2]
-			});
-		});
+	if (!repo_name) {
+		console.error(`Repository "${config.repo}" not found.`);
+		process.exit(1);
 	}
+	await Promise.all([
+		get_tag(config, repo_name),
+		get_issues(config, repo_name),
+		get_pull_request(config, repo_name)
+	]).then((res) => {
+		data = {
+			repo: repo_name,
+			tag: res[0],
+			issues: res[1],
+			pull_request: res[2]
+		};
+	});
 	return data;
 }

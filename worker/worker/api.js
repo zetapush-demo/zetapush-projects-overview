@@ -7,6 +7,7 @@ var exports = module.exports = {
 	jenkins: require('./jenkins')
 };
 
+/*
 (async function()
 {
 	var data = {};
@@ -20,9 +21,10 @@ var exports = module.exports = {
 		data.github = res[0];
 		data.jenkins = res[1];
 		data.jira = {
-			issues: res[0],
-			sprint: res[0]
+			issues: res[2],
+			sprint: res[3]
 		}
 	});
 	console.log(data);
 })();
+*/

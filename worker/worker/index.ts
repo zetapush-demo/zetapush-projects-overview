@@ -41,20 +41,22 @@ export default class Api {
 		});
 		const users = group.users || [];
 
-		console.log('Start sending: ', new Date().toUTCString().slice(0, -4));
+		console.log('Start sending: ', new Date().toString().split(' ').slice(0, -2).join(' '));
+
 		const message = {
 			github: await github(),
 			jenkins: await jenkins(),
 			jira: {
-				issues: jira.issues(),
-				sprint: jira.sprint(),
+				issues: await jira.issues(),
+				sprint: await jira.sprint(),
 			}
 		}
 		this.messaging.send({
 			target: users,
 			data: message
 		});
-		console.log('Done: ', new Date().toUTCString().slice(0, -4));
+		console.log('Done: ', new Date().toString().split(' ').slice(0, -2).join(' '));
+		console.log(message);
 		this.last_data = message;
 	}
 
@@ -63,7 +65,7 @@ export default class Api {
 			await this.simple.createUser(user_info);
 		}
 		catch(err) {
-			console.log(err);
+			console.log('err: ', err);
 		}
 	}
 
