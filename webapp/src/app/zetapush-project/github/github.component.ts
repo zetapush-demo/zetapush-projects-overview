@@ -15,7 +15,7 @@ export class GithubComponent implements OnInit {
 	data: GithubDataStruct;
 	gap_refresh = 900000;
 
-	selected_assignee: string;
+	selected_assignee: string = 'damienld22';
 	assignees_list: string[];
 	new_issues: object;
 	new_pull_request: object;
@@ -49,13 +49,20 @@ export class GithubComponent implements OnInit {
 	}
 
 	filter_data_by_assignees(data, assignee_login) {
+		if (!assignee_login)
+			return data;
 		if (!data)
 			return null;
-		return data.filter(x => {
-			for (var i = 0; i < x.assignees.length; i++)
-				if (x.assignees[i].login === assignee_login)
-					return x;
-		});
+		function foo(data) {
+			return data.filter(x => {
+				for (var i = 0; i < x.assignees.length; i++)
+					if (x.assignees[i].login === assignee_login)
+						return x;
+			});
+		}
+		data.issues = foo(data.issues);
+		data.pull_request = foo(data.pull_request);
+		return data;
 	}
 
 	get_assignees_list(data) {
@@ -70,10 +77,10 @@ export class GithubComponent implements OnInit {
 	on_get_data(tmp: GithubDataStruct) {
 		if (!tmp)
 			return;
-		// console.log(tmp);
-		// console.log('filter: ', this.filter_data_by_assignees(tmp.issues, 'damienld22'));
+		console.log(this.selected_assignee);
 		this.assignees_list = this.get_assignees_list(tmp);
-		this.data = tmp;
+		this.data = this.filter_data_by_assignees(tmp, this.selected_assignee);
+		console.log(this.data);
 		this.new_issues = this.get_new_data(this.data.issues);
 		this.new_pull_request = this.get_new_data(this.data.pull_request);
 		if (this.new_issues !== null)
