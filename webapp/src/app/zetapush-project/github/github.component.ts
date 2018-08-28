@@ -35,20 +35,20 @@ export class GithubComponent implements OnInit {
 		const now = new Date().valueOf();
 		var popup_data;
 
-		function foo(tab) {
+		function get_new_data(tab) {
 			if (tab)
 				for (var i = 0; i < tab.length; i++) {
 					const gap = new Date(tab[i].created).valueOf() - now;
 
-					if (gap < gap_refresh)
+					if (-gap < gap_refresh)
 						return tab[i];
 				}
 			return null;
 		}
-		popup_data = foo(this.data.issues);
+		popup_data = get_new_data(this.data.issues);
 		if (popup_data !== null)
 			return this.openDialog(popup_data);
-		popup_data = foo(this.data.pull_request);
+		popup_data = get_new_data(this.data.pull_request);
 		if (popup_data !== null)
 			return this.openDialog(popup_data);
 	}
@@ -58,24 +58,24 @@ export class GithubComponent implements OnInit {
 		this.data = JSON.parse(JSON.stringify(this.data_save));
 		if (!assignee_login)
 			return;
-		function foo(data) {
+		function filter_assignees(data) {
 			return data.filter(x => {
 				for (var i = 0; i < x.assignees.length; i++)
 					if (x.assignees[i].login === assignee_login)
 						return x;
 			});
 		}
-		this.data.issues = foo(this.data.issues);
-		this.data.pull_request = foo(this.data.pull_request);
+		this.data.issues = filter_assignees(this.data.issues);
+		this.data.pull_request = filter_assignees(this.data.pull_request);
 	}
 
 	get_assignees_list(data) {
 		if (!data)
 			return null;
-		function foo(data) {
+		function filter_assignees_login(data) {
 			return data.filter(x => x.assignees.length).map(x => x.assignees.map(y => y.login)).join().split(',').filter((x, y, z) => z.indexOf(x) === y);
 		}
-		return foo(data.issues).concat(foo(data.pull_request)).filter((x, y, z) => z.indexOf(x) === y);
+		return filter_assignees_login(data.issues).concat(filter_assignees_login(data.pull_request)).filter((x, y, z) => z.indexOf(x) === y);
 	}
 
 	on_get_data(tmp: GithubDataStruct) {

@@ -14,7 +14,6 @@ export class JenkinsComponent implements OnInit {
 
 	data: JenkinsDataStruct[];
 	gap_refresh = 900000;
-	branch_new_build: object;
 
 	constructor(
 		private zetapush_service: ZetapushProjectService,
