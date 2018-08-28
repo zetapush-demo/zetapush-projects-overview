@@ -35,7 +35,7 @@ export class GithubComponent implements OnInit {
 		const now = new Date().valueOf();
 		var popup_data;
 
-		function get_new_data(tab) {
+		function get_last_data(tab) {
 			if (tab)
 				for (var i = 0; i < tab.length; i++) {
 					const gap = new Date(tab[i].created).valueOf() - now;
@@ -45,28 +45,25 @@ export class GithubComponent implements OnInit {
 				}
 			return null;
 		}
-		popup_data = get_new_data(this.data.issues);
+		popup_data = get_last_data(this.data.issues);
 		if (popup_data !== null)
 			return this.openDialog(popup_data);
-		popup_data = get_new_data(this.data.pull_request);
+		popup_data = get_last_data(this.data.pull_request);
 		if (popup_data !== null)
 			return this.openDialog(popup_data);
 	}
 
 	filter_data_by_assignees(assignee_login) {
-		console.log('assignee_login: ', assignee_login);
 		this.data = JSON.parse(JSON.stringify(this.data_save));
 		if (!assignee_login)
 			return;
-		function filter_assignees(data) {
-			return data.filter(x => {
-				for (var i = 0; i < x.assignees.length; i++)
-					if (x.assignees[i].login === assignee_login)
-						return x;
-			});
-		}
-		this.data.issues = filter_assignees(this.data.issues);
-		this.data.pull_request = filter_assignees(this.data.pull_request);
+		function foo(elem) {
+			for (var i = 0; i < elem.assignees.length; i++)
+				if (elem.assignees[i].login === assignee_login)
+					return elem;
+		};
+		this.data.issues = this.data.issues.filter(foo);
+		this.data.pull_request = this.data.pull_request.filter(foo);
 	}
 
 	get_assignees_list(data) {
