@@ -4,10 +4,10 @@
 <div *ngIf="data">
 
 	<mat-form-field>
-		<mat-select [(value)]="selected_assignee" placeholder="Assignee">
+		<mat-select (selectionChange)="filter_data_by_assignees(selected_assignee)" [(value)]="selected_assignee" placeholder="Assignee">
 			<mat-option> None </mat-option>
 			<mat-option *ngFor="let assignee of assignees_list" [value]="assignee">
-			{{assignee}}
+				{{assignee}}
 			</mat-option>
 		</mat-select>
 	</mat-form-field>

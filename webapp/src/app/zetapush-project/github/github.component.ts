@@ -13,46 +13,51 @@ import { GithubPopupComponent } from './popup/github-popup.component';
 export class GithubComponent implements OnInit {
 
 	data: GithubDataStruct;
+	data_save: GithubDataStruct;
 	gap_refresh = 900000;
 
-	selected_assignee: string = 'damienld22';
+	selected_assignee: string;
 	assignees_list: string[];
-	new_issues: object;
-	new_pull_request: object;
 
 	constructor(
 		private zetapush_service: ZetapushProjectService,
 		private dialog: MatDialog
 	) { }
 
-	openDialog() {
+	openDialog(popup_data) {
 		this.dialog.open(GithubPopupComponent, {
 			width: '500px',
-			data: {
-				new_issues: this.new_issues,
-				new_pull_request: this.new_pull_request
-			}
+			data: popup_data
 		});
 	}
 
-	get_new_data(tab) {
+	popup_on_new_data(gap_refresh) {
 		const now = new Date().valueOf();
+		var popup_data;
 
-		if (tab)
-			for (var i = 0; i < tab.length; i++) {
-				const gap = new Date(tab[i].created).valueOf() - now;
+		function foo(tab) {
+			if (tab)
+				for (var i = 0; i < tab.length; i++) {
+					const gap = new Date(tab[i].created).valueOf() - now;
 
-				if (-gap < this.gap_refresh)
-					return tab[i];
-			}
-		return null;
+					if (gap < gap_refresh)
+						return tab[i];
+				}
+			return null;
+		}
+		popup_data = foo(this.data.issues);
+		if (popup_data !== null)
+			return this.openDialog(popup_data);
+		popup_data = foo(this.data.pull_request);
+		if (popup_data !== null)
+			return this.openDialog(popup_data);
 	}
 
-	filter_data_by_assignees(data, assignee_login) {
+	filter_data_by_assignees(assignee_login) {
+		console.log('assignee_login: ', assignee_login);
+		this.data = JSON.parse(JSON.stringify(this.data_save));
 		if (!assignee_login)
-			return data;
-		if (!data)
-			return null;
+			return;
 		function foo(data) {
 			return data.filter(x => {
 				for (var i = 0; i < x.assignees.length; i++)
@@ -60,9 +65,8 @@ export class GithubComponent implements OnInit {
 						return x;
 			});
 		}
-		data.issues = foo(data.issues);
-		data.pull_request = foo(data.pull_request);
-		return data;
+		this.data.issues = foo(this.data.issues);
+		this.data.pull_request = foo(this.data.pull_request);
 	}
 
 	get_assignees_list(data) {
@@ -77,16 +81,12 @@ export class GithubComponent implements OnInit {
 	on_get_data(tmp: GithubDataStruct) {
 		if (!tmp)
 			return;
-		console.log(this.selected_assignee);
-		this.assignees_list = this.get_assignees_list(tmp);
-		this.data = this.filter_data_by_assignees(tmp, this.selected_assignee);
+		this.data = tmp;
+		this.data_save = JSON.parse(JSON.stringify(tmp));
+		this.assignees_list = this.get_assignees_list(this.data);
+		this.filter_data_by_assignees(this.selected_assignee);
 		console.log(this.data);
-		this.new_issues = this.get_new_data(this.data.issues);
-		this.new_pull_request = this.get_new_data(this.data.pull_request);
-		if (this.new_issues !== null)
-			this.openDialog();
-		else if (this.new_pull_request !== null)
-			this.openDialog();
+		this.popup_on_new_data(this.gap_refresh);
 	}
 
 	async ngOnInit() {
