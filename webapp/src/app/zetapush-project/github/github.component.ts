@@ -19,12 +19,17 @@ export class GithubComponent implements OnInit {
 	selected_assignee: string;
 	assignees_list: string[];
 
+	selected_label: string;
+	label_list: string[];
+
 	constructor(
 		private zetapush_service: ZetapushProjectService,
 		private dialog: MatDialog
 	) { }
 
-	openDialog(popup_data) {
+	openDialog(popup_data, message) {
+		popup_data.message = message;
+		console.log(popup_data);
 		this.dialog.open(GithubPopupComponent, {
 			width: '500px',
 			data: popup_data
@@ -36,43 +41,55 @@ export class GithubComponent implements OnInit {
 		var popup_data;
 
 		function get_last_data(tab) {
-			if (tab)
-				for (var i = 0; i < tab.length; i++) {
-					const gap = new Date(tab[i].created).valueOf() - now;
+			if (!tab)
+				return null;
+			for (var i = 0; i < tab.length; i++) {
+				const gap = now - new Date(tab[i].created).valueOf();
 
-					if (-gap < gap_refresh)
-						return tab[i];
-				}
+				if (gap < gap_refresh)
+					return tab[i];
+			}
 			return null;
 		}
 		popup_data = get_last_data(this.data.issues);
 		if (popup_data !== null)
-			return this.openDialog(popup_data);
+			return this.openDialog(popup_data, 'New Issue !!');
 		popup_data = get_last_data(this.data.pull_request);
 		if (popup_data !== null)
-			return this.openDialog(popup_data);
+			return this.openDialog(popup_data, 'New Pull request !!');
 	}
 
-	filter_data_by_assignees(assignee_login) {
+	filter_data_by(value, field, subfield) {
 		this.data = JSON.parse(JSON.stringify(this.data_save));
-		if (!assignee_login)
+		if (value.length != field.length || field.length != subfield.length)
+			return;
+		if (field.includes(undefined) || subfield.includes(undefined))
 			return;
 		function foo(elem) {
-			for (var i = 0; i < elem.assignees.length; i++)
-				if (elem.assignees[i].login === assignee_login)
-					return elem;
+			if (value.every(x => !x))
+				return elem;
+			var occurence_counter = 0;
+			for (var i = 0; i < value.length; i++) {
+				if (!value[i])
+					continue;
+				for (var j = 0; j < elem[field[i]].length; j++)
+					if (elem[field[i]][j][subfield[i]] === value[i])
+						occurence_counter++;
+			}
+			if (occurence_counter === value.filter(x => x).length)
+				return elem;
 		};
 		this.data.issues = this.data.issues.filter(foo);
 		this.data.pull_request = this.data.pull_request.filter(foo);
 	}
 
-	get_assignees_list(data) {
+	get_list(data, field, subfield) {
 		if (!data)
 			return null;
-		function filter_assignees_login(data) {
-			return data.filter(x => x.assignees.length).map(x => x.assignees.map(y => y.login)).join().split(',').filter((x, y, z) => z.indexOf(x) === y);
+		function filter(data) {
+			return data.filter(x => x[field].length).map(x => x[field].map(y => y[subfield])).join().split(',').filter((x, y, z) => z.indexOf(x) === y);
 		}
-		return filter_assignees_login(data.issues).concat(filter_assignees_login(data.pull_request)).filter((x, y, z) => z.indexOf(x) === y);
+		return filter(data.issues).concat(filter(data.pull_request)).filter((x, y, z) => z.indexOf(x) === y);
 	}
 
 	on_get_data(tmp: GithubDataStruct) {
@@ -80,8 +97,13 @@ export class GithubComponent implements OnInit {
 			return;
 		this.data = tmp;
 		this.data_save = JSON.parse(JSON.stringify(tmp));
-		this.assignees_list = this.get_assignees_list(this.data);
-		this.filter_data_by_assignees(this.selected_assignee);
+		this.assignees_list = this.get_list(this.data, 'assignees', 'login');
+		this.label_list = this.get_list(this.data, 'labels', 'name');
+		this.filter_data_by(
+			[this.selected_assignee, this.selected_label],
+			['assignees', 'labels'],
+			['login', 'name']
+		);
 		console.log(this.data);
 		this.popup_on_new_data(this.gap_refresh);
 	}

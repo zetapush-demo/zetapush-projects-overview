@@ -34,9 +34,9 @@ export class JenkinsComponent implements OnInit {
 			return null;
 		for (let i = 0; i < tab.length; i++) {
 			for (let j = 0; j < tab[i].branchs.length; j++) {
-				var gap = tab[i].branchs[j].time - now;
+				const gap = now - tab[i].branchs[j].time;
 
-				if (-gap < this.gap_refresh)
+				if (gap < this.gap_refresh)
 					return tab[i].branchs[j];
 			}
 		}

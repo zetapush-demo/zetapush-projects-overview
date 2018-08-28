@@ -4,13 +4,30 @@
 <div *ngIf="data">
 
 	<mat-form-field>
-		<mat-select (selectionChange)="filter_data_by_assignees(selected_assignee)" [(value)]="selected_assignee" placeholder="Assignee">
+		<mat-select (selectionChange)="filter_data_by(
+									[selected_assignee, selected_label],
+									['assignees', 'labels'],
+									['login', 'name'])"	[(value)]="selected_assignee" placeholder="Assignee">
 			<mat-option> None </mat-option>
 			<mat-option *ngFor="let assignee of assignees_list" [value]="assignee">
 				{{assignee}}
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
+
+	<mat-form-field>
+		<mat-select (selectionChange)="filter_data_by(
+									[selected_assignee, selected_label],
+									['assignees', 'labels'],
+									['login', 'name'])" [(value)]="selected_label" placeholder="Label">
+			<mat-option> None </mat-option>
+			<mat-option *ngFor="let label of label_list" [value]="label">
+				{{label}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+
+	<p *ngIf="selected_label">You selected: {{selected_label}}</p>
 
 	<h1 id="repo"> {{ data.repo }} <i> {{ data.tag }} </i> </h1>
 
