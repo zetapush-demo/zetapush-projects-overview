@@ -1,6 +1,9 @@
 <div id="undefined_data" *ngIf="!data">
-  mdr bah alors l'api, on se sent pas bien ?
+	mdr bah alors l'api, on se sent pas bien ?
 </div>
 <div *ngIf="data">
-
+	<mat-tab-group>
+		<mat-tab *ngFor="let project of data.sprint" label="{{project.project}}">
+		</mat-tab>
+	</mat-tab-group>
 </div>
