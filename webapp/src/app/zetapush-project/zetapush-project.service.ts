@@ -19,9 +19,52 @@ export interface JenkinsDataStruct {
 	url: string
 }
 
+export interface JiraDataStruct {
+	issues: IssuesDataStruct[];
+	sprint: SprintDataStruct[];
+}
+
+interface SprintDataStruct {
+	start: string;
+	end: string;
+	project: string;
+	sprint: string;
+	issues: IssuesDataStruct[];
+}
+
+interface IssuesDataStruct {
+	created: string;
+	issuetype: {
+		iconUrl: string;
+		name: string;
+	};
+	priority: {
+		id: number;
+		iconUrl: string;
+	};
+	reporter: {
+		avatarUrls: string;
+		displayName: string;
+		emailAddress: string;
+	};
+	assignee?: {
+		avatarUrls: string;
+		displayName: string;
+		emailAddress: string;
+	};
+	status: {
+		name: string;
+		id: number;
+	};
+	subtasks?: IssuesDataStruct[];
+	summary: string;
+	description?: string;
+}
+
 export interface DataStruct {
 	github: GithubDataStruct;
 	jenkins: JenkinsDataStruct[];
+	jira: JiraDataStruct;
 }
 
 @Injectable({
