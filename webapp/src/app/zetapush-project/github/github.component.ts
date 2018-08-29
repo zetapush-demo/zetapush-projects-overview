@@ -66,17 +66,18 @@ export class GithubComponent implements OnInit {
 		if (field.includes(undefined) || subfield.includes(undefined))
 			return;
 		function foo(elem) {
+			var occurrence_counter = 0;
+
 			if (value.every(x => !x))
 				return elem;
-			var occurence_counter = 0;
 			for (var i = 0; i < value.length; i++) {
 				if (!value[i])
 					continue;
 				for (var j = 0; j < elem[field[i]].length; j++)
 					if (elem[field[i]][j][subfield[i]] === value[i])
-						occurence_counter++;
+						occurrence_counter++;
 			}
-			if (occurence_counter === value.filter(x => x).length)
+			if (occurrence_counter === value.filter(x => x).length)
 				return elem;
 		};
 		this.data.issues = this.data.issues.filter(foo);
