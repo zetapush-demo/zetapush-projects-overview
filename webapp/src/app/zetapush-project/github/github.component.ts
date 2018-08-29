@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { MatDialog } from '@angular/material';
 
-import { GithubDataStruct, ZetapushProjectService, DataStruct } from '../zetapush-project.service';
+import { Github, ZetapushProjectService, DataStruct } from '../zetapush-project.service';
 import { GithubPopupComponent } from './popup/github-popup.component';
 
 @Component({
@@ -12,8 +12,8 @@ import { GithubPopupComponent } from './popup/github-popup.component';
 })
 export class GithubComponent implements OnInit {
 
-	data: GithubDataStruct;
-	data_save: GithubDataStruct;
+	data: Github;
+	data_save: Github;
 
 	selected_assignee: string;
 	assignees_list: string[];
@@ -91,7 +91,7 @@ export class GithubComponent implements OnInit {
 		return filter(data.issues).concat(filter(data.pull_request)).filter((x, y, z) => z.indexOf(x) === y);
 	}
 
-	on_get_data(tmp: GithubDataStruct) {
+	on_get_data(tmp: Github) {
 		if (!tmp)
 			return;
 		this.data = tmp;

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { MatDialog } from '@angular/material';
 
-import { ZetapushProjectService, DataStruct, JenkinsDataStruct } from '../zetapush-project.service';
+import { ZetapushProjectService, DataStruct, Jenkins } from '../zetapush-project.service';
 import { JenkinsPopupComponent } from './popup/jenkins-popup.component';
 
 @Component({
@@ -12,7 +12,7 @@ import { JenkinsPopupComponent } from './popup/jenkins-popup.component';
 })
 export class JenkinsComponent implements OnInit {
 
-	data: JenkinsDataStruct[];
+	data: Jenkins[];
 	gap_refresh = 900000;
 
 	constructor(
@@ -43,7 +43,7 @@ export class JenkinsComponent implements OnInit {
 		return null;
 	}
 
-	on_get_data(tmp: JenkinsDataStruct[]) {
+	on_get_data(tmp: Jenkins[]) {
 		if (!tmp)
 			return;
 		console.log(tmp);

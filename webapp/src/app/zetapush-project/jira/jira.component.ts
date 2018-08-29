@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ZetapushProjectService, DataStruct, JiraDataStruct } from '../zetapush-project.service';
+import { ZetapushProjectService, DataStruct, Jira } from '../zetapush-project.service';
 
 @Component({
 	selector: 'app-jira',
@@ -9,12 +9,12 @@ import { ZetapushProjectService, DataStruct, JiraDataStruct } from '../zetapush-
 })
 export class JiraComponent implements OnInit {
 
-	data: JiraDataStruct;
+	data: Jira;
 	constructor(
 		private zetapush_service: ZetapushProjectService,
 	) { }
 
-	on_get_data(tmp: JiraDataStruct) {
+	on_get_data(tmp: Jira) {
 		if (!tmp)
 			return;
 		console.log(tmp);

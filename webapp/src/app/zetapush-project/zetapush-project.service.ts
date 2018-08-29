@@ -5,34 +5,34 @@ import { Observable, Subscriber } from 'rxjs';
 import { SmartClient, ProxyService } from '@zetapush/client';
 import { Messaging } from '@zetapush/platform/lib';
 
-export interface GithubDataStruct {
+export interface Github {
 	release: string;
 	repo: string;
 	issues: object[];
 	pull_request: object[];
 }
 
-export interface JenkinsDataStruct {
+export interface Jenkins {
 	branchs: object[],
 	name: string,
 	description: string,
 	url: string
 }
 
-export interface JiraDataStruct {
-	issues: IssuesDataStruct[];
-	sprint: SprintDataStruct[];
+export interface Jira {
+	issues: Issues[];
+	sprint: Sprint[];
 }
 
-interface SprintDataStruct {
+interface Sprint {
 	start: string;
 	end: string;
 	project: string;
 	sprint: string;
-	issues: IssuesDataStruct[];
+	issues: Issues[];
 }
 
-interface IssuesDataStruct {
+interface Issues {
 	created: string;
 	issuetype: {
 		iconUrl: string;
@@ -56,15 +56,15 @@ interface IssuesDataStruct {
 		name: string;
 		id: number;
 	};
-	subtasks?: IssuesDataStruct[];
+	subtasks?: Issues[];
 	summary: string;
 	description?: string;
 }
 
 export interface DataStruct {
-	github: GithubDataStruct;
-	jenkins: JenkinsDataStruct[];
-	jira: JiraDataStruct;
+	github: Github;
+	jenkins: Jenkins[];
+	jira: Jira;
 }
 
 @Injectable({
