@@ -14,7 +14,6 @@ export class GithubComponent implements OnInit {
 
 	data: GithubDataStruct;
 	data_save: GithubDataStruct;
-	gap_refresh = 900000;
 
 	selected_assignee: string;
 	assignees_list: string[];
@@ -29,14 +28,13 @@ export class GithubComponent implements OnInit {
 
 	openDialog(popup_data, message) {
 		popup_data.message = message;
-		console.log(popup_data);
 		this.dialog.open(GithubPopupComponent, {
 			width: '500px',
 			data: popup_data
 		});
 	}
 
-	popup_on_new_data(gap_refresh) {
+	popup_on_new_data(delay) {
 		const now = new Date().valueOf();
 		var popup_data;
 
@@ -44,19 +42,19 @@ export class GithubComponent implements OnInit {
 			if (!tab)
 				return null;
 			for (var i = 0; i < tab.length; i++) {
-				const gap = now - new Date(tab[i].created).valueOf();
+				const gap = now - delay;
 
-				if (gap < gap_refresh)
+				if (new Date(tab[i].created).valueOf() > gap)
 					return tab[i];
 			}
 			return null;
 		}
 		popup_data = get_last_data(this.data.issues);
 		if (popup_data !== null)
-			return this.openDialog(popup_data, 'New Issue !!');
+			this.openDialog(popup_data, 'New Issue !!');
 		popup_data = get_last_data(this.data.pull_request);
 		if (popup_data !== null)
-			return this.openDialog(popup_data, 'New Pull request !!');
+			this.openDialog(popup_data, 'New Pull request !!');
 	}
 
 	filter_data_by(value, field, subfield) {
@@ -106,7 +104,10 @@ export class GithubComponent implements OnInit {
 			['login', 'name']
 		);
 		console.log(this.data);
-		this.popup_on_new_data(this.gap_refresh);
+		this.popup_on_new_data(1000 * 60 * 15); // 15 minutes
+		this.popup_on_new_data(1000 * 60 * 60 * 24); // 24 hours
+		this.popup_on_new_data(1000 * 60 * 60 * 24 * 3); // 3 days
+		this.popup_on_new_data(1000 * 60 * 60 * 24 * 7 * 3); // 1 week
 	}
 
 	async ngOnInit() {
