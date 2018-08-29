@@ -13,6 +13,7 @@ import { GithubComponent } from './zetapush-project/github/github.component';
 import { GithubPopupComponent } from './zetapush-project/github/popup/github-popup.component';
 import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
 import { JenkinsPopupComponent } from './zetapush-project/jenkins/popup/jenkins-popup.component';
+import { JiraComponent } from './zetapush-project/jira/jira.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -36,6 +37,7 @@ import { AppRoutingModule } from './app-routing.module';
 		GithubPopupComponent,
 		JenkinsComponent,
 		JenkinsPopupComponent,
+		JiraComponent,
 	],
 	providers: [],
 	entryComponents: [GithubPopupComponent, JenkinsPopupComponent],

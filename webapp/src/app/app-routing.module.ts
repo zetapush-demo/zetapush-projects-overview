@@ -4,6 +4,7 @@ import { Routes, RouterModule, Resolve } from '@angular/router';
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
 import { GithubComponent } from './zetapush-project/github/github.component';
 import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
+import { JiraComponent } from './zetapush-project/jira/jira.component';
 
 import { ZetapushProjectService } from './zetapush-project/zetapush-project.service';
 
@@ -26,7 +27,7 @@ const routes: Routes = [
 		children: [
 			{ path: 'github', component: GithubComponent },
 			{ path: 'jenkins', component: JenkinsComponent },
-			// 	{ path: 'jira', component: JiraComponent }
+			{ path: 'jira', component: JiraComponent },
 			{ path: '**', redirectTo: '/'}
 		]
 },
