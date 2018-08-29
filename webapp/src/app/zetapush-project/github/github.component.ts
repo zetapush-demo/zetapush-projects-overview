@@ -107,7 +107,7 @@ export class GithubComponent implements OnInit {
 		this.popup_on_new_data(1000 * 60 * 15); // 15 minutes
 		this.popup_on_new_data(1000 * 60 * 60 * 24); // 24 hours
 		this.popup_on_new_data(1000 * 60 * 60 * 24 * 3); // 3 days
-		this.popup_on_new_data(1000 * 60 * 60 * 24 * 7 * 3); // 1 week
+		this.popup_on_new_data(1000 * 60 * 60 * 24 * 7 * 1); // 1 week
 	}
 
 	async ngOnInit() {
