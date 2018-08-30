@@ -19,22 +19,43 @@ function check_bracket(str)
 	return tmp1 != -1 && tmp2 != -1 && tmp1 < tmp2;
 }
 
+exports.compute_sprint_timetracking = function compute_timetracking(issues)
+{
+	var sprint_time = {
+		estimate: 0,
+		remaining: 0,
+		spent: 0
+	};
+
+	for (var i = 0; i < issues.length; i++) {
+		if (!issues.subtasks)
+			continue;
+		for (var j = 0; j < issues.subtasks.length; j++) {
+			sprint_time.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds;
+			sprint_time.remaining += issues[i].subtasks[j].timetracking.remainingEstimateSeconds;
+			sprint_time.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds;
+		}
+	}
+	return sprint_time;
+}
+
 exports.filter_data = function filter_data(issues)
 {
 	for (var i = 0; i < issues.length; i++) {
 		issues[i] = {
-			priority:	exports.extract_data(issues[i].fields.priority, ['id', 'iconUrl']),
-			issuetype:	exports.extract_data(issues[i].fields.issuetype, ['name', 'iconUrl']),
-			status:		exports.extract_data(issues[i].fields.status, ['name', 'id']),
+			key:		issues[i].key,
+			parent:		issues[i].fields.parent && issues[i].fields.parent.key,
+			priority:	extract_data(issues[i].fields.priority, ['id', 'iconUrl']),
+			issuetype:	extract_data(issues[i].fields.issuetype, ['name', 'iconUrl']),
+			status:		extract_data(issues[i].fields.status, ['name', 'id']),
 			summary:	issues[i].fields.summary,
 			created:	exports.parse_time(issues[i].fields.created),
 			description:	issues[i].fields.description,
-			reporter:	issues[i].fields.reporter && exports.extract_data(issues[i].fields.reporter, ['displayName', 'emailAddress', 'avatarUrls[48x48]']),
-			assignee:	issues[i].fields.assignee && exports.extract_data(issues[i].fields.assignee, ['displayName', 'emailAddress', 'avatarUrls[48x48]']),
+			reporter:	extract_data(issues[i].fields.reporter, ['displayName', 'emailAddress', 'avatarUrls[48x48]']),
+			assignee:	extract_data(issues[i].fields.assignee, ['displayName', 'emailAddress', 'avatarUrls[48x48]']),
 			subtasks:	issues[i].fields.subtasks.map(task => task.self),
-			timetracking:	issues[i].fields.timetracking && issues[i].fields.timetracking.originalEstimate && exports.extract_data(issues[i].fields.timetracking, ['originalEstimate', 'remainingEstimate', 'timeSpent'])
+			timetracking:	extract_data(issues[i].fields.timetracking, ['originalEstimateSeconds', 'remainingEstimateSeconds', 'timeSpentSeconds'])
 		};
-		// console.log(issues[i].timetracking);
 		for (var tmp in issues[i])
 			if (!issues[i][tmp] || issues[i][tmp].length === 0)
 				delete issues[i][tmp];
@@ -42,16 +63,16 @@ exports.filter_data = function filter_data(issues)
 	return issues;
 }
 
-exports.extract_data = function extract_data(src, keys)
+function extract_data(src, keys)
 {
 	var dest = {};
 
-	if (typeof keys === 'undefined')
+	if (!src || !keys)
 		return null;
 	for (var i = 0; i < keys.length; i++) {
 		if (check_bracket(keys[i])) {
-			var obj = keys[i].substring(0, keys[i].indexOf('['));
-			var key = get_substring(keys[i], /[\[\]]/);
+			const obj = keys[i].substring(0, keys[i].indexOf('['));
+			const key = get_substring(keys[i], /[\[\]]/);
 
 			dest[obj] = extract_data(src[obj], [key])[key];
 		} else

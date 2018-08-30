@@ -27,4 +27,5 @@ export class JiraComponent implements OnInit {
 		this.zetapush_service.get_data().subscribe(
 			(data: DataStruct) => this.on_get_data(data.jira)
 		);
-	}}
+	}
+}

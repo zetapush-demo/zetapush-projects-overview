@@ -41,10 +41,10 @@ async function put_sub_issues(issues, project_config, config)
 
 	for (var i = 0; i < issues.length; i++) {
 		for (var j = 0; j < issues[i].subtasks.length; j++) {
-			res = await axios.get(issues[i].subtasks[j], config);
-			subtasks.push(res.data);
+			res = await axios.get(issues[i].subtasks[j], config).catch(err => console.log(err));
+			if (res.data.fields.status.name !== project_config.close_state)
+				subtasks.push(res.data);
 		}
-		subtasks = subtasks.filter(task => task.fields.status.name !== project_config.close_state);
 		issues[i].subtasks = utils.filter_data(subtasks);
 		subtasks = [];
 	}
@@ -52,11 +52,11 @@ async function put_sub_issues(issues, project_config, config)
 
 async function get_current_sprint(project_config, board_id, config)
 {
-	var api_url;
 	var res = await axios.get(`${api}/board/${board_id}/sprint?state=active`, config)
+	const sprint_id = res.data.values[0].id;
+	const api_url = `${api}/sprint/${sprint_id}/issue?jql`;
 
 	res = res.data.values[0];
-	api_url = `${api}/sprint/${res.id}/issue?jql`;
 	var sprint = {
 		project: project_config.name,
 		sprint: res.name,
