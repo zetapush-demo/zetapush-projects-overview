@@ -64,8 +64,30 @@ async function get_current_sprint(project_config, board_id, config)
 		end: utils.parse_time(res.endDate).slice(0, -9),
 		issues: await utils.get_issues_list(api_url, project_config, config)
 	};
+	const subtasks_list = sprint.issues.filter(issue => !issue.subtasks);
+
 	sprint.issues = sprint.issues.filter(issue => issue.subtasks);
-	await put_sub_issues(sprint.issues, project_config, config);
+	console.log(sprint.issues.length, subtasks_list.length);
+
+
+	var sum = 0;
+	for (var i = 0; i < sprint.issues.length; i++) {
+//		for (j = 0; j < subtasks_list.length; j++)
+//			if (subtasks_list[i].parent
+		const subtasks = subtasks_list.filter(issue => {
+			if (issue.parent === undefined)
+				console.log(issue);
+//			console.log(issue.parent);
+			if (issue.parent === sprint.issues[i].key)
+				return issue;
+		});
+
+		sprint.issues[i].subtasks = [];//subtasks;
+		sum += subtasks.length;
+	}
+	console.log(sprint.issues.length, sum, sprint.issues.length + sum);
+	//await put_sub_issues(sprint.issues, project_config, config);
+	//sprint.time = utils.compute_sprint_timetracking(sprint.issues);
 	return sprint;
 }
 
