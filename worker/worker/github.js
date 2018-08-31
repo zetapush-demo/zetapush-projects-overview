@@ -1,5 +1,5 @@
 var axios = require('axios');
-var utils = require('./utils');
+var { get_config, parse_time, obj_tab_filter, get_good_color } = require('./utils');
 
 const api_url = 'https://api.github.com/repos/zetapush';
 
@@ -45,10 +45,10 @@ async function get_issues(config, repo_name)
 				avatar: data[i].user.avatar_url,
 				url: data[i].user.html_url
 			},
-			created: utils.parse_time(data[i].created_at),
-			labels: utils.get_good_color(utils.obj_tab_filter(data[i].labels, ["name", "color"])),
+			created: parse_time(data[i].created_at),
+			labels: get_good_color(obj_tab_filter(data[i].labels, ["name", "color"])),
 			body: data[i].body,
-			assignees: utils.obj_tab_filter(data[i].assignees, ["login", "avatar_url"])
+			assignees: obj_tab_filter(data[i].assignees, ["login", "avatar_url"])
 		};
 		issues.push(data[i]);
 	}
@@ -71,10 +71,10 @@ async function get_pull_request(config, repo_name)
 				avatar: data[i].user.avatar_url,
 				url: data[i].user.html_url
 			},
-			created: utils.parse_time(data[i].created_at),
-			labels: utils.get_good_color(utils.obj_tab_filter(data[i].labels, ["name", "color"])),
+			created: parse_time(data[i].created_at),
+			labels: get_good_color(obj_tab_filter(data[i].labels, ["name", "color"])),
 			body: data[i].body,
-			assignees: utils.obj_tab_filter(data[i].requested_reviewers, ["login", "avatar_url"]),
+			assignees: obj_tab_filter(data[i].requested_reviewers, ["login", "avatar_url"]),
 			head: data[i].head.ref,
 			base: data[i].base.ref
 		};
@@ -85,7 +85,7 @@ async function get_pull_request(config, repo_name)
 
 module.exports = async function()
 {
-	const config = utils.get_config('github');
+	const config = get_config('github');
 	const repo_name = await get_repo_name(config);
 	var data = {};
 

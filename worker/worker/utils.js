@@ -19,29 +19,7 @@ function check_bracket(str)
 	return tmp1 != -1 && tmp2 != -1 && tmp1 < tmp2;
 }
 
-exports.compute_sprint_timetracking = function compute_timetracking(issues)
-{
-	var sprint_time = {
-		estimate: 0,
-		remaining: 0,
-		spent: 0
-	};
-
-	for (var i = 0; i < issues.length; i++) {
-		if (!issues[i].subtasks)
-			continue;
-		for (var j = 0; j < issues[i].subtasks.length; j++) {
-			if (!issues[i].subtasks[j].timetracking)
-				continue;
-			sprint_time.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds || 0;
-			sprint_time.remaining += issues[i].subtasks[j].timetracking.remainingEstimateSeconds || 0;
-			sprint_time.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds || 0;
-		}
-	}
-	return sprint_time;
-}
-
-exports.filter_data = function filter_data(issues)
+function filter_data(issues)
 {
 	for (var i = 0; i < issues.length; i++) {
 		issues[i] = {
@@ -100,7 +78,7 @@ exports.get_issues_list = async function get_issues_list(api_url, project_config
 	for (var i = 0; i < max; i += 100) {
 		res = await axios.get(`${api_url}&startAt=${i}&maxResults=100`, config);
 		res.data.issues = res.data.issues.filter(issue => issue.fields.status.name !== project_config.close_state);
-		issues = issues.concat(exports.filter_data(res.data.issues));
+		issues = issues.concat(filter_data(res.data.issues));
 	}
 	return issues;
 }

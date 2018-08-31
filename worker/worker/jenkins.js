@@ -1,5 +1,5 @@
 const axios = require('axios');
-const utils = require('./utils');
+const { parse_time, get_config } = require('./utils');
 
 const jenkins_assets = 'https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/48x48/';
 
@@ -23,7 +23,7 @@ async function get_timestamp_last_build(build_url)
 {
 	const res = await axios.get(`${build_url}api/json`);
 
-	return utils.parse_time(res.data.timestamp);
+	return parse_time(res.data.timestamp);
 }
 
 async function get_branch_array(branch_url_array)
@@ -62,7 +62,7 @@ async function get_branch_array(branch_url_array)
 module.exports = async function()
 {
 	var data = [];
-	const config = utils.get_config('jenkins');
+	const config = get_config('jenkins');
 	const jenkins_url = `${config.url}api/json`;
 	var repo_list = await get_repo_list(jenkins_url);
 

@@ -1,5 +1,5 @@
 const axios = require('axios');
-const utils = require('../utils');
+const { parse_time, get_config, get_issues_list } = require('../utils');
 
 const api = 'https://zetapush.atlassian.net/rest/agile/1.0';
 
@@ -55,6 +55,28 @@ function put_sub_issues(sprint)
 	push_orphelin_issues(sprint, subtasks_list);
 }
 
+function compute_sprint_timetracking(issues)
+{
+	var sprint_time = {
+		estimate: 0,
+		remaining: 0,
+		spent: 0
+	};
+
+	for (var i = 0; i < issues.length; i++) {
+		if (!issues[i].subtasks)
+			continue;
+		for (var j = 0; j < issues[i].subtasks.length; j++) {
+			if (!issues[i].subtasks[j].timetracking)
+				continue;
+			sprint_time.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds || 0;
+			sprint_time.remaining += issues[i].subtasks[j].timetracking.remainingEstimateSeconds || 0;
+			sprint_time.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds || 0;
+		}
+	}
+	return sprint_time;
+}
+
 async function get_current_sprint(project_config, board_id, config)
 {
 	var res = await axios.get(`${api}/board/${board_id}/sprint?state=active`, config)
@@ -65,19 +87,19 @@ async function get_current_sprint(project_config, board_id, config)
 	var sprint = {
 		project: project_config.name,
 		sprint: res.name,
-		start: utils.parse_time(res.startDate).slice(0, -9),
-		end: utils.parse_time(res.endDate).slice(0, -9),
-		issues: await utils.get_issues_list(api_url, project_config, config)
+		start: parse_time(res.startDate).slice(0, -9),
+		end: parse_time(res.endDate).slice(0, -9),
+		issues: await get_issues_list(api_url, project_config, config)
 	};
 	put_sub_issues(sprint);
-	sprint.time = utils.compute_sprint_timetracking(sprint.issues);
+	sprint.time = compute_sprint_timetracking(sprint.issues);
 	return sprint;
 }
 
 module.exports = async function()
 {
 	var data = [];
-	const config = utils.get_config('jira');
+	const config = get_config('jira');
 	const project_list = config.sprint.project_list;
 	const boards_id = await get_board_list(project_list, config.http);
 
