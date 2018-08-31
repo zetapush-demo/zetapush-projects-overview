@@ -38,8 +38,10 @@ function push_orphelin_issues(sprint, subtasks_list)
 {
 	const orphelin_issues = subtasks_list.filter(issue => !issue.subtasks && !issue.parent);
 
-	for (var i = 0; i < orphelin_issues.length; i++)
-		sprint.issues.push(orphelin_issues[i]);
+	sprint.issues.push({
+		summary: 'Other issues',
+		subtasks: orphelin_issues
+	});
 }
 
 function put_sub_issues(sprint)
@@ -53,6 +55,7 @@ function put_sub_issues(sprint)
 		sprint.issues[i].subtasks = subtasks;
 	}
 	push_orphelin_issues(sprint, subtasks_list);
+	sprint.issues.forEach(issue => issue.subtasks && issue.subtasks.forEach(x => delete x.parent));
 }
 
 function compute_sprint_timetracking(issues)
