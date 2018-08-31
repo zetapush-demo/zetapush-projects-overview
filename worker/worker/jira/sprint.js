@@ -34,20 +34,25 @@ async function get_board_list(project_list, config)
 	return boards_id;
 }
 
-async function put_sub_issues(issues, project_config, config)
+function push_orphelin_issues(sprint, subtasks_list)
 {
-	var res;
-	var subtasks = [];
+	const orphelin_issues = subtasks_list.filter(issue => !issue.subtasks && !issue.parent);
 
-	for (var i = 0; i < issues.length; i++) {
-		for (var j = 0; j < issues[i].subtasks.length; j++) {
-			res = await axios.get(issues[i].subtasks[j], config).catch(err => console.log(err));
-			if (res.data.fields.status.name !== project_config.close_state)
-				subtasks.push(res.data);
-		}
-		issues[i].subtasks = utils.filter_data(subtasks);
-		subtasks = [];
+	for (var i = 0; i < orphelin_issues.length; i++)
+		sprint.issues.push(orphelin_issues[i]);
+}
+
+function put_sub_issues(sprint)
+{
+	const subtasks_list = sprint.issues.filter(issue => !issue.subtasks);
+
+	sprint.issues = sprint.issues.filter(issue => issue.subtasks);
+	for (var i = 0; i < sprint.issues.length; i++) {
+		const subtasks = subtasks_list.filter(issue => issue.parent === sprint.issues[i].key);
+
+		sprint.issues[i].subtasks = subtasks;
 	}
+	push_orphelin_issues(sprint, subtasks_list);
 }
 
 async function get_current_sprint(project_config, board_id, config)
@@ -64,30 +69,8 @@ async function get_current_sprint(project_config, board_id, config)
 		end: utils.parse_time(res.endDate).slice(0, -9),
 		issues: await utils.get_issues_list(api_url, project_config, config)
 	};
-	const subtasks_list = sprint.issues.filter(issue => !issue.subtasks);
-
-	sprint.issues = sprint.issues.filter(issue => issue.subtasks);
-	console.log(sprint.issues.length, subtasks_list.length);
-
-
-	var sum = 0;
-	for (var i = 0; i < sprint.issues.length; i++) {
-//		for (j = 0; j < subtasks_list.length; j++)
-//			if (subtasks_list[i].parent
-		const subtasks = subtasks_list.filter(issue => {
-			if (issue.parent === undefined)
-				console.log(issue);
-//			console.log(issue.parent);
-			if (issue.parent === sprint.issues[i].key)
-				return issue;
-		});
-
-		sprint.issues[i].subtasks = [];//subtasks;
-		sum += subtasks.length;
-	}
-	console.log(sprint.issues.length, sum, sprint.issues.length + sum);
-	//await put_sub_issues(sprint.issues, project_config, config);
-	//sprint.time = utils.compute_sprint_timetracking(sprint.issues);
+	put_sub_issues(sprint);
+	sprint.time = utils.compute_sprint_timetracking(sprint.issues);
 	return sprint;
 }
 

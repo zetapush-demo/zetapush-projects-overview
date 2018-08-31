@@ -28,12 +28,14 @@ exports.compute_sprint_timetracking = function compute_timetracking(issues)
 	};
 
 	for (var i = 0; i < issues.length; i++) {
-		if (!issues.subtasks)
+		if (!issues[i].subtasks)
 			continue;
-		for (var j = 0; j < issues.subtasks.length; j++) {
-			sprint_time.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds;
-			sprint_time.remaining += issues[i].subtasks[j].timetracking.remainingEstimateSeconds;
-			sprint_time.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds;
+		for (var j = 0; j < issues[i].subtasks.length; j++) {
+			if (!issues[i].subtasks[j].timetracking)
+				continue;
+			sprint_time.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds || 0;
+			sprint_time.remaining += issues[i].subtasks[j].timetracking.remainingEstimateSeconds || 0;
+			sprint_time.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds || 0;
 		}
 	}
 	return sprint_time;
@@ -47,17 +49,17 @@ exports.filter_data = function filter_data(issues)
 			parent:		issues[i].fields.parent && issues[i].fields.parent.key,
 			priority:	extract_data(issues[i].fields.priority, ['id', 'iconUrl']),
 			issuetype:	extract_data(issues[i].fields.issuetype, ['name', 'iconUrl']),
-			status:		extract_data(issues[i].fields.status, ['name', 'id']),
+			status:		issues[i].fields.status.name,
 			summary:	issues[i].fields.summary,
 			created:	exports.parse_time(issues[i].fields.created),
 			description:	issues[i].fields.description,
-			reporter:	extract_data(issues[i].fields.reporter, ['displayName', 'emailAddress', 'avatarUrls[48x48]']),
-			assignee:	extract_data(issues[i].fields.assignee, ['displayName', 'emailAddress', 'avatarUrls[48x48]']),
-			subtasks:	issues[i].fields.subtasks.map(task => task.self),
+			reporter:	extract_data(issues[i].fields.reporter, ['displayName', 'avatarUrls[48x48]']),
+			assignee:	extract_data(issues[i].fields.assignee, ['displayName', 'avatarUrls[48x48]']),
+			subtasks:	issues[i].fields.subtasks,
 			timetracking:	extract_data(issues[i].fields.timetracking, ['originalEstimateSeconds', 'remainingEstimateSeconds', 'timeSpentSeconds'])
 		};
 		for (var tmp in issues[i])
-			if (!issues[i][tmp] || issues[i][tmp].length === 0)
+			if (!issues[i][tmp] || issues[i][tmp].length === 0 || (Object.keys(issues[i][tmp]).length === 0 && issues[i][tmp].constructor === Object))
 				delete issues[i][tmp];
 	}
 	return issues;
@@ -70,6 +72,8 @@ function extract_data(src, keys)
 	if (!src || !keys)
 		return null;
 	for (var i = 0; i < keys.length; i++) {
+		if (!src[keys[i]])
+			continue;
 		if (check_bracket(keys[i])) {
 			const obj = keys[i].substring(0, keys[i].indexOf('['));
 			const key = get_substring(keys[i], /[\[\]]/);
