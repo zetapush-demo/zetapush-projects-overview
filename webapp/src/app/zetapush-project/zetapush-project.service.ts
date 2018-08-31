@@ -45,17 +45,12 @@ interface Issues {
 	reporter: {
 		avatarUrls: string;
 		displayName: string;
-		emailAddress: string;
 	};
 	assignee?: {
 		avatarUrls: string;
 		displayName: string;
-		emailAddress: string;
 	};
-	status: {
-		name: string;
-		id: number;
-	};
+	status: string;
 	subtasks?: Issues[];
 	summary: string;
 	description?: string;
