@@ -50,14 +50,14 @@ function extract_data(src, keys)
 	if (!src || !keys)
 		return null;
 	for (var i = 0; i < keys.length; i++) {
-		if (!src[keys[i]])
-			continue;
 		if (check_bracket(keys[i])) {
 			const obj = keys[i].substring(0, keys[i].indexOf('['));
 			const key = get_substring(keys[i], /[\[\]]/);
 
 			dest[obj] = extract_data(src[obj], [key])[key];
-		} else
+		} else if (!src[keys[i]])
+			continue;
+		else
 			dest[keys[i]] = src[keys[i]];
 	}
 	return dest;
