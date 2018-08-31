@@ -9,6 +9,7 @@
 				<mat-expansion-panel-header>
 					<mat-panel-title>
 						<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
+						<b> {{issue.key}} </b>
 						<b> {{issue.status}} </b>
 						<i *ngIf="issue.subtasks"> {{issue.subtasks.length}} sous-tâches </i>
 						<h4> {{issue.summary}} </h4>
@@ -24,7 +25,8 @@
 						<mat-expansion-panel-header>
 							<mat-panel-title>
 								<img src="{{sub.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
-								<b> {{sub.status.name}} </b>
+								<b> {{issue.key}} </b>
+								<b> {{sub.status}} </b>
 								<h4> {{sub.summary}} </h4>
 								<!-- <img src="{{sub.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/> -->
 							</mat-panel-title>
