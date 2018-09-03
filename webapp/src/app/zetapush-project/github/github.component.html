@@ -1,7 +1,7 @@
 <div id="undefined_data" *ngIf="!data">
     mdr bah alors l'api, on se sent pas bien ?
 </div>
-<div *ngIf="data">
+<div *ngIf="data && assignees_list && label_list">
 
 	<mat-form-field>
 		<mat-select (selectionChange)="filter_data_by(
@@ -27,18 +27,16 @@
 		</mat-select>
 	</mat-form-field>
 
-	<p *ngIf="selected_label">You selected: {{selected_label}}</p>
-
 	<h1 id="repo"> {{ data.repo }} <i> {{ data.tag }} </i> </h1>
 
     <mat-tab-group>
 
 	<mat-tab label="Issues">
-	    <mat-accordion class="list">
-			<mat-expansion-panel class="item_list" *ngFor="let issue of data.issues">
+	    <mat-accordion>
+			<mat-expansion-panel *ngFor="let issue of data.issues">
 
 				<mat-expansion-panel-header>
-					<mat-panel-title class="item_name">
+					<mat-panel-title>
 						<a href="{{issue.url}}">
 							<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="wtf l'api est down">
 						</a>
@@ -74,11 +72,11 @@
 	</mat-tab>
 
 	<mat-tab label="Pull Request">
-		<mat-accordion class="list">
-			<mat-expansion-panel class="item_list" *ngFor="let pull_request of data.pull_request">
+		<mat-accordion>
+			<mat-expansion-panel *ngFor="let pull_request of data.pull_request">
 
 				<mat-expansion-panel-header>
-					<mat-panel-title class="item_name">
+					<mat-panel-title>
 						<a href="{{pull_request.url}}">
 							<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="wtf l'api est down">
 						</a>
