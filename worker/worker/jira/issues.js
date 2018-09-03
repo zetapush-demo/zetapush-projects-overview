@@ -4,7 +4,7 @@ module.exports = async function()
 {
 	var data = [];
 	const config = get_config('jira');
-	const projects_config = config.issues.project_list;
+	const projects_config = config.issues;
 
 	for (var i = 0; i < projects_config.length; i++) {
 		const api_url = `https://zetapush.atlassian.net/rest/api/2/search?jql=project=${projects_config[i].key}`;

@@ -110,7 +110,7 @@ module.exports = async function()
 {
 	var data = [];
 	const config = get_config('jira');
-	const project_list = config.sprint.project_list;
+	const project_list = config.sprint;
 	const boards_id = await get_board_list(project_list, config.http);
 
 	console.assert(boards_id.length === project_list.length);
