@@ -17,23 +17,19 @@
 					</mat-panel-title>
 				</mat-expansion-panel-header>
 				<p *ngIf="issue.description"> {{issue.description}} </p>
-				<div *ngIf="issue.reporter">
+				<div *ngIf="issue.reporter" class="reporter">
 					<img src="{{issue.reporter.avatarUrls}}" alt="wtf bah jira é casser" />
 					<span> Reporter: qu'est-ce que tu fous <b> {{issue.reporter.displayName}} </b> c'est à toi de livrer ça </span>
 				</div>
-				<mat-accordion>
-					<mat-expansion-panel *ngFor="let sub of issue.subtasks">
-						<mat-expansion-panel-header>
-							<mat-panel-title>
-								<img *ngIf="sub.issuetype" src="{{sub.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
-								<b> {{sub.key}} </b>
-								<b> {{sub.status}} </b>
-								<h4> {{sub.summary}} </h4>
-								<img *ngIf="sub.priority" src="{{sub.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/>
-							</mat-panel-title>
-						</mat-expansion-panel-header>
-					</mat-expansion-panel>
-				</mat-accordion>
+				<mat-card *ngFor="let sub of issue.subtasks">
+					<mat-card-content>
+						<img *ngIf="sub.issuetype" src="{{sub.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
+						<b> {{sub.key}} </b>
+						<b> {{sub.status}} </b>
+						<h4> {{sub.summary}} </h4>
+						<img *ngIf="sub.priority" src="{{sub.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/>
+					</mat-card-content>
+				</mat-card>
 
 			</mat-expansion-panel>
 		</mat-accordion>

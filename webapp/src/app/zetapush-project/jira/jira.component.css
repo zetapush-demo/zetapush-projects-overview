@@ -1,3 +1,14 @@
+.reporter {
+	background-color: #d1d5da;
+	color: #586069;
+	display: flex;
+	align-items: center;
+}
+
+.reporter * {
+	margin: 0.5vw;
+}
+
 mat-accordion {
 	padding: 20px;
 }
@@ -11,6 +22,21 @@ mat-expansion-panel {
 mat-panel-title * {
 	align-self: center;
 	margin: 0.5vw;
+}
+
+mat-card {
+	border: 1px solid #d1d5da;
+	border-radius: 4px;
+    margin-top: 20px;
+}
+
+mat-card-content * {
+	align-self: center;
+	margin: 0.5vw;
+}
+
+mat-card-content {
+    display: flex;
 }
 
 .sprint {
