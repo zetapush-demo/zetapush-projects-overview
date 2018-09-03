@@ -3,17 +3,17 @@
 </div>
 <mat-tab-group *ngIf="data">
 	<mat-tab *ngFor="let project of data.sprint" label="{{project.project}}">
-		<mat-accordion class="list">
-			<p> Sprint en cours : {{project.sprint}} <span *ngIf="project.start && project.end"> ({{project.start}} au {{project.end}}) </span> </p>
+		<mat-accordion>
+			<h2 class="sprint"> Sprint en cours : {{project.sprint}} <span *ngIf="project.start && project.end"> ({{project.start}} au {{project.end}}) </span> </h2>
 			<mat-expansion-panel *ngFor="let issue of project.issues">
 				<mat-expansion-panel-header>
 					<mat-panel-title>
 						<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
 						<b> {{issue.key}} </b>
 						<b> {{issue.status}} </b>
-						<i *ngIf="issue.subtasks"> {{issue.subtasks.length}} sous-tâches </i>
+						<i *ngIf="issue.subtasks.length"> {{issue.subtasks.length}} sous-tâches </i>
 						<h4> {{issue.summary}} </h4>
-						<!-- <img src="{{issue.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/> -->
+						<img *ngIf="issue.priority" src="{{issue.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/>
 					</mat-panel-title>
 				</mat-expansion-panel-header>
 				<p *ngIf="issue.description"> {{issue.description}} </p>
@@ -21,15 +21,15 @@
 					<img src="{{issue.reporter.avatarUrls}}" alt="wtf bah jira é casser" />
 					<span> Reporter: qu'est-ce que tu fous <b> {{issue.reporter.displayName}} </b> c'est à toi de livrer ça </span>
 				</div>
-				<mat-accordion class="list">
+				<mat-accordion>
 					<mat-expansion-panel *ngFor="let sub of issue.subtasks">
 						<mat-expansion-panel-header>
 							<mat-panel-title>
-								<img src="{{sub.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
-								<b> {{issue.key}} </b>
+								<img *ngIf="sub.issuetype" src="{{sub.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
+								<b> {{sub.key}} </b>
 								<b> {{sub.status}} </b>
 								<h4> {{sub.summary}} </h4>
-								<!-- <img src="{{sub.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/> -->
+								<img *ngIf="sub.priority" src="{{sub.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/>
 							</mat-panel-title>
 						</mat-expansion-panel-header>
 					</mat-expansion-panel>
