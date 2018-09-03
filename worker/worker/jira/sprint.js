@@ -23,7 +23,7 @@ async function get_board_list(project_list, config)
 				break;
 			}
 			if (j === res.length - 1) {
-				console.error('Something bad in .zetarc =>\njira: { \n\t sprint: {');
+				console.error(`Something bad in .zetarc, or this project can't have sprint =>\njira: { \n\t sprint: {`);
 				console.error(`\t\t project_list: [{\n\t\t\t name: "${project_list[i].name}"`);
 				console.error(`\t\t\t key: "${project_list[i].key}"`);
 				console.error(`\t\t\t close_state: "${project_list[i].close_state}"`);
@@ -82,10 +82,17 @@ function compute_sprint_timetracking(issues)
 
 async function get_current_sprint(project_config, board_id, config)
 {
-	var res = await axios.get(`${api}/board/${board_id}/sprint?state=active`, config)
-	const sprint_id = res.data.values[0].id;
-	const api_url = `${api}/sprint/${sprint_id}/issue?jql`;
+	var res = await axios.get(`${api}/board/${board_id}/sprint?state=active`, config);
+	var sprint_id;
+	var api_url;
 
+	if (!res.data.values.length)
+		return {
+			project: project_config.name,
+			sprint: 'There is no active sprint.'
+		};
+	sprint_id = res.data.values[0].id;
+	api_url = `${api}/sprint/${sprint_id}/issue?jql`;
 	res = res.data.values[0];
 	var sprint = {
 		project: project_config.name,
