@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { MatDialog } from '@angular/material';
 
 import { Github, ZetapushProjectService, DataStruct } from '../zetapush-project.service';
