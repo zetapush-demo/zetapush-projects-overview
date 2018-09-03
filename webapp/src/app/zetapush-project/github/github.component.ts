@@ -20,17 +20,25 @@ export class GithubComponent implements OnInit {
 	selected_label: string;
 	label_list: string[];
 
+	is_dialog_open: boolean = false;
+
 	constructor(
 		private zetapush_service: ZetapushProjectService,
 		private dialog: MatDialog
 	) { }
 
 	openDialog(popup_data, message) {
+		var dialog_ref;
+
 		popup_data.message = message;
-		this.dialog.open(GithubPopupComponent, {
-			width: '500px',
-			data: popup_data
-		});
+		if (!this.is_dialog_open) {
+			dialog_ref = this.dialog.open(GithubPopupComponent, {
+				width: '500px',
+				data: popup_data
+			});
+			this.is_dialog_open = true;
+			dialog_ref.afterClosed().subscribe(() => this.is_dialog_open = false);
+		}
 	}
 
 	popup_on_new_data(delay: number[]) {
