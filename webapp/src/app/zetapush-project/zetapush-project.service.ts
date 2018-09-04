@@ -5,34 +5,85 @@ import { Observable, Subscriber } from 'rxjs';
 import { SmartClient, ProxyService } from '@zetapush/client';
 import { Messaging } from '@zetapush/platform/lib';
 
+export interface DataStruct {
+	github: Github;
+	jenkins: Jenkins[];
+	jira: Jira;
+}
+
 export interface Github {
 	release: string;
 	repo: string;
-	issues: object[];
-	pull_request: object[];
+	issues: GithubIssue[];
+	pull_request: PullRequest[];
 }
 
 export interface Jenkins {
-	branchs: object[],
+	branchs: JenkinsBranch[],
 	name: string,
 	description: string,
 	url: string
 }
 
 export interface Jira {
-	issues: Issues[];
-	sprint: Sprint[];
+	issues: JiraIssue[];
+	sprint: JiraSprint[];
 }
 
-interface Sprint {
+interface GithubIssue {
+	assignees: {
+		login: string;
+		avatar_url: string;
+	}[];
+	body: string;
+	created: string;
+	id: number;
+	labels: {
+		color: string;
+		name: string;
+	}[];
+	message?: string;
+	name: string;
+	url: string;
+	user: {
+		avatar: string;
+		name: string;
+		url: string;
+	}
+}
+
+interface PullRequest extends GithubIssue {
+	base: string;
+	head: string;
+}
+
+interface JenkinsBranch {
+	branch_url: string;
+	name: string;
+	time: string;
+	last_build: {
+		description: string;
+		icon: string;
+		score: number;
+		url: string;
+		in_progress?: boolean;
+	}
+}
+
+interface JiraSprint {
 	start: string;
 	end: string;
 	project: string;
 	sprint: string;
-	issues: Issues[];
+	issues: JiraIssue[];
+	time: {
+		estimate: number;
+		remaining: number;
+		spent: number;
+	}
 }
 
-interface Issues {
+interface JiraIssue {
 	created: string;
 	issuetype: {
 		iconUrl: string;
@@ -51,15 +102,9 @@ interface Issues {
 		displayName: string;
 	};
 	status: string;
-	subtasks?: Issues[];
+	subtasks?: JiraIssue[];
 	summary: string;
 	description?: string;
-}
-
-export interface DataStruct {
-	github: Github;
-	jenkins: Jenkins[];
-	jira: Jira;
 }
 
 @Injectable({
