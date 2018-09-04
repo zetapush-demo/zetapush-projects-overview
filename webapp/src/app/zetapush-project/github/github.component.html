@@ -57,9 +57,10 @@
 					<p> opened this issue {{issue.created}} </p>
 				</div>
 
-				<ul *ngIf="issue.assignees">
-					<li class="assignees_user" *ngFor="let assignee of issue.assignees">
-						<p> {{assignee.login}} </p>
+				<ul class="item_info" *ngIf="issue.assignees">
+					Assignees :
+					<li *ngFor="let assignee of issue.assignees">
+						<p class="username"> {{assignee.login}} </p>
 						<img src="{{assignee.avatar_url}}" alt="">
 					</li>
 				</ul>
