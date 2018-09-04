@@ -4,19 +4,19 @@
 @import 'node_modules/github-markdown-css/';
 
 html {
-    font-family: sans-serif;
+	font-family: sans-serif;
 }
 
 ul {
-    list-style: none;
+	list-style: none;
 }
 
 a {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 #undefined_data {
