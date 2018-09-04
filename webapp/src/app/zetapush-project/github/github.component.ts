@@ -41,33 +41,27 @@ export class GithubComponent implements OnInit {
 		}
 	}
 
-	popup_on_new_data(delay: number[]) {
+	popup_on_new_data(delay: number) {
 		const now = new Date().valueOf();
 		var popup_data;
 
-		function get_last_data(tab, delay_id) {
+		function get_last_data(tab) {
 			if (!tab)
 				return null;
 			for (var i = 0; i < tab.length; i++) {
-				const gap = now - delay[delay_id];
+				const gap = now - delay;
 
 				if (new Date(tab[i].created).valueOf() > gap)
 					return tab[i];
 			}
 			return null;
 		}
-		for (var i = 0; i < delay.length; i++) {
-			popup_data = get_last_data(this.data.issues, i);
-			if (popup_data) {
-				this.openDialog(popup_data, 'New Issue !!');
-				break;
-			}
-			popup_data = get_last_data(this.data.pull_request, i);
-			if (popup_data) {
-				this.openDialog(popup_data, 'New Pull request !!');
-				break;
-			}
-		}
+		popup_data = get_last_data(this.data.issues);
+		if (popup_data)
+			return this.openDialog(popup_data, 'New Issue !!');
+		popup_data = get_last_data(this.data.pull_request);
+		if (popup_data)
+			return this.openDialog(popup_data, 'New Pull request !!');
 	}
 
 	filter_data_by(value, field, subfield) {
@@ -117,12 +111,7 @@ export class GithubComponent implements OnInit {
 			['login', 'name']
 		);
 		console.log(this.data);
-		this.popup_on_new_data([
-			1000 * 60 * 15, // 15 minutes
-			1000 * 60 * 60 * 24, // 24 hours
-			1000 * 60 * 60 * 24 * 3, // 3 days
-			1000 * 60 * 60 * 24 * 7 * 1 // 1 week
-		]);
+		this.popup_on_new_data(1000 * 60 * 60 * 24 * 7 * 1); // 1 week
 	}
 
 	async ngOnInit() {
