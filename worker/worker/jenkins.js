@@ -43,7 +43,7 @@ async function get_branch_array(branch_url_array)
 			new_branch.last_build = {
 				url: res.data.lastBuild.url,
 				icon: `${jenkins_assets}nobuilt_anime.gif`,
-				description: 'Build in progress',
+				description: 'Build in progress !!',
 				in_progress: true
 			};
 		} else {

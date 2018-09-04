@@ -19,7 +19,7 @@ export default class Api {
 		await this.sendMessage();
 		setInterval(async () => {
 			await this.sendMessage();
-		}, 900000);
+		}, 1000 * 60 * 15); // 15 minutes
 	}
 
 	constructor(
