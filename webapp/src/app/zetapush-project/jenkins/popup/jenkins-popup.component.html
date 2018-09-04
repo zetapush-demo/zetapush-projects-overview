@@ -1,16 +1,17 @@
 <div class="popup" *ngIf="data">
 	<h1 class="title" mat-dialog-title > New build !! </h1>
 	<h2>
-		<a href="{{data.branch_url}}">
-			{{data.name}}
+		<p> {{data.project}} </p>
+		<a href="{{data.branch.branch_url}}">
+			{{data.branch.name}}
 		</a>
 	</h2>
 	<div mat-dialog-content>
-		<p> At {{data.time}}</p>
-		<a *ngIf="data.last_build" href="{{data.last_build.url}}">
-			<img src="{{data.last_build.icon}}" alt="wtf bah l'image est plus sur le repo" />
+		<p> Start at : {{data.branch.time}}</p>
+		<a *ngIf="data.branch.last_build" href="{{data.branch.last_build.url}}">
+			<img src="{{data.branch.last_build.icon}}" alt="wtf bah l'image est plus sur le repo" />
 		</a>
-		<p> {{data.last_build.description}} </p>
+		<p> {{data.branch.last_build.description}} </p>
 	</div>
 
 	<div mat-dialog-actions>

@@ -13,7 +13,8 @@ import { JenkinsPopupComponent } from './popup/jenkins-popup.component';
 export class JenkinsComponent implements OnInit {
 
 	data: Jenkins[];
-	gap_refresh = 900000;
+
+	is_dialog_open: boolean = false;
 
 	constructor(
 		private zetapush_service: ZetapushProjectService,
@@ -21,24 +22,29 @@ export class JenkinsComponent implements OnInit {
 	) { }
 
 	openDialog(branch_new_build) {
-		this.dialog.open(JenkinsPopupComponent, {
-			width: '500px',
-			data: branch_new_build
-		});
+		var dialog_ref;
+
+		if (!this.is_dialog_open) {
+			dialog_ref = this.dialog.open(JenkinsPopupComponent, {
+				width: '500px',
+				data: branch_new_build
+			});
+			this.is_dialog_open = true;
+			dialog_ref.afterClosed().subscribe(() => this.is_dialog_open = false);
+		}
 	}
 
 	get_new_data(tab) {
-		const now = new Date().valueOf();
-
 		if (!tab)
 			return null;
 		for (let i = 0; i < tab.length; i++) {
-			for (let j = 0; j < tab[i].branchs.length; j++) {
-				const gap = now - tab[i].branchs[j].time;
-
-				if (gap < this.gap_refresh)
-					return tab[i].branchs[j];
-			}
+			console.log(tab[i]);
+			for (let j = 0; j < tab[i].branchs.length; j++)
+				if (tab[i].branchs[j].last_build.in_progress)
+					return {
+						project: tab[i].name,
+						branch: tab[i].branchs[j]
+					};
 		}
 		return null;
 	}
