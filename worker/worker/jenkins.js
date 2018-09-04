@@ -73,7 +73,7 @@ module.exports = async function()
 			name: res.data.name,
 			description: res.data.description,
 			url: res.data.url,
-			branchs: await get_branch_array(res.data.jobs)
+			branchs: await get_branch_array(res.data.jobs.filter(branch => branch.color !== 'disabled'))
 		});
 	}
 	return data;
