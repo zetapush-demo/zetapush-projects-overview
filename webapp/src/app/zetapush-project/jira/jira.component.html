@@ -5,10 +5,12 @@
 	<mat-tab *ngFor="let project of data.sprint" label="{{project.project}}">
 		<mat-accordion>
 			<h2 class="sprint"> Sprint en cours : {{project.sprint}} <span *ngIf="project.start && project.end"> ({{project.start}} au {{project.end}}) </span> </h2>
-			<mat-progress-bar *ngIf="project.time" mode="buffer"
-				[value]="project.time.spent / project.time.estimate * 100" [bufferValue]="project.time.remaining / project.time.estimate * 100">
-			</mat-progress-bar>
-
+			<div *ngIf="project.time" class="time">
+				<p id="n0"> Spent: <b>{{project.time.spent / 3600}}h</b> </p>
+				<p id="n1"> Remaining: <b>{{project.time.remaining / 3600}}h</b> </p>
+				<p id="n2"> Estimate: <b>{{project.time.estimate / 3600}}h</b> </p>
+			</div>
+			<mat-progress-bar *ngIf="project.time" mode="buffer" [value]="project.time.spent / project.time.estimate * 100" [bufferValue]="project.time.remaining / project.time.estimate * 100"> </mat-progress-bar>
 			<mat-expansion-panel *ngFor="let issue of project.issues">
 				<mat-expansion-panel-header>
 					<mat-panel-title>
