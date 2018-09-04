@@ -1,4 +1,5 @@
-import { Simple, Messaging, Groups, Injectable, BasicAuthenticatedUser } from '@zetapush/platform';
+import { Simple, Messaging, Groups, BasicAuthenticatedUser } from '@zetapush/platform-legacy';
+import { Injectable } from '@zetapush/core'
 import { github, jenkins, jira } from './api';
 
 const GROUP_ID = 'githubGroup';
