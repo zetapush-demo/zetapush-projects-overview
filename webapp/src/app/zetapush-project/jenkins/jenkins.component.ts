@@ -37,15 +37,13 @@ export class JenkinsComponent implements OnInit {
 	get_new_data(tab) {
 		if (!tab)
 			return null;
-		for (let i = 0; i < tab.length; i++) {
-			console.log(tab[i]);
+		for (let i = 0; i < tab.length; i++)
 			for (let j = 0; j < tab[i].branchs.length; j++)
 				if (tab[i].branchs[j].last_build.in_progress)
 					return {
 						project: tab[i].name,
 						branch: tab[i].branchs[j]
 					};
-		}
 		return null;
 	}
 
