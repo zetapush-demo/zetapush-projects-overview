@@ -7,6 +7,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule, MatButtonModule, MatSelectModule} from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AppComponent } from './app.component';
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
@@ -30,7 +31,8 @@ import { AppRoutingModule } from './app-routing.module';
 		MatDialogModule,
 		MatButtonModule,
 		MatSelectModule,
-		MatCardModule
+		MatCardModule,
+		MatProgressBarModule
 	],
 	declarations: [
 		AppComponent,

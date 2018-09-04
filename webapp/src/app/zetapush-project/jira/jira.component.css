@@ -27,7 +27,7 @@ mat-panel-title * {
 mat-card {
 	border: 1px solid #d1d5da;
 	border-radius: 4px;
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 mat-card-content * {
@@ -36,9 +36,15 @@ mat-card-content * {
 }
 
 mat-card-content {
-    display: flex;
+	display: flex;
+}
+
+mat-progress-bar {
+	height: 20px;
+	margin-top: 2vw;
+	margin-bottom: 2vw;
 }
 
 .sprint {
-    text-align: center;
+	text-align: center;
 }
