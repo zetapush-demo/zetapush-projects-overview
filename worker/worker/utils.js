@@ -65,7 +65,7 @@ function extract_data(src, keys)
 
 exports.get_issues_list = async function get_issues_list(api_url, project_config, config)
 {
-	var res = await axios.get(`${api_url}&maxResults=1`, config).catch((err) => {
+	var res = await axios.get(`${api_url}&maxResults=1`, config).catch(err => {
 		if (err.response.status != 200) {
 			console.error(err.response.status, err.response.statusText);
 			console.error(`The authenticated account is not allowed to see\n\t => ${project_config.name}`);

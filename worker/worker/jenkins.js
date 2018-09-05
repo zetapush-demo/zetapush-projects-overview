@@ -6,7 +6,7 @@ const jenkins_assets = 'https://raw.githubusercontent.com/jenkinsci/jenkins/mast
 async function get_repo_list(jenkins_url)
 {
 	var url = [];
-	const res = await axios.get(jenkins_url).catch((err) => {
+	const res = await axios.get(jenkins_url).catch(err => {
 		if (err.response.status != 200) {
 			console.log(err.response.status, err.response.statusText);
 			console.log(`Url : ${jenkins_url}`);

@@ -6,7 +6,7 @@ const api = 'https://zetapush.atlassian.net/rest/agile/1.0';
 async function get_board_list(project_list, config)
 {
 	var boards_id = [];
-	var res = await axios.get(`${api}/board/`, config).catch((err) => {
+	var res = await axios.get(`${api}/board/`, config).catch(err => {
 		if (err.response.status != 200) {
 			console.error(err.response.status, err.response.statusText);
 			console.error('Bad credentials => .zetarc =>');
