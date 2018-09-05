@@ -15,8 +15,8 @@
 			<mat-select (selectionChange)="filter_data_by(
 										repo_index.value,
 										filter_form[repo_index.value],
-										this.form_field_name.field,
-										this.form_field_name.subfield)"
+										form_field_name.field,
+										form_field_name.subfield)"
 						[(value)]="form.selected" [placeholder]="form.placeholder">
 				<mat-option> None </mat-option>
 				<mat-option *ngFor="let option of form.available_list" [value]="option"> {{option}}	</mat-option>

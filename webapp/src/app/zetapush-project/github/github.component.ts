@@ -76,8 +76,9 @@ export class GithubComponent implements OnInit {
 	}
 
 	filter_data_by(index, value, field, subfield) {
-		value = value.filter(x => x.selected); // please trust me
-		console.log(index, value, field, subfield);
+		console.log('avant', value);
+		value = value.map(x => x.selected); // please trust me
+		console.log('après', value);
 		console.log('');
 		this.data[index] = JSON.parse(JSON.stringify(this.data_save[index]));
 		if (value.length !== field.length || field.length !== subfield.length)
