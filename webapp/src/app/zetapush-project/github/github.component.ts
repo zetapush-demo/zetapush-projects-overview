@@ -23,18 +23,11 @@ export class GithubComponent implements OnInit {
 
 	repo_index: FormControl = new FormControl(0);
 
-	form_field = [
-		{
-			field: 'assignees',
-			subfield: 'login',
-			placeholder: 'Assignee'
-		},
-		{
-			field: 'labels',
-			subfield: 'name',
-			placeholder: 'Label'
-		},
-	];
+	form_field_name = {
+		field: ['assignees', 'labels'],
+		subfield: ['login', 'name'],
+		placeholder: ['Assignee', 'Label']
+	};
 	filter_form: FilterForm[][] = [];
 	is_dialog_open: boolean = false;
 
@@ -83,9 +76,13 @@ export class GithubComponent implements OnInit {
 	}
 
 	filter_data_by(index, value, field, subfield) {
+		value = value.filter(x => x.selected); // please trust me
+		console.log(index, value, field, subfield);
+		console.log('');
 		this.data[index] = JSON.parse(JSON.stringify(this.data_save[index]));
-		if (value.length != field.length || field.length != subfield.length)
+		if (value.length !== field.length || field.length !== subfield.length)
 			return;
+		console.log('normalement t là');
 		if (field.includes(undefined) || subfield.includes(undefined))
 			return;
 		function foo(elem) {
@@ -123,21 +120,21 @@ export class GithubComponent implements OnInit {
 		this.data_save = JSON.parse(JSON.stringify(this.data));
 		for (var i = 0; i < this.data.length; i++) {
 			this.filter_form[i] = [];
-			for (var j = 0; j < this.form_field.length; j++) {
+			for (var j = 0; j < this.form_field_name.field.length; j++) {
 				this.filter_form[i].push({
 					selected: '',
 					available_list: this.get_list(
 						this.data[i],
-						this.form_field[j].field,
-						this.form_field[j].subfield
+						this.form_field_name.field[j],
+						this.form_field_name.subfield[j]
 					),
-					placeholder: this.form_field[j].placeholder
+					placeholder: this.form_field_name.placeholder[j]
 				});
 				this.filter_data_by(
 					i,
-					this.filter_form[i][j].selected,
-					this.form_field[j].field,
-					this.form_field[j].subfield,
+					this.filter_form[i].filter(x => x.selected),
+					this.form_field_name.field,
+					this.form_field_name.subfield,
 				);
 			}
 		}
