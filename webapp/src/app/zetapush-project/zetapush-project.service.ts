@@ -6,7 +6,7 @@ import { SmartClient, ProxyService } from '@zetapush/client';
 import { Messaging } from '@zetapush/platform/lib';
 
 export interface DataStruct {
-	github: Github;
+	github: Github[];
 	jenkins: Jenkins[];
 	jira: Jira;
 }

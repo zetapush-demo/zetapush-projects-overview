@@ -62,7 +62,7 @@ function filter_data(issue)
 		base: issue.base && issue.base.ref
 	};
 	for (var tmp in issue)
-		if (!issue[tmp] || issue[tmp].length === 0 || (Object.keys(issue[tmp]).length === 0 && issue[tmp].constructor === Object))
+		if (!issue[tmp])
 			delete issue[tmp];
 	return issue;
 }
