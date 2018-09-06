@@ -2,14 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { FormControl } from '@angular/forms';
 
-import { ZetapushProjectService, Github, DataStruct, GithubIssue } from '../zetapush-project.service';
+import { ZetapushProjectService, Github, DataStruct, GithubIssue, FilterForm } from '../zetapush-project.service';
 import { GithubPopupComponent } from './popup/github-popup.component';
-
-interface FilterForm {
-	selected: string;
-	available_list: string[];
-	placeholder: string;
-};
 
 @Component({
 	selector: 'app-github',
@@ -80,17 +74,14 @@ export class GithubComponent implements OnInit {
 		const subfield: string[] = this.form_field_name.subfield;
 		const value: string[] = formvalue.map(x => x.selected); // please trust me
 
-		console.log(field, subfield, value);
 		this.data[index] = JSON.parse(JSON.stringify(this.data_save[index]));
 		if (value.length !== field.length || field.length !== subfield.length)
 			return;
-		if (field.includes(undefined) || subfield.includes(undefined))
+		if (field.includes(undefined) || subfield.includes(undefined) || value.every(x => !x))
 			return;
 		function foo(elem) {
 			var occurrence_counter = 0;
 
-			if (value.every(x => !x))
-				return elem;
 			for (var i = 0; i < value.length; i++) {
 				if (!value[i])
 					continue;
@@ -102,9 +93,7 @@ export class GithubComponent implements OnInit {
 				return elem;
 		};
 		this.data[index].issues = this.data[index].issues.filter(foo);
-		console.log('avant: ', this.data[index].pull_request);
 		this.data[index].pull_request = this.data[index].pull_request.filter(foo);
-		console.log('après: ', this.data[index].pull_request);
 	}
 
 	get_list(data: Github, field: string, subfield: string) {

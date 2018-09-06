@@ -52,6 +52,12 @@ export interface GithubIssue {
 	}
 }
 
+export interface FilterForm {
+	selected: string;
+	available_list: string[];
+	placeholder: string;
+};
+
 interface PullRequest extends GithubIssue {
 	base: string;
 	head: string;
