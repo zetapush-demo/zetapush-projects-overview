@@ -13,7 +13,7 @@ export class JenkinsComponent implements OnInit {
 
 	data: Jenkins[];
 
-	is_dialog_open: boolean = false;
+	is_dialog_open = false;
 
 	constructor(
 		private zetapush_service: ZetapushProjectService,
@@ -33,7 +33,7 @@ export class JenkinsComponent implements OnInit {
 		}
 	}
 
-	get_new_data(tab) {
+	get_new_data(tab: Jenkins[]) {
 		if (!tab)
 			return null;
 		for (let i = 0; i < tab.length; i++)
