@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { FormControl } from '@angular/forms';
 
-import { Github, ZetapushProjectService, DataStruct } from '../zetapush-project.service';
+import { ZetapushProjectService, Github, DataStruct, GithubIssue } from '../zetapush-project.service';
 import { GithubPopupComponent } from './popup/github-popup.component';
 
 interface FilterForm {
@@ -36,7 +36,7 @@ export class GithubComponent implements OnInit {
 		private dialog: MatDialog
 	) { }
 
-	openDialog(popup_data, message) {
+	openDialog(popup_data: GithubIssue, message: string) {
 		var dialog_ref;
 
 		popup_data.message = message;
@@ -51,10 +51,10 @@ export class GithubComponent implements OnInit {
 	}
 
 	popup_on_new_data(delay: number) {
-		const now = new Date().valueOf();
-		var popup_data;
+		const now: number = new Date().valueOf();
+		var popup_data: GithubIssue;
 
-		function get_last_data(tab) {
+		function get_last_data(tab: GithubIssue[]): GithubIssue {
 			if (!tab)
 				return null;
 			for (var i = 0; i < tab.length; i++) {

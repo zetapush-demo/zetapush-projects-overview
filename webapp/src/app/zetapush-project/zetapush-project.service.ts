@@ -30,7 +30,7 @@ export interface Jira {
 	sprint: JiraSprint[];
 }
 
-interface GithubIssue {
+export interface GithubIssue {
 	assignees: {
 		login: string;
 		avatar_url: string;
