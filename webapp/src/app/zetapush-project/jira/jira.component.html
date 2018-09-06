@@ -19,13 +19,14 @@
 						<b> {{issue.status}} </b>
 						<i *ngIf="issue.subtasks.length"> {{issue.subtasks.length}} sous-tâches </i>
 						<h4> {{issue.summary}} </h4>
+						<span class="priority_img"></span>
 						<img *ngIf="issue.priority" src="{{issue.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/>
 					</mat-panel-title>
 				</mat-expansion-panel-header>
 				<p *ngIf="issue.description"> {{issue.description}} </p>
 				<div *ngIf="issue.reporter" class="reporter">
 					<img src="{{issue.reporter.avatarUrls}}" alt="wtf bah jira é casser" />
-					<span> Reporter: qu'est-ce que tu fous <b> {{issue.reporter.displayName}} </b> c'est à toi de livrer ça </span>
+					<span> Reporter: <b> {{issue.reporter.displayName}} </b> </span>
 				</div>
 				<mat-card *ngFor="let sub of issue.subtasks">
 					<mat-card-content>
@@ -33,8 +34,10 @@
 						<b> {{sub.key}} </b>
 						<b> {{sub.status}} </b>
 						<h4> {{sub.summary}} </h4>
+						<span class="priority_img"></span>
 						<img *ngIf="sub.priority" src="{{sub.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/>
 					</mat-card-content>
+					<p *ngIf="sub.description"> {{sub.description}} </p>
 				</mat-card>
 
 			</mat-expansion-panel>

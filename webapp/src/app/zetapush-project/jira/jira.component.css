@@ -3,10 +3,11 @@
 	color: #586069;
 	display: flex;
 	align-items: center;
+	border-radius: 4px;
 }
 
 .reporter * {
-	margin: 0.5vw;
+	margin: 1vw;
 }
 
 mat-accordion {
@@ -43,6 +44,10 @@ mat-progress-bar {
 	height: 20px;
 	margin-top: 80px;
 	margin-bottom: 40px;
+}
+
+.priority_img {
+	flex: 1 1 auto;
 }
 
 .sprint {
