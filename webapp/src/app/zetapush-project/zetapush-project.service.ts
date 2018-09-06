@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { Observable, Subscriber } from 'rxjs';
 
 import { SmartClient, ProxyService } from '@zetapush/client';

@@ -23,7 +23,7 @@ export class GithubComponent implements OnInit {
 		placeholder: ['Assignee', 'Label']
 	};
 	filter_form: FilterForm[][] = [];
-	is_dialog_open: boolean = false;
+	is_dialog_open = false;
 
 	constructor(
 		private zetapush_service: ZetapushProjectService,
