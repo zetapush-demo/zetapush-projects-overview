@@ -57,7 +57,7 @@ export interface FilterForm {
 	placeholder: string;
 };
 
-interface PullRequest extends GithubIssue {
+export interface PullRequest extends GithubIssue {
 	base: string;
 	head: string;
 }

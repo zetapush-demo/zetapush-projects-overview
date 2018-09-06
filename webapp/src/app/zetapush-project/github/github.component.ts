@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { FormControl } from '@angular/forms';
 
-import { ZetapushProjectService, Github, DataStruct, GithubIssue, FilterForm } from '../zetapush-project.service';
+import { ZetapushProjectService, Github, DataStruct, GithubIssue, FilterForm, PullRequest } from '../zetapush-project.service';
 import { GithubPopupComponent } from './popup/github-popup.component';
 
 @Component({
@@ -18,9 +18,9 @@ export class GithubComponent implements OnInit {
 	repo_index: FormControl = new FormControl(0);
 
 	form_field_name = {
-		field: ['assignees', 'labels'],
-		subfield: ['login', 'name'],
-		placeholder: ['Assignee', 'Label']
+		field: ['assignees', 'labels', 'user'],
+		subfield: ['login', 'name', 'name'],
+		placeholder: ['Assignee', 'Label', 'User']
 	};
 	filter_form: FilterForm[][] = [];
 	is_dialog_open = false;
@@ -85,8 +85,12 @@ export class GithubComponent implements OnInit {
 			for (var i = 0; i < value.length; i++) {
 				if (!value[i])
 					continue;
-				for (var j = 0; j < elem[field[i]].length; j++)
-					if (elem[field[i]][j][subfield[i]] === value[i])
+				if (elem[field[i]].constructor === Array)
+					for (var j = 0; j < elem[field[i]].length; j++)
+						if (elem[field[i]][j][subfield[i]] === value[i])
+							occurrence_counter++;
+				else
+					if (elem[field[i]][subfield[i]] === value[i])
 						occurrence_counter++;
 			}
 			if (occurrence_counter === value.filter(x => x).length)
@@ -100,7 +104,10 @@ export class GithubComponent implements OnInit {
 		if (!data)
 			return null;
 		function filter(tmp) {
-			return tmp.filter(x => x[field].length).map(x => x[field].map(y => y[subfield])).join().split(',').filter((x, y, z) => z.indexOf(x) === y && x.length);
+			if (tmp.every(x => x[field].constructor === Array))
+				return tmp.filter(x => x[field].length).map(x => x[field].map(y => y[subfield])).join().split(',').filter((x, y, z) => z.indexOf(x) === y && x.length);
+			else
+				return tmp.map(x => x[field][subfield]).join().split(',').filter((x, y, z) => z.indexOf(x) === y && x.length);
 		}
 		return filter(data.issues).concat(filter(data.pull_request)).filter((x, y, z) => z.indexOf(x) === y);
 	}
