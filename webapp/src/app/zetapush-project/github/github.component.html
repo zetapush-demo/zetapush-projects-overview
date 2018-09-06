@@ -6,17 +6,12 @@
 
 	<mat-tab *ngFor="let repo of data" [label]="repo.repo">
 
-		<p> repo_index: {{repo_index.value}}</p>
-
 		<h1 id="repo"> {{ repo.repo }} <i> {{ repo.tag }} </i> </h1>
 
 		<mat-form-field *ngFor="let form of filter_form[repo_index.value]; let index = index">
-			<p> index: {{index}}</p>
 			<mat-select (selectionChange)="filter_data_by(
 										repo_index.value,
-										filter_form[repo_index.value],
-										form_field_name.field,
-										form_field_name.subfield)"
+										filter_form[repo_index.value])"
 						[(value)]="form.selected" [placeholder]="form.placeholder">
 				<mat-option> None </mat-option>
 				<mat-option *ngFor="let option of form.available_list" [value]="option"> {{option}}	</mat-option>
@@ -67,7 +62,7 @@
 
 			<mat-tab label="Pull Request">
 				<mat-accordion>
-					<mat-expansion-panel *ngFor="let pull_request of data.pull_request">
+					<mat-expansion-panel *ngFor="let pull_request of repo.pull_request">
 
 						<mat-expansion-panel-header>
 							<mat-panel-title>

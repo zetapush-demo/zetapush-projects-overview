@@ -75,15 +75,15 @@ export class GithubComponent implements OnInit {
 		}
 	}
 
-	filter_data_by(index, value, field, subfield) {
-		console.log('avant', value);
-		value = value.map(x => x.selected); // please trust me
-		console.log('après', value);
-		console.log('');
+	filter_data_by(index: number, formvalue: FilterForm[]) {
+		const field: string[] = this.form_field_name.field;
+		const subfield: string[] = this.form_field_name.subfield;
+		const value: string[] = formvalue.map(x => x.selected); // please trust me
+
+		console.log(field, subfield, value);
 		this.data[index] = JSON.parse(JSON.stringify(this.data_save[index]));
 		if (value.length !== field.length || field.length !== subfield.length)
 			return;
-		console.log('normalement t là');
 		if (field.includes(undefined) || subfield.includes(undefined))
 			return;
 		function foo(elem) {
@@ -102,14 +102,16 @@ export class GithubComponent implements OnInit {
 				return elem;
 		};
 		this.data[index].issues = this.data[index].issues.filter(foo);
+		console.log('avant: ', this.data[index].pull_request);
 		this.data[index].pull_request = this.data[index].pull_request.filter(foo);
+		console.log('après: ', this.data[index].pull_request);
 	}
 
-	get_list(data, field, subfield) {
+	get_list(data: Github, field: string, subfield: string) {
 		if (!data)
 			return null;
 		function filter(tmp) {
-			return tmp.filter(x => x[field].length).map(x => x[field].map(y => y[subfield])).join().split(',').filter((x, y, z) => z.indexOf(x) === y);
+			return tmp.filter(x => x[field].length).map(x => x[field].map(y => y[subfield])).join().split(',').filter((x, y, z) => z.indexOf(x) === y && x.length);
 		}
 		return filter(data.issues).concat(filter(data.pull_request)).filter((x, y, z) => z.indexOf(x) === y);
 	}
@@ -131,16 +133,9 @@ export class GithubComponent implements OnInit {
 					),
 					placeholder: this.form_field_name.placeholder[j]
 				});
-				this.filter_data_by(
-					i,
-					this.filter_form[i].filter(x => x.selected),
-					this.form_field_name.field,
-					this.form_field_name.subfield,
-				);
 			}
 		}
 		console.log(this.data);
-		console.log(this.filter_form);
 		this.popup_on_new_data(1000 * 60 * 60 * 24 * 7 * 1); // 1 week
 	}
 
