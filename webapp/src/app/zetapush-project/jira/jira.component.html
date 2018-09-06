@@ -2,45 +2,57 @@
 	mdr bah alors l'api, on se sent pas bien ?
 </div>
 <mat-tab-group *ngIf="data">
-	<mat-tab *ngFor="let project of data.sprint" label="{{project.project}}">
-		<mat-accordion>
-			<h2 class="sprint"> Sprint en cours : {{project.sprint}} <span *ngIf="project.start && project.end"> ({{project.start}} au {{project.end}}) </span> </h2>
-			<div *ngIf="project.time" class="time">
-				<p id="n0"> Spent: <b>{{project.time.spent / 3600}}h</b> </p>
-				<p id="n1"> Remaining: <b>{{project.time.remaining / 3600}}h</b> </p>
-				<p id="n2"> Estimate: <b>{{project.time.estimate / 3600}}h</b> </p>
-			</div>
-			<mat-progress-bar *ngIf="project.time" mode="buffer" [value]="project.time.spent / project.time.estimate * 100" [bufferValue]="project.time.remaining / project.time.estimate * 100"> </mat-progress-bar>
-			<mat-expansion-panel *ngFor="let issue of project.issues">
-				<mat-expansion-panel-header>
-					<mat-panel-title>
-						<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
-						<b> {{issue.key}} </b>
-						<b> {{issue.status}} </b>
-						<i *ngIf="issue.subtasks.length"> {{issue.subtasks.length}} sous-tâches </i>
-						<h4> {{issue.summary}} </h4>
-						<span class="priority_img"></span>
-						<img *ngIf="issue.priority" src="{{issue.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/>
-					</mat-panel-title>
-				</mat-expansion-panel-header>
-				<p *ngIf="issue.description"> {{issue.description}} </p>
-				<div *ngIf="issue.reporter" class="reporter">
-					<img src="{{issue.reporter.avatarUrls}}" alt="wtf bah jira é casser" />
-					<span> Reporter: <b> {{issue.reporter.displayName}} </b> </span>
-				</div>
-				<mat-card *ngFor="let sub of issue.subtasks">
-					<mat-card-content>
-						<img *ngIf="sub.issuetype" src="{{sub.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
-						<b> {{sub.key}} </b>
-						<b> {{sub.status}} </b>
-						<h4> {{sub.summary}} </h4>
-						<span class="priority_img"></span>
-						<img *ngIf="sub.priority" src="{{sub.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/>
-					</mat-card-content>
-					<p *ngIf="sub.description"> {{sub.description}} </p>
-				</mat-card>
+	<mat-tab *ngFor="let project of data.project" label="{{project.project}}">
 
-			</mat-expansion-panel>
-		</mat-accordion>
+		<mat-tab-group *ngIf="project">
+			<mat-tab *ngFor="let sprint of project.sprint" label="{{sprint.sprint}}">
+
+				<mat-accordion>
+					<h2 class="sprint"> {{sprint.sprint}} <i *ngIf="sprint.start && sprint.end"> ({{sprint.start}} au {{sprint.end}}) </i> </h2>
+					<div *ngIf="sprint.time" class="time">
+						<p id="n0"> Spent: <b>{{sprint.time.spent / 3600}}h</b> </p>
+						<p id="n1"> Remaining: <b>{{sprint.time.remaining / 3600}}h</b> </p>
+						<p id="n2"> Estimate: <b>{{sprint.time.estimate / 3600}}h</b> </p>
+					</div>
+					<mat-progress-bar *ngIf="sprint.time" mode="buffer" [value]="sprint.time.spent / sprint.time.estimate * 100" [bufferValue]="sprint.time.remaining / sprint.time.estimate * 100"> </mat-progress-bar>
+					<mat-expansion-panel *ngFor="let issue of sprint.issues">
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
+								<b> {{issue.key}} </b>
+								<b> {{issue.status}} </b>
+								<i *ngIf="issue.subtasks.length"> {{issue.subtasks.length}} sous-tâches </i>
+								<h4> {{issue.summary}} </h4>
+								<span class="priority_img"></span>
+								<img *ngIf="issue.priority" src="{{issue.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/>
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						<p *ngIf="issue.description"> {{issue.description}} </p>
+						<div *ngIf="issue.reporter" class="reporter">
+							<img src="{{issue.reporter.avatarUrls}}" alt="wtf bah jira é casser" />
+							<span> Reporter: <b> {{issue.reporter.displayName}} </b> </span>
+						</div>
+						<mat-card *ngFor="let sub of issue.subtasks">
+							<mat-card-content>
+								<div *ngIf="sub.reporter" class="reporter">
+									<img src="{{sub.reporter.avatarUrls}}" alt="wtf bah jira é casser" />
+									<span> Reporter: <b> {{sub.reporter.displayName}} </b> </span>
+								</div>
+								<img *ngIf="sub.issuetype" src="{{sub.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
+								<b> {{sub.key}} </b>
+								<b> {{sub.status}} </b>
+								<h4> {{sub.summary}} </h4>
+								<span class="priority_img"></span>
+								<img *ngIf="sub.priority" src="{{sub.priority.iconUrl}}" alt="wtf bah jira é casser" width="30"/>
+								</mat-card-content>
+							<p *ngIf="sub.description"> {{sub.description}} </p>
+						</mat-card>
+
+					</mat-expansion-panel>
+				</mat-accordion>
+
+			</mat-tab>
+		</mat-tab-group>
+
 	</mat-tab>
 </mat-tab-group>

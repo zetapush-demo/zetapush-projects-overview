@@ -49,7 +49,7 @@ export default class Api {
 			jenkins: await jenkins(),
 			jira: {
 				issues: await jira.issues(),
-				sprint: await jira.sprint(),
+				project: await jira.sprint(),
 			}
 		}
 		this.messaging.send({

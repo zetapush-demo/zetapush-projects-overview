@@ -26,7 +26,10 @@ export interface Jenkins {
 
 export interface Jira {
 	issues: JiraIssue[];
-	sprint: JiraSprint[];
+	project: {
+		project: string;
+		sprint: JiraSprint[]
+	}[];
 }
 
 export interface GithubIssue {
@@ -78,7 +81,6 @@ interface JenkinsBranch {
 interface JiraSprint {
 	start: string;
 	end: string;
-	project: string;
 	sprint: string;
 	issues: JiraIssue[];
 	time: {
