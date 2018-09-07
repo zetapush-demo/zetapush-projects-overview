@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { FormControl } from '@angular/forms';
 
-import { ZetapushProjectService, Github, DataStruct, GithubIssue, FilterForm, PullRequest } from '../zetapush-project.service';
+import { ZetapushProjectService, Github, DataStruct, GithubIssue, FilterForm } from '../zetapush-project.service';
 import { GithubPopupComponent } from './popup/github-popup.component';
 
 @Component({
