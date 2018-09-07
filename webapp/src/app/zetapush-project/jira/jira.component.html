@@ -15,6 +15,7 @@
 						<p id="n2"> Estimate: <b>{{sprint.time.estimate / 3600}}h</b> </p>
 					</div>
 					<mat-progress-bar *ngIf="sprint.time" mode="buffer" [value]="sprint.time.spent / sprint.time.estimate * 100" [bufferValue]="sprint.time.remaining / sprint.time.estimate * 100"> </mat-progress-bar>
+					<p *ngIf="!sprint.issues.length"> This sprint is empty, you should closed it. </p>
 					<mat-expansion-panel *ngFor="let issue of sprint.issues">
 						<mat-expansion-panel-header>
 							<mat-panel-title>

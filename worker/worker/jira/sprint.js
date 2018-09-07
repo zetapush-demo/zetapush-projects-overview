@@ -38,10 +38,11 @@ function push_orphelin_issues(sprint, subtasks_list)
 {
 	const orphelin_issues = subtasks_list.filter(issue => !issue.subtasks && !issue.parent);
 
-	sprint.issues.push({
-		summary: 'Other issues',
-		subtasks: orphelin_issues
-	});
+	if (sprint.issues.length || orphelin_issues.length)
+		sprint.issues.push({
+			summary: 'Other issues',
+			subtasks: orphelin_issues
+		});
 }
 
 function put_sub_issues(sprint)
