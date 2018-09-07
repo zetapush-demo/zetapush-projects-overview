@@ -19,7 +19,7 @@ export class JiraComponent implements OnInit {
 		if (!tmp)
 			return;
 		this.data = tmp;
-		console.log(tmp.project);
+		console.log(tmp);
 	}
 
 	async ngOnInit() {

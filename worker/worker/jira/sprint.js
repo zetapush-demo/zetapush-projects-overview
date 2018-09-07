@@ -88,10 +88,7 @@ async function get_current_sprint(project_config, board_id, config)
 	var data = [];
 
 	if (!res.data.values.length)
-		return {
-			project: project_config.name,
-			sprint: `Il n'y a pas de sprint en cours !`
-		};
+		return [];
 	res = res.data.values;
 	for (var i = 0; i < res.length; i++) {
 		api_url = `${api}/sprint/${res[i].id}/issue?jql`;
