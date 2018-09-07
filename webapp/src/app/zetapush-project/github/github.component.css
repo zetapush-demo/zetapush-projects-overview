@@ -54,6 +54,10 @@ mat-panel-title h2 i {
 	font-weight: 600;
 }
 
+.item_info li {
+	display: contents;
+}
+
 .body {
 	padding: 15px;
 }

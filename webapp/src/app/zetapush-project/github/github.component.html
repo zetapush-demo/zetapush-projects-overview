@@ -48,8 +48,8 @@
 						<ul class="item_info" *ngIf="issue.assignees && issue.assignees.length">
 							Assignees :
 							<li *ngFor="let assignee of issue.assignees">
-								<p class="username"> {{assignee.login}} </p>
 								<img src="{{assignee.avatar_url}}" alt="">
+								<p class="username"> {{assignee.login}} </p>
 							</li>
 						</ul>
 						<div class="body">
