@@ -85,11 +85,11 @@ export class GithubComponent implements OnInit {
 			for (var i = 0; i < value.length; i++) {
 				if (!value[i])
 					continue;
-				if (elem[field[i]].constructor === Array)
+				if (elem[field[i]].constructor === Array) {
 					for (var j = 0; j < elem[field[i]].length; j++)
 						if (elem[field[i]][j][subfield[i]] === value[i])
 							occurrence_counter++;
-				else
+				} else
 					if (elem[field[i]][subfield[i]] === value[i])
 						occurrence_counter++;
 			}
@@ -105,7 +105,7 @@ export class GithubComponent implements OnInit {
 			return null;
 		function filter(tmp) {
 			if (tmp.every(x => x[field].constructor === Array))
-				return tmp.filter(x => x[field].length).map(x => x[field].map(y => y[subfield])).join().split(',').filter((x, y, z) => z.indexOf(x) === y && x.length);
+				return tmp.map(x => x[field].map(y => y[subfield])).join().split(',').filter((x, y, z) => z.indexOf(x) === y && x.length);
 			else
 				return tmp.map(x => x[field][subfield]).join().split(',').filter((x, y, z) => z.indexOf(x) === y && x.length);
 		}
