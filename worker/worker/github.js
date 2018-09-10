@@ -25,8 +25,8 @@ async function get_repo_list(repos, config)
 				break;
 			}
 			if (j === res.data.length - 1) {
-				console.error(`Something bad in .zetarc, or this github repository doesn't exist =>\github: { \n\t sprint: {`);
-				console.error(`\t\t repos: [{\n\t\t\t name: "${repos[i]}"`);
+				console.error(`Something bad in .zetarc, or this github repository doesn't exist =>\n\tgithub:`);
+				console.error(`\t\trepos: [{\n\t\t\tname: "${JSON.stringify(repos[i])}"`);
 				console.error(`\t\t}]\n\t}\n}`);
 				process.exit(1);
 			}
