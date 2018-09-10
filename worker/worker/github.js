@@ -96,7 +96,7 @@ module.exports = async function()
 			get_tag(config, repo_list[i].name, repo_list[i].issues_nb),
 			get_data(config, 'issues', repo_list[i].name, repo_list[i].issues_nb),
 			get_data(config, 'pulls', repo_list[i].name, repo_list[i].issues_nb)
-		]).then((res) => {
+		]).then(res => {
 			data.push({
 				repo: repo_list[i].name,
 				tag: res[0],

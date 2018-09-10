@@ -17,7 +17,7 @@ var exports = module.exports = {
 		exports.jenkins(),
 		exports.jira.issues(),
 		exports.jira.sprint()
-	]).then((res) => {
+	]).then(res => {
 		data.github = res[0];
 		data.jenkins = res[1];
 		data.jira = {
