@@ -47,6 +47,21 @@
 							"extractLicenses": true,
 							"vendorChunk": false,
 							"buildOptimizer": true
+						},
+						"dev": {
+							"fileReplacements": [{
+								"replace": "src/environments/environment.ts",
+								"with": "src/environments/environment.dev.ts"
+							}],
+							"optimization": false,
+							"outputHashing": "none",
+							"sourceMap": false,
+							"extractCss": false,
+							"namedChunks": false,
+							"aot": false,
+							"extractLicenses": false,
+							"vendorChunk": false,
+							"buildOptimizer": false
 						}
 					}
 				},
@@ -58,6 +73,10 @@
 					"configurations": {
 						"production": {
 							"browserTarget": "zetapush-projects-overview:build:production"
+						},
+						"dev": {
+							"hmr": true,
+							"browserTarget": "zetapush-projects-overview:build:dev"
 						}
 					}
 				},

@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^6.1.7",
     "@angular/platform-browser-dynamic": "^6.1.7",
     "@angular/router": "^6.1.7",
+    "@angularclass/hmr": "^2.1.3",
     "@zetapush/client": "^0.31.4",
     "@zetapush/cometd": "^0.31.4",
     "@zetapush/platform": "^0.31.4",
