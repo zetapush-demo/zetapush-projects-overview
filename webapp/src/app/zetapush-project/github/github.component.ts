@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { FormControl } from '@angular/forms';
 
-import { ZetapushProjectService, Github, DataStruct, GithubIssue, FilterForm } from '../zetapush-project.service';
+import { ZetapushProjectService, Github, DataStruct, FilterForm } from '../zetapush-project.service';
 import { GithubPopupComponent } from './popup/github-popup.component';
 
 @Component({
@@ -30,10 +30,11 @@ export class GithubComponent implements OnInit {
 		private dialog: MatDialog
 	) { }
 
-	openDialog(popup_data: GithubIssue, message: string) {
+	openDialog(popup_data, repo_name: string, message: string) {
 		var dialog_ref;
 
 		popup_data.message = message;
+		popup_data.repo_name = repo_name;
 		if (!this.is_dialog_open) {
 			dialog_ref = this.dialog.open(GithubPopupComponent, {
 				width: '500px',
@@ -45,27 +46,27 @@ export class GithubComponent implements OnInit {
 	}
 
 	popup_on_new_data(delay: number) {
-		const now: number = new Date().valueOf();
-		var popup_data: GithubIssue;
+		var now = new Date().valueOf();
+		const gap = now - delay;
 
-		function get_last_data(tab: GithubIssue[]): GithubIssue {
-			if (!tab)
+		function get_last_data(tab: any[]) {
+			if (!tab || !tab.length)
 				return null;
-			for (var i = 0; i < tab.length; i++) {
-				const gap = now - delay;
+			const last_timestamp = Math.max(...tab.map(x => new Date(x.created).valueOf()));
 
-				if (new Date(tab[i].created).valueOf() > gap)
-					return tab[i];
-			}
-			return null;
+			return tab.find(x => {
+				const current_timestamp = new Date(x.created).valueOf();
+
+				if (current_timestamp === last_timestamp && current_timestamp > gap)
+					return x;
+			});
 		}
 		for (var i = 0; i < this.data.length; i++) {
-			popup_data = get_last_data(this.data[i].issues);
+			const concat_data = this.data[i].issues.concat(this.data[i].pull_request);
+			const popup_data = get_last_data(concat_data);
+
 			if (popup_data)
-				return this.openDialog(popup_data, 'New Issue !!');
-			popup_data = get_last_data(this.data[i].pull_request);
-			if (popup_data)
-				return this.openDialog(popup_data, 'New Pull request !!');
+				return this.openDialog(popup_data, this.data[i].repo, popup_data.base ? 'New Pull request !!' : 'New Issue !!');
 		}
 	}
 

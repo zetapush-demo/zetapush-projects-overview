@@ -44,7 +44,6 @@ export interface GithubIssue {
 		color: string;
 		name: string;
 	}[];
-	message?: string;
 	name: string;
 	url: string;
 	user: {
