@@ -21,12 +21,44 @@ a:hover {
 
 #undefined_data {
 	position: absolute;
-	text-align: center;
-	top: 50%;
+	left: calc(50% - 50px);
+	top: calc(50% - 50px);
 	width: 100%;
-	font-size: 2em;
 }
 
 mat-tab-body div {
 	overflow: hidden !important;
+}
+
+mat-accordion {
+	padding: 20px;
+}
+
+mat-expansion-panel {
+	border: 1px solid #d1d5da;
+	border-radius: 4px;
+	margin-bottom: 20px !important;
+}
+
+mat-panel-title * {
+	align-self: center;
+	margin: 0.5vw;
+}
+
+mat-panel-title h2 {
+	font-weight: 400;
+	font-size: 24px;
+}
+
+::-webkit-scrollbar {
+	width: 0.6rem;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #dddddd;
+}
+
+::-webkit-scrollbar-button{
+	background-color: #eeeeee;
+	max-height: 5px;
 }

@@ -10,21 +10,6 @@
 	margin: 1vw;
 }
 
-mat-accordion {
-	padding: 20px;
-}
-
-mat-expansion-panel {
-	border: 1px solid #d1d5da;
-	border-radius: 4px;
-	margin-bottom: 20px;
-}
-
-mat-panel-title * {
-	align-self: center;
-	margin: 0.5vw;
-}
-
 mat-card {
 	border: 1px solid #d1d5da;
 	border-radius: 4px;
