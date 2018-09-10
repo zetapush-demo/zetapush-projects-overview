@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { parse_time, get_config, get_issues_list } = require('../utils');
+const { parse_time, get_config, get_issues_list } = require('./utils');
 
 const api = 'https://zetapush.atlassian.net/rest/agile/1.0';
 
@@ -34,15 +34,16 @@ async function get_board_list(project_list, config)
 	return boards_id;
 }
 
-function push_orphelin_issues(sprint, subtasks_list)
+function push_orphan_issues(sprint, subtasks_list)
 {
-	const orphelin_issues = subtasks_list.filter(issue => !issue.subtasks && !issue.parent);
+	const orphan_issues = subtasks_list.filter(issue => !issue.subtasks && !issue.parent);
 
-	if (sprint.issues.length || orphelin_issues.length)
+	if (orphan_issues.length) {
 		sprint.issues.push({
 			summary: 'Other issues',
-			subtasks: orphelin_issues
+			subtasks: orphan_issues
 		});
+	}
 }
 
 function put_sub_issues(sprint)
@@ -55,7 +56,7 @@ function put_sub_issues(sprint)
 
 		sprint.issues[i].subtasks = subtasks;
 	}
-	push_orphelin_issues(sprint, subtasks_list);
+	push_orphan_issues(sprint, subtasks_list);
 	sprint.issues.forEach(issue => issue.subtasks && issue.subtasks.forEach(x => delete x.parent));
 }
 

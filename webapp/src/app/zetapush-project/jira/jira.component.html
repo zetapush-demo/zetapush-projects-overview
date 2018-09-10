@@ -1,6 +1,6 @@
 <mat-spinner id="undefined_data" *ngIf="!data"></mat-spinner>
 <mat-tab-group *ngIf="data">
-	<mat-tab *ngFor="let project of data.project" label="{{project.project}}">
+	<mat-tab *ngFor="let project of data" label="{{project.project}}">
 
 		<h2 *ngIf="!project.sprint.length" class="sprint"> There is no current sprint. </h2>
 		<mat-tab-group>

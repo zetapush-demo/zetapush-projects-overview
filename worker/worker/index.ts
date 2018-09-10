@@ -1,6 +1,6 @@
 import { Simple, Messaging, Groups, BasicAuthenticatedUser } from '@zetapush/platform-legacy';
 import { Injectable } from '@zetapush/core'
-import { github, jenkins, jira } from './api';
+import { github, jenkins, sprint } from './api';
 
 const GROUP_ID = 'githubGroup';
 
@@ -47,10 +47,7 @@ export default class Api {
 		const message = {
 			github: await github(),
 			jenkins: await jenkins(),
-			jira: {
-				issues: await jira.issues(),
-				project: await jira.sprint(),
-			}
+			jira: await sprint()
 		}
 		this.messaging.send({
 			target: users,

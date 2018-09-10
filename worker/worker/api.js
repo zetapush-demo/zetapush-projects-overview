@@ -1,8 +1,5 @@
 var exports = module.exports = {
-	jira: {
-		issues: require('./jira/issues'),
-		sprint: require('./jira/sprint')
-	},
+	sprint: require('./sprint'),
 	github: require('./github'),
 	jenkins: require('./jenkins')
 };
@@ -15,15 +12,11 @@ var exports = module.exports = {
 	await Promise.all([
 		exports.github(),
 		exports.jenkins(),
-		exports.jira.issues(),
-		exports.jira.sprint()
+		exports.sprint()
 	]).then(res => {
 		data.github = res[0];
 		data.jenkins = res[1];
-		data.jira = {
-			issues: res[2],
-			sprint: res[3]
-		}
+		data.sprint = res[2];
 	});
 	console.log(data);
 })();
