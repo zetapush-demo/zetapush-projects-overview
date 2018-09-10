@@ -1,6 +1,4 @@
-<div id="undefined_data" *ngIf="!data || !data.length">
-	mdr bah alors l'api, on se sent pas bien ?
-</div>
+<mat-spinner id="undefined_data" *ngIf="!data || !data.length"> </mat-spinner>
 <mat-tab-group *ngIf="data && data.length">
 	<mat-tab *ngFor="let app of data" label="{{app.name}}">
 		<a href="{{app.url}}">

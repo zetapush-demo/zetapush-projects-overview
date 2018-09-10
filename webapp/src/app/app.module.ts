@@ -8,6 +8,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule, MatButtonModule, MatSelectModule} from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppComponent } from './app.component';
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
@@ -32,7 +33,8 @@ import { AppRoutingModule } from './app-routing.module';
 		MatButtonModule,
 		MatSelectModule,
 		MatCardModule,
-		MatProgressBarModule
+		MatProgressBarModule,
+		MatProgressSpinnerModule
 	],
 	declarations: [
 		AppComponent,

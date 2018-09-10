@@ -1,6 +1,4 @@
-<div id="undefined_data" *ngIf="!data">
-	mdr bah alors l'api, on se sent pas bien ?
-</div>
+<mat-spinner id="undefined_data" *ngIf="!data"></mat-spinner>
 <mat-tab-group *ngIf="data">
 	<mat-tab *ngFor="let project of data.project" label="{{project.project}}">
 
