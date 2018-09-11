@@ -3,74 +3,87 @@ const { parse_time, get_config } = require('./utils');
 
 const jenkins_assets = 'https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/48x48/';
 
-const blue_url = 'http://ci.zpush.io:28702/blue/organizations/jenkins/ZetaPush%20Github%2F'
+const blue_url = 'blue/organizations/jenkins/ZetaPush%20Github%2F';
+const api_url = 'blue/rest/organizations/jenkins/pipelines/ZetaPush%20Github/pipelines/';
 
 async function get_repo_urls(jenkins_url)
 {
-	var url = [];
-	const res = await axios.get(jenkins_url).catch(err => {
+	const res = await axios.get(`${jenkins_url}/${api_url}`).catch(err => {
 		if (err.response.status != 200) {
 			console.log(err.response.status, err.response.statusText);
-			console.log(`Url : ${jenkins_url}`);
 			process.exit(1);
 		}
 	});
 
-	for (var i = 0; i < res.data.jobs.length; i++)
-		url.push(`${res.data.jobs[i].url}api/json`);
-	return url;
+	return res.data.map(x => `${jenkins_url}${x._links.self.href}`);
 }
 
-async function get_timestamp_last_build(build_url)
+async function get_branch_flow(url)
 {
-	const res = await axios.get(`${build_url}api/json`);
+	const res = await axios.get(url);
 
-	return parse_time(res.data.timestamp);
+	return res.data.map(x => {
+		return {
+			name: x.displayName,
+			result: x.result,
+			state: x.state,
+			duration: x.durationInMillis
+		}
+	});
 }
 
-async function get_branch_array(branch_url_array, project_name)
+async function get_branch_array(local_url, branch_url, project_name)
 {
 	var branchs = [];
+	const res = await axios.get(branch_url);
 
-	if (!branch_url_array)
-		return null;
-	for (var i = 0; i < branch_url_array.length; i++) {
-		const res = await axios.get(`${branch_url_array[i].url}api/json`);
+	for (var i = 0; i < res.data.length; i++) {
+		// console.log(res.data[i]);
 
-		var new_branch = {
-			name: res.data.displayName,
-			time: await get_timestamp_last_build(res.data.lastBuild.url),
-			url: `${blue_url}${project_name}/detail/${res.data.displayName}/${res.data.lastBuild.number}/pipeline`
+		var branch = {
+			name: res.data[i].name,
+			score: res.data[i].weatherScore,
+			time: {
+				end: new Date(res.data[i].latestRun.endTime).toUTCString(),
+				duration: new Date(res.data[i].latestRun.durationInMillis).toISOString().substr(11, 8),
+			},
+			url: `${local_url}/${blue_url}${project_name}/detail/${res.data[i].name}/${res.data[i].latestRun.id}`,
+			result: res.data[i].latestRun.result,
+			state: res.data[i].latestRun.state,
+			runSummary: res.data[i].latestRun.runSummary,
+			github_url: res.data[i].branch.url,
+			flow: await get_branch_flow(`${branch_url}/${res.data[i].name}/runs/${res.data[i].latestRun.id}/nodes`)
 		};
-		if (!res.data.healthReport.length) {
-			new_branch.icon = `${jenkins_assets}nobuilt_anime.gif`;
-			new_branch.description = 'Build in progress !!';
-			new_branch.in_progress = true;
-		} else {
-			new_branch.icon = `${jenkins_assets}${res.data.healthReport[0].iconUrl}`;
-			new_branch.description = res.data.healthReport[0].description;
-			new_branch.score = res.data.healthReport[0].score;
-		}
-		branchs.push(new_branch);
+		console.log(branch);
+		// process.exit(1);
+		// if (!res.data[i].healthReport.length) {
+		// 	branch.icon = `${jenkins_assets}nobuilt_anime.gif`;
+		// 	branch.description = 'Build in progress !!';
+		// 	branch.in_progress = true;
+		// } else {
+		// 	branch.icon = `${jenkins_assets}${res.data[i].healthReport[0].iconUrl}`;
+		// 	branch.description = res.data[i].healthReport[0].description;
+		// 	branch.score = res.data[i].healthReport[0].score;
+		// }
+		branchs.push(branch);
 	}
+	process.exit(1);
 	return branchs;
 }
 
 module.exports = async function()
 {
 	var data = [];
-	const config = get_config('jenkins');
-	const jenkins_url = `${config.url}api/json`;
-	const repo_urls = await get_repo_urls(jenkins_url);
+	const jenkins = get_config('jenkins');
+	const repo_urls = await get_repo_urls(jenkins.url);
 
 	for (var i = 0; i < repo_urls.length; i++) {
 		var res = await axios.get(repo_urls[i]);
 
 		data.push({
 			name: res.data.name,
-			description: res.data.description,
-			url: `${blue_url}${res.data.name}/activity`,
-			branchs: await get_branch_array(res.data.jobs.filter(branch => branch.color !== 'disabled'), res.data.name)
+			url: `${jenkins.url}/${blue_url}${res.data.name}/activity`,
+			branchs: await get_branch_array(jenkins.url, `${repo_urls[i]}branches`, res.data.name)
 		});
 	}
 	return data;
