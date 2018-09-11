@@ -33,7 +33,7 @@ async function get_branch_array(branch_url_array, project_name)
 	var branchs = [];
 
 	if (!branch_url_array)
-		return '0 branch';
+		return null;
 	for (var i = 0; i < branch_url_array.length; i++) {
 		const res = await axios.get(`${branch_url_array[i].url}api/json`);
 
