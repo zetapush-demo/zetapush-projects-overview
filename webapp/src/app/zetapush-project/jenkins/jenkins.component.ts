@@ -37,11 +37,11 @@ export class JenkinsComponent implements OnInit {
 		if (!tab)
 			return null;
 		for (var i = 0; i < tab.length; i++)
-			for (var j = 0; j < tab[i].branchs.length; j++)
-				if (tab[i].branchs[j].in_progress)
+			for (var j = 0; j < tab[i].branches.length; j++)
+				if (tab[i].branches[j].in_progress)
 					return {
 						project: tab[i].name,
-						branch: tab[i].branchs[j]
+						branch: tab[i].branches[j]
 					};
 		return null;
 	}

@@ -2,23 +2,65 @@
 <mat-tab-group *ngIf="data && data.length">
 	<mat-tab *ngFor="let app of data" label="{{app.name}}">
 		<a href="{{app.url}}">
-			<img src="http://ci.zpush.io:28702/static/45740046/images/headshot.png" alt="wtf jean-kins é casser" />
+			<img src="https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/jenkins-redbg.png" alt="wtf bah l'image est plus sur le repo" />
 		</a>
 		<h2> {{app.description}} </h2>
-		<mat-accordion class="list">
-			<mat-expansion-panel *ngFor="let branch of app.branchs">
-				<mat-expansion-panel-header>
-					<mat-panel-title>
-						<a href="{{branch.url}}">
-							<img src="{{branch.icon}}" alt="wtf bah l'image n'est plus sur le repo" />
-						</a>
-						<h2> {{branch.name}}</h2>
-						<i *ngIf="branch.in_progress"> BUILD IN PROGRESS</i>
-					</mat-panel-title>
-				</mat-expansion-panel-header>
-				<p> {{branch.description}} </p>
-				<p> Time: {{branch.time}}</p>
-			</mat-expansion-panel>
-		</mat-accordion>
+		<mat-tab-group>
+			<mat-tab label="Branches">
+				<mat-accordion class="list">
+					<mat-expansion-panel *ngFor="let branch of app.branches">
+
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								<!-- <a href="{{branch.url}}">
+									<img src="{{branch.icon}}" alt="bad icon url" />
+								</a> -->
+								<span> {{branch.result}} </span>
+								<h2> {{branch.name}}</h2>
+								<i *ngIf="branch.in_progress"> BUILD IN PROGRESS</i>
+								<span style="flex: 1 1 auto;"> </span>
+								<p> {{branch.time.duration}} - {{branch.time.end}}</p>
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+
+						<div *ngFor="let flow of branch.flow; let index = index">
+							<p> {{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms </p>
+						</div>
+						<p> {{branch.description}} </p>
+						<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
+
+					</mat-expansion-panel>
+				</mat-accordion>
+			</mat-tab>
+
+			<mat-tab label="Pull Request">
+				<mat-accordion class="list">
+					<mat-expansion-panel *ngFor="let branch of app.pull_request">
+
+						<mat-expansion-panel-header>
+								<mat-panel-title>
+									<!-- <a href="{{branch.url}}">
+										<img src="{{branch.icon}}" alt="bad icon url" />
+									</a> -->
+									<span> {{branch.state}} : {{branch.result}} </span>
+									<h2> {{branch.name}} : {{branch.pull_request.title}}</h2>
+									<i *ngIf="branch.in_progress"> BUILD IN PROGRESS</i>
+									<p> {{branch.pull_request.author}} </p>
+									<span style="flex: 1 1 auto;"> </span>
+									<p> {{branch.time.duration}} - {{branch.time.end}}</p>
+								</mat-panel-title>
+							</mat-expansion-panel-header>
+
+							<div *ngFor="let flow of branch.flow; let index = index">
+								<p> {{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms </p>
+							</div>
+							<p> {{branch.description}} </p>
+							<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
+
+					</mat-expansion-panel>
+				</mat-accordion>
+			</mat-tab>
+
+		</mat-tab-group>
 	</mat-tab>
 </mat-tab-group>

@@ -41,7 +41,7 @@ async function get_branch_array(local_url, branch_url, project_name)
 		// console.log(res.data[i]);
 
 		var branch = {
-			name: res.data[i].name,
+			name: res.data[i].displayName,
 			score: res.data[i].weatherScore,
 			time: {
 				end: parse_time(res.data[i].latestRun.endTime),
@@ -64,6 +64,9 @@ async function get_branch_array(local_url, branch_url, project_name)
 		// 	branch.description = res.data[i].healthReport[0].description;
 		// 	branch.score = res.data[i].healthReport[0].score;
 		// }
+		for (var tmp in branch)
+			if (!branch[tmp])
+				delete branch[tmp];
 		branches.push(branch);
 	}
 	return branches;
@@ -76,12 +79,15 @@ module.exports = async function()
 	const repo_urls = await get_repo_urls(jenkins.url);
 
 	for (var i = 0; i < repo_urls.length; i++) {
-		var res = await axios.get(repo_urls[i]);
+		const res = await axios.get(repo_urls[i]);
+		const branches = await get_branch_array(jenkins.url, `${repo_urls[i]}branches`, res.data.name);
 
 		data.push({
-			name: res.data.name,
+			name: res.data.displayName,
+			description: res.data.fullDisplayName,
 			url: `${jenkins.url}/${blue_url}${res.data.name}/activity`,
-			branches: await get_branch_array(jenkins.url, `${repo_urls[i]}branches`, res.data.name)
+			branches: branches.filter(x => !x.pull_request),
+			pull_request: branches.filter(x => x.pull_request)
 		});
 	}
 	return data;

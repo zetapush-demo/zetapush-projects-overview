@@ -18,7 +18,7 @@ export interface Github {
 }
 
 export interface Jenkins {
-	branchs: JenkinsBranch[],
+	branches: JenkinsBranch[],
 	name: string,
 	description: string,
 	url: string
