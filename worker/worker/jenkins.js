@@ -3,6 +3,8 @@ const { parse_time, get_config } = require('./utils');
 
 const jenkins_assets = 'https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/48x48/';
 
+const blue_url = 'http://ci.zpush.io:28702/blue/organizations/jenkins/ZetaPush%20Github%2F'
+
 async function get_repo_urls(jenkins_url)
 {
 	var url = [];
@@ -72,7 +74,7 @@ module.exports = async function()
 		data.push({
 			name: res.data.name,
 			description: res.data.description,
-			url: `http://ci.zpush.io:28702/blue/organizations/jenkins/ZetaPush%20Github%2F${res.data.name}/branches`,
+			url: `${blue_url}${res.data.name}/activity`,
 			branchs: await get_branch_array(res.data.jobs.filter(branch => branch.color !== 'disabled'))
 		});
 	}
