@@ -34,7 +34,7 @@ async function get_branch_flow(url)
 
 async function get_branch_array(local_url, branch_url, project_name)
 {
-	var branchs = [];
+	var branches = [];
 	const res = await axios.get(branch_url);
 
 	for (var i = 0; i < res.data.length; i++) {
@@ -44,7 +44,7 @@ async function get_branch_array(local_url, branch_url, project_name)
 			name: res.data[i].name,
 			score: res.data[i].weatherScore,
 			time: {
-				end: new Date(res.data[i].latestRun.endTime).toUTCString(),
+				end: parse_time(res.data[i].latestRun.endTime),
 				duration: new Date(res.data[i].latestRun.durationInMillis).toISOString().substr(11, 8),
 			},
 			url: `${local_url}/${blue_url}${project_name}/detail/${res.data[i].name}/${res.data[i].latestRun.id}`,
@@ -52,10 +52,9 @@ async function get_branch_array(local_url, branch_url, project_name)
 			state: res.data[i].latestRun.state,
 			runSummary: res.data[i].latestRun.runSummary,
 			github_url: res.data[i].branch.url,
+			pull_request: res.data[i].pullRequest,
 			flow: await get_branch_flow(`${branch_url}/${res.data[i].name}/runs/${res.data[i].latestRun.id}/nodes`)
 		};
-		console.log(branch);
-		// process.exit(1);
 		// if (!res.data[i].healthReport.length) {
 		// 	branch.icon = `${jenkins_assets}nobuilt_anime.gif`;
 		// 	branch.description = 'Build in progress !!';
@@ -65,10 +64,9 @@ async function get_branch_array(local_url, branch_url, project_name)
 		// 	branch.description = res.data[i].healthReport[0].description;
 		// 	branch.score = res.data[i].healthReport[0].score;
 		// }
-		branchs.push(branch);
+		branches.push(branch);
 	}
-	process.exit(1);
-	return branchs;
+	return branches;
 }
 
 module.exports = async function()
@@ -83,7 +81,7 @@ module.exports = async function()
 		data.push({
 			name: res.data.name,
 			url: `${jenkins.url}/${blue_url}${res.data.name}/activity`,
-			branchs: await get_branch_array(jenkins.url, `${repo_urls[i]}branches`, res.data.name)
+			branches: await get_branch_array(jenkins.url, `${repo_urls[i]}branches`, res.data.name)
 		});
 	}
 	return data;
