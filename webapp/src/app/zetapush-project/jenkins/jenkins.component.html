@@ -9,15 +9,14 @@
 			<mat-expansion-panel *ngFor="let branch of app.branchs">
 				<mat-expansion-panel-header>
 					<mat-panel-title>
-						<a *ngIf="branch.last_build" href="{{branch.last_build.url}}">
-							<img src="{{branch.last_build.icon}}" alt="wtf bah l'image est plus sur le repo" />
+						<a href="{{branch.url}}">
+							<img src="{{branch.icon}}" alt="wtf bah l'image n'est plus sur le repo" />
 						</a>
 						<h2> {{branch.name}}</h2>
-						<i *ngIf="branch.last_build.in_progress"> BUILD IN PROGRESS</i>
+						<i *ngIf="branch.in_progress"> BUILD IN PROGRESS</i>
 					</mat-panel-title>
 				</mat-expansion-panel-header>
-				<a href="{{branch.branch_url}}"> Go to Branch </a>
-				<p> {{branch.last_build.description}} </p>
+				<p> {{branch.description}} </p>
 				<p> Time: {{branch.time}}</p>
 			</mat-expansion-panel>
 		</mat-accordion>

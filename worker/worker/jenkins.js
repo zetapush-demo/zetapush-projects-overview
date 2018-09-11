@@ -28,7 +28,7 @@ async function get_timestamp_last_build(build_url)
 	return parse_time(res.data.timestamp);
 }
 
-async function get_branch_array(branch_url_array)
+async function get_branch_array(branch_url_array, project_name)
 {
 	var branchs = [];
 
@@ -36,25 +36,20 @@ async function get_branch_array(branch_url_array)
 		return '0 branch';
 	for (var i = 0; i < branch_url_array.length; i++) {
 		const res = await axios.get(`${branch_url_array[i].url}api/json`);
-		var new_branch = {};
 
-		new_branch.name = res.data.displayName;
-		new_branch.time = await get_timestamp_last_build(res.data.lastBuild.url);
-		new_branch.branch_url = res.data.url;
+		var new_branch = {
+			name: res.data.displayName,
+			time: await get_timestamp_last_build(res.data.lastBuild.url),
+			url: `${blue_url}${project_name}/detail/${res.data.displayName}/${res.data.lastBuild.number}/pipeline`
+		};
 		if (!res.data.healthReport.length) {
-			new_branch.last_build = {
-				url: res.data.lastBuild.url,
-				icon: `${jenkins_assets}nobuilt_anime.gif`,
-				description: 'Build in progress !!',
-				in_progress: true
-			};
+			new_branch.icon = `${jenkins_assets}nobuilt_anime.gif`;
+			new_branch.description = 'Build in progress !!';
+			new_branch.in_progress = true;
 		} else {
-			new_branch.last_build = {
-				description: res.data.healthReport[0].description,
-				url: res.data.lastBuild.url,
-				icon: `${jenkins_assets}${res.data.healthReport[0].iconUrl}`,
-				score: res.data.healthReport[0].score,
-			};
+			new_branch.icon = `${jenkins_assets}${res.data.healthReport[0].iconUrl}`;
+			new_branch.description = res.data.healthReport[0].description;
+			new_branch.score = res.data.healthReport[0].score;
 		}
 		branchs.push(new_branch);
 	}
@@ -75,7 +70,7 @@ module.exports = async function()
 			name: res.data.name,
 			description: res.data.description,
 			url: `${blue_url}${res.data.name}/activity`,
-			branchs: await get_branch_array(res.data.jobs.filter(branch => branch.color !== 'disabled'))
+			branchs: await get_branch_array(res.data.jobs.filter(branch => branch.color !== 'disabled'), res.data.name)
 		});
 	}
 	return data;

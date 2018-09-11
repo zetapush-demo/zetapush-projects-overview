@@ -65,16 +65,13 @@ export interface PullRequest extends GithubIssue {
 }
 
 interface JenkinsBranch {
-	branch_url: string;
+	description: string;
+	icon: string;
 	name: string;
+	score?: number;
+	in_progress?: boolean;
+	url: string;
 	time: string;
-	last_build: {
-		description: string;
-		icon: string;
-		score: number;
-		url: string;
-		in_progress?: boolean;
-	}
 }
 
 interface JiraSprint {
