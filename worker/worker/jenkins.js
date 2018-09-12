@@ -51,6 +51,7 @@ async function get_branch_array(local_url, branch_url, project_name)
 			score: res.data[i].weatherScore,
 			time: {
 				end: parse_time(res.data[i].latestRun.endTime),
+				start: parse_time(res.data[i].latestRun.startTime),
 				duration: new Date(res.data[i].latestRun.durationInMillis).toISOString().substr(11, 8),
 			},
 			url: `${local_url}/${blue_url}${project_name}/detail/${res.data[i].name}/${res.data[i].latestRun.id}`,

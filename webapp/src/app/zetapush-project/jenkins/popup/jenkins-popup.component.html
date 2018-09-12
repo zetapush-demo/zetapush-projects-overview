@@ -2,19 +2,21 @@
 	<h1 class="title" mat-dialog-title > New build !! </h1>
 	<h2>
 		<p> {{data.project}} </p>
-		<a href="{{data.branch.branch_url}}">
+		<a href="{{data.branch.url}}">
 			{{data.branch.name}}
 		</a>
 	</h2>
 	<div mat-dialog-content>
-		<p> Start at : {{data.branch.time}}</p>
-		<a *ngIf="data.branch.last_build" href="{{data.branch.last_build.url}}">
-			<img src="{{data.branch.last_build.icon}}" alt="wtf bah l'image est plus sur le repo" />
+		<p> {{data.branch.time.start}}</p>
+		<a href="{{data.branch.url}}">
+			<img src="{{data.branch.icon}}" alt="wtf bah l'image est plus sur le repo" />
 		</a>
-		<p> {{data.branch.last_build.description}} </p>
+		<div *ngFor="let flow of data.branch.flow; let index = index">
+			<p> {{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms </p>
+		</div>
 	</div>
 
 	<div mat-dialog-actions>
-		<button mat-button (click)="closeDialog()">OK</button>
+		<button mat-button (click)="closeDialog()"> OK </button>
 	</div>
 </div>
