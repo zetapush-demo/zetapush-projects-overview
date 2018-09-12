@@ -15,9 +15,9 @@
 								<a href="{{branch.url}}">
 									<img src="{{branch.icon}}" alt="wtf bah l'image est plus sur le repo" />
 								</a>
-								<span> {{branch.result}} </span>
-								<h2> {{branch.name}} {{branch.score}} </h2>
+								<i *ngIf="!branch.in_progress"> {{branch.result}} </i>
 								<i *ngIf="branch.in_progress"> BUILD IN PROGRESS</i>
+								<h2> {{branch.name}} {{branch.score}} </h2>
 								<span style="flex: 1 1 auto;"> </span>
 								<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
 							</mat-panel-title>

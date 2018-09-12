@@ -40,35 +40,48 @@ function get_icon_url(score)
 	return `${jenkins_assets}health-80plus.png`;
 }
 
+function get_icon_by_flow(flow)
+{
+	var last = 0;
+	var length = flow.filter(x => x.result !== 'SKIPPED').length;
+
+	while (last < flow.length && flow[last].result === 'SUCCESS')
+		last++;
+	return get_icon_url((last / length) * 100);
+}
+
 async function get_branch_array(local_url, branch_url, project_name)
 {
 	var branches = [];
 	const res = await axios.get(branch_url);
 
 	for (var i = 0; i < res.data.length; i++) {
+		const name = res.data[i].name;
+		const id = res.data[i].latestRun.id;
+		const flow = await get_branch_flow(`${branch_url}/${name}/runs/${id}/nodes`);
+
 		var branch = {
 			name: res.data[i].displayName,
-			score: res.data[i].weatherScore,
 			time: {
-				end: parse_time(res.data[i].latestRun.endTime),
 				start: parse_time(res.data[i].latestRun.startTime),
+				end: parse_time(res.data[i].latestRun.endTime),
 				duration: new Date(res.data[i].latestRun.durationInMillis).toISOString().substr(11, 8),
 			},
-			url: `${local_url}/${blue_url}${project_name}/detail/${res.data[i].name}/${res.data[i].latestRun.id}`,
-			icon: get_icon_url(res.data[i].weatherScore),
+			url: `${local_url}/${blue_url}${project_name}/detail/${name}/${id}`,
+			icon: flow && get_icon_by_flow(flow),
 			result: res.data[i].latestRun.result,
 			state: res.data[i].latestRun.state,
 			runSummary: res.data[i].latestRun.runSummary,
 			github_url: res.data[i].branch.url,
 			pull_request: res.data[i].pullRequest,
-			flow: await get_branch_flow(`${branch_url}/${res.data[i].name}/runs/${res.data[i].latestRun.id}/nodes`)
+			flow: flow
 		};
 		if (branch.state === 'RUNNING') {
 			branch.icon = `${jenkins_assets}nobuilt_anime.gif`;
 			branch.in_progress = true;
 		}
 		for (var tmp in branch)
-			if (typeof branch[tmp] === 'undefined')
+			if (!branch[tmp])
 				delete branch[tmp];
 		branches.push(branch);
 	}
