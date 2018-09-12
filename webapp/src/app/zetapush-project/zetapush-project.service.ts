@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
 
 import { SmartClient, ProxyService } from '@zetapush/client';
-import { Messaging } from '@zetapush/platform/lib';
+import { Messaging } from '@zetapush/platform-legacy/lib/';
 
 export interface DataStruct {
 	github: Github[];
@@ -120,7 +120,7 @@ export class ZetapushProjectService {
 		platformUrl: 'https://celtia.zetapush.com/zbo/pub/business',
 		appName: 'oJjkJCOM'
 	});
-	api: ProxyService = this.client.createProxyTaskService();
+	api: ProxyService = this.client.createProxyTaskService({});
 	data: DataStruct;
 	obs: Observable<DataStruct>;
 	observer: Subscriber<DataStruct>;
