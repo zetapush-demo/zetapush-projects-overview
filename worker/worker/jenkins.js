@@ -43,7 +43,7 @@ function get_icon_url(score)
 function get_icon_by_flow(flow)
 {
 	var last = 0;
-	var length = flow.filter(x => x.result !== 'SKIPPED').length;
+	var length = flow.filter(x => x.state !== 'SKIPPED').length;
 
 	while (last < flow.length && flow[last].result === 'SUCCESS')
 		last++;
@@ -77,6 +77,7 @@ async function get_branch_array(local_url, branch_url, project_name)
 			flow: flow
 		};
 		if (branch.state === 'RUNNING') {
+			branch.result = 'RUNNING';
 			branch.icon = `${jenkins_assets}nobuilt_anime.gif`;
 			branch.in_progress = true;
 		}

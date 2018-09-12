@@ -6,6 +6,7 @@
 		</a>
 		<h2> {{app.description}} </h2>
 		<mat-tab-group>
+
 			<mat-tab label="Branches">
 				<mat-accordion class="list">
 					<mat-expansion-panel *ngFor="let branch of app.branches">
@@ -15,9 +16,8 @@
 								<a href="{{branch.url}}">
 									<img src="{{branch.icon}}" alt="wtf bah l'image est plus sur le repo" />
 								</a>
-								<i *ngIf="!branch.in_progress"> {{branch.result}} </i>
-								<i *ngIf="branch.in_progress"> BUILD IN PROGRESS</i>
-								<h2> {{branch.name}} {{branch.score}} </h2>
+								<i> {{branch.result}} </i>
+								<h2> {{branch.name}} </h2>
 								<span style="flex: 1 1 auto;"> </span>
 								<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
 							</mat-panel-title>
@@ -26,7 +26,6 @@
 						<div *ngFor="let flow of branch.flow; let index = index">
 							<p> {{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms </p>
 						</div>
-						<p> {{branch.description}} </p>
 						<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
 
 					</mat-expansion-panel>
@@ -42,19 +41,17 @@
 									<a href="{{branch.url}}">
 										<img src="{{branch.icon}}" alt="wtf bah l'image est plus sur le repo" />
 									</a>
-									<span> {{branch.result}} </span>
+									<i> {{branch.result}} </i>
 									<h2> {{branch.name}} : {{branch.pull_request.title}}</h2>
-									<i *ngIf="branch.in_progress"> BUILD IN PROGRESS</i>
 									<p> {{branch.pull_request.author}} </p>
 									<span style="flex: 1 1 auto;"> </span>
-									<p> {{branch.time.duration}} - {{branch.time.end}}</p>
+									<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
 								</mat-panel-title>
 							</mat-expansion-panel-header>
 
 							<div *ngFor="let flow of branch.flow; let index = index">
 								<p> {{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms </p>
 							</div>
-							<p> {{branch.description}} </p>
 							<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
 
 					</mat-expansion-panel>
