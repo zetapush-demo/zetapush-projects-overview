@@ -42,7 +42,7 @@ export default class Api {
 		});
 		const users = group.users || [];
 
-		console.log('Start sending: ', new Date().toString().split(' ').slice(0, -2).join(' '));
+		console.log('Start sending: ', new Date().toLocaleString());
 
 		const message = {
 			github: await github(),
@@ -53,7 +53,7 @@ export default class Api {
 			target: users,
 			data: message
 		});
-		console.log('Done: ', new Date().toString().split(' ').slice(0, -2).join(' '));
+		console.log('Done: ', new Date().toLocaleString());
 		console.log(message);
 		this.last_data = message;
 	}

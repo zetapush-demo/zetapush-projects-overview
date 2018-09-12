@@ -96,8 +96,16 @@ exports.obj_tab_filter = function obj_tab_filter(obj, accept)
 exports.parse_time = function parse_time(time)
 {
 	var tmp = new Date(time);
+	var d = tmp.getDate();
+	var m = tmp.getMonth() + 1; // January is 0!
+	var y = tmp.getFullYear();
+	var time = tmp.toString().split(' ')[4];
 
-	return (tmp.toString().split(' ').slice(0, -2).join(' '));
+	if (d < 10)
+		d = '0' + d;
+	if (m < 10)
+		m = '0' + m;
+	return `${d}-${m}-${y} ${time}`;
 }
 
 exports.get_good_color = function get_good_color(objtab)
