@@ -11,8 +11,9 @@ export interface DataStruct {
 }
 
 export interface Github {
-	release: string;
-	repo: string;
+	name: string;
+	url: string;
+	tag: string;
 	issues: GithubIssue[];
 	pull_request: PullRequest[];
 }

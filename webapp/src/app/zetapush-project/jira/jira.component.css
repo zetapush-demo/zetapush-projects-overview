@@ -25,6 +25,11 @@ mat-card-content {
 	display: flex;
 }
 
+mat-panel-title * {
+	align-self: center;
+	margin: 0.5vw;
+}
+
 mat-progress-bar {
 	height: 20px;
 	margin-top: 80px;

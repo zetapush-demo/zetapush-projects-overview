@@ -1,7 +1,13 @@
-var exports = module.exports = {
-	sprint: require('./sprint'),
-	github: require('./github'),
-	jenkins: require('./jenkins')
+module.exports = async () => {
+	const github = await require('./github')();
+	const jenkins = await require('./jenkins')();
+	const jira = await require('./jira')();
+
+	return {
+		github: merge_data(github, jenkins),
+		jenkins: jenkins,
+		jira: jira,
+	};
 };
 
 function merge_pr(pull_request, branches)
@@ -15,30 +21,14 @@ function merge_pr(pull_request, branches)
 
 function merge_data(github, jenkins)
 {
-	var data = [];
-
-	for (var i = 0; i < github.length; i++) {
-		for (var j = 0; j < jenkins.length; j++) {
-			if (jenkins[j].name === github[i].name) {
-				var merge = {
-					name: github[i].name,
-					tag: github[i].tag,
-					jenkins_url: jenkins[j].url,
-					github_url: github[i].url,
-					issues: github[i].issues,
-					pull_request: merge_pr(github[i].pull_request, jenkins[j].branches)
-				};
-
-				data.push(merge);
-			}
-		}
-		break;
-	}
-	// delete data[0].issues;
-	// delete data[0].branches;
-	console.log(data[0].pull_request);
+	for (var i = 0; i < github.length; i++)
+		for (var j = 0; j < jenkins.length; j++)
+			if (jenkins[j].name === github[i].name)
+				github[i].pull_request = merge_pr(github[i].pull_request, jenkins[j].branches)
+	return github;
 }
 
+/*
 (async function()
 {
 	var data = {};
@@ -55,3 +45,4 @@ function merge_data(github, jenkins)
 	// console.log(data);
 	merge_data(data.github, data.jenkins);
 })();
+*/

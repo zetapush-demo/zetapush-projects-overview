@@ -1,12 +1,22 @@
-h1#repo {
+#repo {
 	text-align: center;
+	font-size: 32px;
+	margin: 2vw;
 }
 
-h1#repo i {
+#repo i {
 	font-size: 0.5em;
 }
 
-mat-panel-title h2 i {
+#repo div {
+	align-self: center;
+}
+
+.text_overflow a {
+	align-self: center;
+}
+
+mat-panel-title h4 i {
 	color: #a3aab1;
 }
 

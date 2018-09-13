@@ -66,7 +66,7 @@ export class GithubComponent implements OnInit {
 			const popup_data = get_last_data(concat_data);
 
 			if (popup_data)
-				return this.openDialog(popup_data, this.data[i].repo, popup_data.base ? 'New Pull request !!' : 'New Issue !!');
+				return this.openDialog(popup_data, this.data[i].name, popup_data.base ? 'New Pull request !!' : 'New Issue !!');
 		}
 	}
 

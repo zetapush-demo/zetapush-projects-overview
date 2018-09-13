@@ -1,32 +1,34 @@
 <mat-spinner id="undefined_data" *ngIf="!data"></mat-spinner>
-<mat-tab-group *ngIf="data"	[selectedIndex]="repo_index.value"
-							(selectedIndexChange)="repo_index.setValue($event)">
+<mat-tab-group *ngIf="data"	[selectedIndex]="repo_index.value" (selectedIndexChange)="repo_index.setValue($event)">
 
-	<mat-tab *ngFor="let repo of data" [label]="repo.repo">
+	<mat-tab *ngFor="let repo of data" [label]="repo.name">
 
-		<h1 id="repo"> {{ repo.repo }} <i> {{ repo.tag }} </i> </h1>
-
+		<div id="repo">
+			<div>
+				<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" width="30"/>
+			</div>
+			<a href="{{repo.url}}"> {{repo.name}} </a>
+			<i> {{repo.tag}} </i>
+		</div>
 		<mat-form-field *ngFor="let form of filter_form[repo_index.value]; let index = index">
-			<mat-select (selectionChange)="filter_data_by(
-										repo_index.value,
-										filter_form[repo_index.value])"
-						[(value)]="form.selected" [placeholder]="form.placeholder">
+			<mat-select (selectionChange)="filter_data_by(repo_index.value, filter_form[repo_index.value])" [(value)]="form.selected" [placeholder]="form.placeholder">
 				<mat-option> None </mat-option>
 				<mat-option *ngFor="let option of form.available_list" [value]="option"> {{option}}	</mat-option>
 			</mat-select>
 		</mat-form-field>
 
-		<mat-tab-group>
-			<mat-tab label="Issues">
+		<div>
+			<mat-card fxFlex="50%">
+				<mat-card-title style="text-align: center"> Issues </mat-card-title>
 				<mat-accordion>
 					<mat-expansion-panel *ngFor="let issue of repo.issues">
 
 						<mat-expansion-panel-header>
-							<mat-panel-title>
+							<mat-panel-title fxLayout="row wrap" class="text_overflow">
 								<a href="{{issue.url}}">
 									<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="wtf l'api est down">
 								</a>
-								<h2> {{issue.name}} <i> #{{issue.id}} </i> </h2>
+								<h4 fxFlex> {{issue.name}} <i> #{{issue.id}} </i> </h4>
 								<ul class="label_list" *ngIf="issue.labels">
 									<li [ngStyle]="{'background-color': label.color}" *ngFor="let label of issue.labels"> {{label.name}}</li>
 								</ul>
@@ -56,49 +58,73 @@
 
 					</mat-expansion-panel>
 				</mat-accordion>
-			</mat-tab>
+			</mat-card>
 
-			<mat-tab label="Pull Request">
+			<mat-card fxFlex="50%">
+				<mat-card-title style="text-align: center"> Pull Request </mat-card-title>
 				<mat-accordion>
 					<mat-expansion-panel *ngFor="let pull_request of repo.pull_request">
 
 						<mat-expansion-panel-header>
-							<mat-panel-title>
+							<mat-panel-title fxLayout="row wrap" class="text_overflow">
 								<a href="{{pull_request.url}}">
 									<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="wtf l'api est down">
 								</a>
-								<h2> {{pull_request.name}} <i> #{{pull_request.id}} </i> </h2>
+								<h4> {{pull_request.name}} <i> #{{pull_request.id}} </i> </h4>
 								<ul class="label_list" *ngIf="pull_request.labels">
 									<li [ngStyle]="{'background-color': label.color}" *ngFor="let label of pull_request.labels"> {{label.name}}</li>
 								</ul>
 							</mat-panel-title>
 						</mat-expansion-panel-header>
 
-						<div *ngIf="pull_request.user" class="item_info">
-							<a href="{{pull_request.user.url}}">
-								<img src="{{pull_request.user.avatar}}" alt="wtf l'api est down">
-							</a>
-							<a class="username" href="{{pull_request.user.url}}">
-								{{pull_request.user.name}}
-							</a>
-							<p> wants to merge {{pull_request.commits}} into <span class="commit-ref">{{pull_request.base}} </span> from <span class="commit-ref"> {{pull_request.head}} </span> at {{pull_request.created}} </p>
-						</div>
+						<div>
+							<mat-card fxFlex="50%">
+								<div *ngIf="pull_request.user" class="item_info">
+									<a href="{{pull_request.user.url}}">
+										<img src="{{pull_request.user.avatar}}" alt="img not found">
+									</a>
+									<a class="username" href="{{pull_request.user.url}}">
+										{{pull_request.user.name}}
+									</a>
+									<p> wants to merge {{pull_request.commits}} into <span class="commit-ref">{{pull_request.base}} </span> from <span class="commit-ref"> {{pull_request.head}} </span> at {{pull_request.created}} </p>
+								</div>
 
-						<ul class="item_info" *ngIf="pull_request.assignees && pull_request.assignees.length">
-							Reviewers :
-							<li class="username" *ngFor="let reviewer of pull_request.assignees">
-								<p> {{reviewer.login}} </p>
-								<img src="{{reviewer.avatar_url}}" alt="wtf l'api est down">
-							</li>
-						</ul>
-						<div class="body">
-							<markdown class="markdown-body" [data]="pull_request.body"></markdown>
+								<ul class="item_info" *ngIf="pull_request.assignees && pull_request.assignees.length">
+									Reviewers :
+									<li class="username" *ngFor="let reviewer of pull_request.assignees">
+										<p> {{reviewer.login}} </p>
+										<img src="{{reviewer.avatar_url}}" alt="img not found">
+									</li>
+								</ul>
+								<div class="body">
+									<markdown class="markdown-body" [data]="pull_request.body"></markdown>
+								</div>
+							</mat-card>
+
+							<mat-card *ngIf="pull_request.build" fxFlex="50%">
+								<div class="item_info">
+									<a href="{{pull_request.build.url}}">
+										<img src="{{pull_request.build.icon}}" alt="img not found" />
+									</a>
+									<i> {{pull_request.build.result}} </i>
+									<span style="flex: 1 1 auto;"> </span>
+									<p *ngIf="!pull_request.build.in_progress"> {{pull_request.build.time.duration}} - {{pull_request.build.time.end}}</p>
+								</div>
+
+								<mat-card-content>
+									<a href="{{pull_request.build.github_url}}"> {{pull_request.build.github_url}} </a>
+									<div *ngFor="let flow of pull_request.build.flow; let index = index">
+										<p> {{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms </p>
+									</div>
+								</mat-card-content>
+
+							</mat-card>
 						</div>
 
 					</mat-expansion-panel>
 				</mat-accordion>
-			</mat-tab>
-		</mat-tab-group>
+			</mat-card>
+		</div>
 
 	</mat-tab>
 </mat-tab-group>
