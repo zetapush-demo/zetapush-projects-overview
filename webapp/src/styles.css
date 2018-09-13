@@ -40,6 +40,20 @@ a:hover {
 	width: 100%;
 }
 
+.title {
+	text-align: center;
+	font-size: 32px;
+	margin: 2vw;
+}
+
+.title i {
+	font-size: 0.5em;
+}
+
+.title div {
+	align-self: center;
+}
+
 mat-accordion {
 	padding: 20px;
 }
@@ -50,13 +64,9 @@ mat-expansion-panel {
 	margin-bottom: 20px !important;
 }
 
-mat-panel-title * {
-	/* align-self: center; */
-	/* margin: 0.5vw; */
-}
-
 .text_overflow * {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	align-self: center;
 }

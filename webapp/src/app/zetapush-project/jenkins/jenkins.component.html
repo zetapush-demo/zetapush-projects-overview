@@ -1,10 +1,12 @@
 <mat-spinner id="undefined_data" *ngIf="!data || !data.length"> </mat-spinner>
 <mat-tab-group *ngIf="data && data.length">
 	<mat-tab *ngFor="let app of data" label="{{app.name}}">
-		<a href="{{app.url}}">
-			<img src="https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/jenkins-redbg.png" alt="wtf bah l'image est plus sur le repo" />
-		</a>
-		<h1 style="text-align: center"> {{app.name}} </h1>
+		<div class="title">
+				<div>
+					<img src="https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/jenkins-redbg.png" alt="img not found" />
+				</div>
+				<a href="{{app.url}}"> {{app.name}} </a>
+		</div>
 
 		<div>
 			<mat-card fxFlex="50%">
@@ -15,10 +17,10 @@
 						<mat-expansion-panel-header>
 							<mat-panel-title fxLayout="row wrap" class="text_overflow">
 								<a href="{{branch.url}}">
-									<img src="{{branch.icon}}" alt="wtf bah l'image est plus sur le repo" />
+									<img src="{{branch.icon}}" alt="img not found" />
 								</a>
 								<i> {{branch.result}} </i>
-								<h2> {{branch.name}} </h2>
+								<h4> {{branch.name}} </h4>
 								<span style="flex: 1 1 auto;"> </span>
 								<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
 							</mat-panel-title>
@@ -41,10 +43,10 @@
 						<mat-expansion-panel-header>
 								<mat-panel-title fxLayout="row wrap" class="text_overflow">
 									<a href="{{branch.url}}">
-										<img src="{{branch.icon}}" alt="wtf bah l'image est plus sur le repo" />
+										<img src="{{branch.icon}}" alt="img not found" />
 									</a>
 									<i> {{branch.result}} </i>
-									<h2> {{branch.name}} : {{branch.pull_request.title}}</h2>
+									<h4> {{branch.name}} : {{branch.pull_request.title}}</h4>
 									<p> {{branch.pull_request.author}} </p>
 									<span style="flex: 1 1 auto;"> </span>
 									<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
