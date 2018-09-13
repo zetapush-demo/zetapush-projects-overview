@@ -52,7 +52,7 @@ export default class Api {
 		this.messaging.send({
 			target: users,
 			data: message
-		}).catch(()=>{});
+		});
 		console.log('Done: ', new Date().toLocaleString());
 		console.log(message);
 		this.last_data = message;
