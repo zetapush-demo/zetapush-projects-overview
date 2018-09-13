@@ -13,10 +13,24 @@ ul {
 
 a {
 	text-decoration: none;
+	color: inherit;
 }
 
 a:hover {
 	text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+	width: 0.6rem;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #dddddd;
+}
+
+::-webkit-scrollbar-button{
+	background-color: #eeeeee;
+	max-height: 5px;
 }
 
 #undefined_data {
@@ -24,10 +38,6 @@ a:hover {
 	left: calc(50% - 50px);
 	top: calc(50% - 50px);
 	width: 100%;
-}
-
-mat-tab-body div {
-	overflow: hidden !important;
 }
 
 mat-accordion {
