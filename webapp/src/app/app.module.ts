@@ -9,6 +9,7 @@ import { MatDialogModule, MatButtonModule, MatSelectModule} from '@angular/mater
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
@@ -34,7 +35,8 @@ import { AppRoutingModule } from './app-routing.module';
 		MatSelectModule,
 		MatCardModule,
 		MatProgressBarModule,
-		MatProgressSpinnerModule
+		MatProgressSpinnerModule,
+		FlexLayoutModule
 	],
 	declarations: [
 		AppComponent,

@@ -50,8 +50,7 @@ img {
 	position: relative;
 	display: inline-block;
 	padding: 0 5px;
-	font: 0.75em/2 "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
-		Courier, monospace;
+	font: 0.75em/2 "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
 	color: #274466;
 	white-space: nowrap;
 	background-color: #eff7ff;
