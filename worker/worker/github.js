@@ -114,7 +114,8 @@ module.exports = async function()
 			get_data(config, 'pulls', repo_list[i], repo_list[i].issues_nb)
 		]).then(res => {
 			data.push({
-				repo: repo_list[i].name,
+				name: repo_list[i].name,
+				url: `https://github.com/${repo_list[i].owner}/${repo_list[i].name}`,
 				tag: res[0],
 				issues: res[1],
 				pull_request: res[2]
