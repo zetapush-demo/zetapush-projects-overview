@@ -1,19 +1,20 @@
 <mat-spinner id="undefined_data" *ngIf="!data"></mat-spinner>
-<mat-tab-group *ngIf="data"	[selectedIndex]="repo_index.value" (selectedIndexChange)="repo_index.setValue($event)">
+<mat-tab-group *ngIf="data" [selectedIndex]="repo_index.value" (selectedIndexChange)="repo_index.setValue($event)">
 
 	<mat-tab *ngFor="let repo of data" [label]="repo.name">
 
 		<div class="title">
 			<div>
-				<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" width="30"/>
+				<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" width="30" />
 			</div>
 			<a href="{{repo.url}}"> {{repo.name}} </a>
 			<i> {{repo.tag}} </i>
 		</div>
 		<mat-form-field *ngFor="let form of filter_form[repo_index.value]; let index = index">
-			<mat-select (selectionChange)="filter_data_by(repo_index.value, filter_form[repo_index.value])" [(value)]="form.selected" [placeholder]="form.placeholder">
+			<mat-select (selectionChange)="filter_data_by(repo_index.value, filter_form[repo_index.value])" [(value)]="form.selected"
+			 [placeholder]="form.placeholder">
 				<mat-option> None </mat-option>
-				<mat-option *ngFor="let option of form.available_list" [value]="option"> {{option}}	</mat-option>
+				<mat-option *ngFor="let option of form.available_list" [value]="option"> {{option}} </mat-option>
 			</mat-select>
 		</mat-form-field>
 
@@ -24,12 +25,12 @@
 					<mat-expansion-panel *ngFor="let issue of repo.issues">
 
 						<mat-expansion-panel-header>
-							<mat-panel-title fxLayout="row wrap" class="text_overflow">
+							<mat-panel-title fxLayout="row wrap">
 								<a href="{{issue.url}}">
 									<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="wtf l'api est down">
 								</a>
 								<h4 fxFlex> {{issue.name}} <i> #{{issue.id}} </i> </h4>
-								<ul class="label_list" *ngIf="issue.labels">
+								<ul fxLayout="row wrap" class="label_list" *ngIf="issue.labels">
 									<li [ngStyle]="{'background-color': label.color}" *ngFor="let label of issue.labels"> {{label.name}}</li>
 								</ul>
 							</mat-panel-title>
@@ -66,12 +67,13 @@
 					<mat-expansion-panel *ngFor="let pull_request of repo.pull_request">
 
 						<mat-expansion-panel-header>
-							<mat-panel-title fxLayout="row wrap" class="text_overflow">
+							<mat-panel-title fxLayout="row wrap">
 								<a href="{{pull_request.url}}">
 									<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="wtf l'api est down">
 								</a>
 								<h4> {{pull_request.name}} <i> #{{pull_request.id}} </i> </h4>
-								<ul class="label_list" *ngIf="pull_request.labels">
+								<span style="flex: 1 1 auto;"> </span>
+								<ul fxLayout="row wrap" class="label_list" *ngIf="pull_request.labels">
 									<li [ngStyle]="{'background-color': label.color}" *ngFor="let label of pull_request.labels"> {{label.name}}</li>
 								</ul>
 							</mat-panel-title>
@@ -86,7 +88,8 @@
 									<a class="username" href="{{pull_request.user.url}}">
 										{{pull_request.user.name}}
 									</a>
-									<p> wants to merge {{pull_request.commits}} into <span class="commit-ref">{{pull_request.base}} </span> from <span class="commit-ref"> {{pull_request.head}} </span> at {{pull_request.created}} </p>
+									<p> wants to merge {{pull_request.commits}} into <span class="commit-ref">{{pull_request.base}} </span> from
+										<span class="commit-ref"> {{pull_request.head}} </span> at {{pull_request.created}} </p>
 								</div>
 
 								<ul class="item_info" *ngIf="pull_request.assignees && pull_request.assignees.length">
@@ -108,7 +111,8 @@
 									</a>
 									<i> {{pull_request.build.result}} </i>
 									<span style="flex: 1 1 auto;"> </span>
-									<p *ngIf="!pull_request.build.in_progress"> {{pull_request.build.time.duration}} - {{pull_request.build.time.end}}</p>
+									<p *ngIf="!pull_request.build.in_progress"> {{pull_request.build.time.duration}} -
+										{{pull_request.build.time.end}}</p>
 								</div>
 
 								<mat-card-content>

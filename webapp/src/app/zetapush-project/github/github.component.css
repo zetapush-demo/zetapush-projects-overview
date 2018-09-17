@@ -4,10 +4,10 @@ mat-panel-title h4 i {
 
 .label_list li {
 	padding: 5px;
-	display: inline;
-	margin: 0.5vw;
+	margin-left: 10px;
 	font-weight: 600;
-	border-radius: 2px;
+	border-radius: 4px;
+	max-height: 18px;
 }
 
 .item_info {

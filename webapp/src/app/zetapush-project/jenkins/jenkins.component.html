@@ -11,11 +11,11 @@
 		<div>
 			<mat-card fxFlex="50%">
 				<mat-card-title style="text-align: center"> Branches </mat-card-title>
-					<mat-accordion class="list">
+					<mat-accordion>
 					<mat-expansion-panel *ngFor="let branch of app.branches">
 
 						<mat-expansion-panel-header>
-							<mat-panel-title fxLayout="row wrap" class="text_overflow">
+							<mat-panel-title fxLayout="row wrap">
 								<a href="{{branch.url}}">
 									<img src="{{branch.icon}}" alt="img not found" />
 								</a>
@@ -37,22 +37,22 @@
 
 			<mat-card fxFlex="50%">
 				<mat-card-title style="text-align: center"> Pull Request </mat-card-title>
-				<mat-accordion class="list">
+				<mat-accordion>
 					<mat-expansion-panel *ngFor="let branch of app.pull_request">
 
 						<mat-expansion-panel-header>
-								<mat-panel-title fxLayout="row wrap" class="text_overflow">
+								<mat-panel-title fxLayout="row wrap">
 									<a href="{{branch.url}}">
 										<img src="{{branch.icon}}" alt="img not found" />
 									</a>
 									<i> {{branch.result}} </i>
 									<h4> {{branch.name}} : {{branch.pull_request.title}}</h4>
-									<p> {{branch.pull_request.author}} </p>
 									<span style="flex: 1 1 auto;"> </span>
 									<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
 								</mat-panel-title>
 							</mat-expansion-panel-header>
 
+							<p> {{branch.pull_request.author}} </p>
 							<div *ngFor="let flow of branch.flow; let index = index">
 								<p> {{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms </p>
 							</div>
