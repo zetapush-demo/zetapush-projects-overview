@@ -121,7 +121,7 @@ export class ZetapushProjectService {
 		platformUrl: 'https://celtia.zetapush.com/zbo/pub/business',
 		appName: 'oJjkJCOM'
 	});
-	api: ProxyService = this.client.createProxyTaskService({});
+	api: ProxyService = this.client.createProxyTaskService();
 	data: DataStruct;
 	obs: Observable<DataStruct>;
 	observer: Subscriber<DataStruct>;
