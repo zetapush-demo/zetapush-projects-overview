@@ -24,12 +24,6 @@ class Resolver implements Resolve<any> {
 const routes: Routes = [
 	{ path: '', component: ZetapushProjectComponent,
 		resolve: { zetapush: Resolver },
-		children: [
-			{ path: 'github', component: GithubComponent },
-			{ path: 'jenkins', component: JenkinsComponent },
-			{ path: 'jira', component: JiraComponent },
-			{ path: '**', redirectTo: '/'}
-		]
 	},
 	{ path: '**', redirectTo: '/' }
 ];

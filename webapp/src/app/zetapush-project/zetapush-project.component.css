@@ -1,11 +1,3 @@
-nav {
-	margin: 0 auto;
-}
-
-nav a img {
-	margin-right: 10px;
-}
-
 :host {
 	display: block;
 	position: absolute;
