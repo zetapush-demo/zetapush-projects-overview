@@ -54,6 +54,10 @@ a:hover {
 	align-self: center;
 }
 
+.title img {
+	width: 60px !important;
+}
+
 mat-accordion {
 	padding: 20px;
 }
