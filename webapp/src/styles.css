@@ -75,10 +75,3 @@ mat-panel-title * {
 mat-expansion-panel-header {
 	height: auto !important;
 }
-
-.text_overflow {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	align-self: center;
-}
