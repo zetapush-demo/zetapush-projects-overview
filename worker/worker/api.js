@@ -34,15 +34,15 @@ function merge_data(github, jenkins)
 	var data = {};
 
 	await Promise.all([
-		exports.github(),
-		exports.jenkins(),
-		// exports.sprint()
+		require('./github')(),
+		require('./jenkins')(),
+		require('./jira')()
 	]).then(res => {
 		data.github = res[0];
 		data.jenkins = res[1];
-//		data.sprint = res[2];
+		data.sprint = res[0];
 	});
-	// console.log(data);
-	merge_data(data.github, data.jenkins);
+	// merge_data(data.github, data.jenkins);
+	console.log(data);
 })();
 */
