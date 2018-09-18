@@ -44,18 +44,7 @@ mat-progress-bar {
 	text-align: center;
 }
 
-.time p {
-	position: absolute;
-}
-
-#n0 {
-	left: calc(100% / 6 * 1);
-}
-
-#n1 {
-	left: calc(100% / 6 * 3);
-}
-
-#n2 {
-	left: calc(100% / 6 * 5);
+.time {
+	text-align: center;
+	margin-bottom: -60px;
 }

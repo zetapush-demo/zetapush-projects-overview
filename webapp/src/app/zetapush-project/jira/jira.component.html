@@ -15,11 +15,15 @@
 				<mat-accordion *ngIf="sprint">
 					<h2 class="sprint"> {{sprint.sprint}} <i *ngIf="sprint.start && sprint.end"> ({{sprint.start}} au {{sprint.end}}) </i> </h2>
 					<div *ngIf="sprint.time" class="time">
-						<p id="n0"> Spent: <b>{{sprint.time.spent / 3600}}h</b> </p>
-						<p id="n1"> Remaining: <b>{{sprint.time.remaining / 3600}}h</b> </p>
-						<p id="n2"> Estimate: <b>{{sprint.time.estimate / 3600}}h</b> </p>
+						<div>
+							<p fxFlex=""> Spent: <b> {{sprint.time.spent / 3600}}h </b> </p>
+							<p fxFlex=""> Really spent: <b> {{sprint.time.remaining / 3600}}h </b> </p>
+							<p fxFlex=""> Estimate: <b> {{sprint.time.estimate / 3600}}h </b> </p>
+						</div>
+						<p *ngIf="sprint.time.spent > sprint.time.remaining"> Early of : <b> {{(sprint.time.spent - sprint.time.remaining) / 3600}}h </b> </p>
+						<p *ngIf="sprint.time.spent < sprint.time.remaining"> Late of : <b> {{(sprint.time.spent - sprint.time.remaining) / 3600}}h </b> </p>
 					</div>
-					<mat-progress-bar *ngIf="sprint.time" mode="buffer" [value]="sprint.time.spent * 100 / sprint.time.estimate" [bufferValue]="100 - (sprint.time.remaining * 100 / sprint.time.estimate)"> </mat-progress-bar>
+					<mat-progress-bar *ngIf="sprint.time" mode="buffer" [value]="sprint.time.spent / sprint.time.estimate * 100" [bufferValue]="sprint.time.remaining / sprint.time.estimate * 100"> </mat-progress-bar>
 					<p *ngIf="sprint.issues && !sprint.issues.length"> This sprint is empty, you should closed it. </p>
 					<mat-expansion-panel *ngFor="let issue of sprint.issues">
 						<mat-expansion-panel-header>
