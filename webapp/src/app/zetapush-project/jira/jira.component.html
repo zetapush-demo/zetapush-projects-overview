@@ -2,6 +2,13 @@
 <mat-tab-group *ngIf="data">
 	<mat-tab *ngFor="let project of data" label="{{project.project}}">
 
+		<div class="title">
+			<div>
+				<img src="https://wac-cdn.atlassian.com/dam/jcr:37f03d61-2cfc-4862-b536-ca6d200e7cf8/Jira%20Software-icon-blue.svg?cdnVersion=jw"/>
+			</div>
+			<a href="{{project.url}}"> {{project.project}} </a>
+		</div>
+
 		<h2 *ngIf="!project.sprint.length" class="sprint"> There is no current sprint. </h2>
 		<mat-tab-group>
 			<mat-tab *ngFor="let sprint of project.sprint" label="{{sprint.sprint}}">
