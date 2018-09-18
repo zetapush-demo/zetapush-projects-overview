@@ -97,7 +97,7 @@ async function get_current_sprint(project_config, board_id, config)
 			sprint: res[i].name,
 			start: parse_time(res[i].startDate).slice(0, -9),
 			end: parse_time(res[i].endDate).slice(0, -9),
-			issues: await get_issues_list(api_url, project_config, config)
+			issues: await get_issues_list(api_url, board_id, project_config, config)
 		};
 		put_sub_issues(sprint);
 		sprint.time = compute_sprint_timetracking(sprint.issues);
@@ -121,6 +121,7 @@ module.exports = async function()
 	for (var i = 0; i < boards_id.length; i++) {
 		const sprint = {
 			project: config.sprint[i].name,
+			url: `https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${boards_id[i]}`,
 			sprint: await get_current_sprint(config.sprint[i], boards_id[i], config.http)
 		}
 

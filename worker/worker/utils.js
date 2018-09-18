@@ -19,11 +19,12 @@ function check_bracket(str)
 	return tmp1 != -1 && tmp2 != -1 && tmp1 < tmp2;
 }
 
-function filter_data(issues)
+function filter_data(issues, board_id)
 {
 	for (var i = 0; i < issues.length; i++) {
 		issues[i] = {
 			key:		issues[i].key,
+			url:		`https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${board_id}&modal=detail&selectedIssue=${issues[i].key}`,
 			parent:		issues[i].fields.parent && issues[i].fields.parent.key,
 			priority:	extract_data(issues[i].fields.priority, ['id', 'iconUrl']),
 			issuetype:	extract_data(issues[i].fields.issuetype, ['name', 'iconUrl']),
@@ -63,7 +64,7 @@ function extract_data(src, keys)
 	return dest;
 }
 
-exports.get_issues_list = async function get_issues_list(api_url, project_config, config)
+exports.get_issues_list = async function get_issues_list(api_url, board_id, project_config, config)
 {
 	var res = await axios.get(`${api_url}&maxResults=1`, config).catch(err => {
 		if (err.response.status != 200) {
@@ -78,7 +79,7 @@ exports.get_issues_list = async function get_issues_list(api_url, project_config
 	for (var i = 0; i < max; i += 100) {
 		res = await axios.get(`${api_url}&startAt=${i}&maxResults=100`, config);
 		res.data.issues = res.data.issues.filter(issue => issue.fields.status.name !== project_config.close_state);
-		issues = issues.concat(filter_data(res.data.issues));
+		issues = issues.concat(filter_data(res.data.issues, board_id));
 	}
 	return issues;
 }

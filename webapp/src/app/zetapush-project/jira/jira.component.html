@@ -24,6 +24,7 @@
 					<mat-expansion-panel *ngFor="let issue of sprint.issues">
 						<mat-expansion-panel-header>
 							<mat-panel-title>
+								<a *ngIf="issue.url" href="{{issue.url}}"> Go </a>
 								<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="wtf bah jira é casser"/>
 								<b> {{issue.key}} </b>
 								<b> {{issue.status}} </b>
@@ -40,6 +41,7 @@
 						</div>
 						<mat-card *ngFor="let sub of issue.subtasks">
 							<mat-card-content>
+								<a *ngIf="sub.url" href="{{sub.url}}"> Go </a>
 								<div *ngIf="sub.reporter" class="reporter">
 									<img src="{{sub.reporter.avatarUrls}}" alt="wtf bah jira é casser" />
 									<span> Reporter: <b> {{sub.reporter.displayName}} </b> </span>
