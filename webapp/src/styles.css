@@ -59,7 +59,7 @@ a:hover {
 }
 
 mat-accordion {
-	padding: 20px;
+	padding: 0;
 }
 
 mat-expansion-panel {
