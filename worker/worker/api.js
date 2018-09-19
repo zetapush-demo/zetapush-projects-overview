@@ -40,7 +40,7 @@ function merge_data(github, jenkins)
 	]).then(res => {
 		data.github = res[0];
 		data.jenkins = res[1];
-		data.sprint = res[0];
+		data.sprint = res[2];
 	});
 	// merge_data(data.github, data.jenkins);
 	console.log(data);
