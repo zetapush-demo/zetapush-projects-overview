@@ -18,18 +18,39 @@ async function get_repo_urls(jenkins_url)
 	return res.data.map(x => `${jenkins_url}${x._links.self.href}`);
 }
 
+function build_flow_tree(arr)
+{
+	var tree = [];
+	var mappedArr = {};
+
+	for (var i = 0; i < arr.length; i++) {
+		mappedArr[arr[i].id] = arr[i];
+		mappedArr[arr[i].id].child = [];
+	}
+	for (var id in mappedArr)
+		if (mappedArr[id].parent)
+			mappedArr[mappedArr[id].parent].child.push(mappedArr[id]);
+		else
+			tree.push(mappedArr[id]);
+	return tree;
+}
+
 async function get_branch_flow(url)
 {
-	const res = await axios.get(url);
+	var res = await axios.get(url);
 
-	return res.data.map(x => {
+	res = res.data.map(x => {
 		return {
 			name: x.displayName,
 			result: x.result,
 			state: x.state,
-			duration: x.durationInMillis
+			duration: x.durationInMillis,
+			id: x.id,
+			parent: x.firstParent
+
 		}
 	});
+	return build_flow_tree(res)[0];
 }
 
 function get_icon_url(score)
