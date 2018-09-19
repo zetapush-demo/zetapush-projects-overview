@@ -119,7 +119,7 @@ async function get_branch_array(local_url, branch_url, project_name)
 			runSummary: res.data[i].latestRun.runSummary,
 			github_url: res.data[i].branch.url,
 			pull_request: res.data[i].pullRequest,
-			flow: flow
+			flow: JSON.stringify(flow, null, " ")
 		};
 		if (branch.state === 'RUNNING') {
 			branch.result = 'RUNNING';
