@@ -111,8 +111,7 @@
 									</a>
 									<i> {{pull_request.build.result}} </i>
 									<span style="flex: 1 1 auto;"> </span>
-									<p *ngIf="!pull_request.build.in_progress"> {{pull_request.build.time.duration}} -
-										{{pull_request.build.time.end}}</p>
+									<p *ngIf="!pull_request.build.in_progress"> {{pull_request.build.time.duration}} - {{pull_request.build.time.end}} </p>
 								</div>
 
 								<mat-card-content>
