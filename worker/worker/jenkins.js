@@ -53,22 +53,46 @@ async function get_branch_flow(url)
 	return build_flow_tree(res)[0];
 }
 
-function get_icon_url(score)
+function get_tree_lenght(obj)
 {
-	for (var i = 0; i < 80; i += 20)
-		if (score >= i && score < i + 20)
-			return `${jenkins_assets}health-${i || '00'}to${i + 19}.png`;
-	return `${jenkins_assets}health-80plus.png`;
+	var depth = 0;
+
+	if (obj.child)
+		for (var i = 0; i < obj.child.length; i++) {
+			const tmp = get_tree_lenght(obj.child[i]);
+
+			if (tmp > depth)
+				depth = tmp;
+		}
+	return depth + 1;
+}
+
+function get_tree_max_lenght_until(obj, field, pattern)
+{
+	var depth = 0;
+
+	if (obj[field] !== pattern)
+		return depth;
+	if (obj.child)
+		for (var i = 0; i < obj.child.length; i++) {
+			const tmp = get_tree_max_lenght_until(obj.child[i], field, pattern);
+
+			if (tmp > depth)
+				depth = tmp;
+		}
+	return depth + 1;
 }
 
 function get_icon_by_flow(flow)
 {
-	var last = 0;
-	var length = flow.filter(x => x.state !== 'SKIPPED').length;
+	const last = get_tree_max_lenght_until(flow, 'result', 'SUCCESS');
+	const length = get_tree_lenght(flow);
+	const score = (last / length) * 100;
 
-	while (last < flow.length && flow[last].result === 'SUCCESS')
-		last++;
-	return get_icon_url((last / length) * 100);
+	for (var i = 0; i < 80; i += 20)
+		if (score >= i && score < i + 20)
+			return `${jenkins_assets}health-${i || '00'}to${i + 19}.png`;
+	return `${jenkins_assets}health-80plus.png`;
 }
 
 async function get_branch_array(local_url, branch_url, project_name)
