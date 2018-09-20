@@ -18,6 +18,31 @@ async function get_repo_urls(jenkins_url)
 	return res.data.map(x => `${jenkins_url}${x._links.self.href}`);
 }
 
+function tree_flatter(tree)
+{
+	for (var i = 0; i < tree.length; i++) {
+		if (tree[i].child.length === 1) {
+			tree_flatter(tree[i].child[0]);
+			tree.push(tree[i].child[0]);
+			delete tree[i].child;
+		} else if (tree[i].child.length > 1)
+			for (var j = 0; j < tree[i].child.length; j++)
+				tree_flatter(tree[i].child[j].child);
+	}
+}
+
+function tree_cleaner(tree)
+{
+	for (var i = 0; i < tree.length; i++) {
+		if (tree[i].state === 'SKIPPED' || (tree[i].type === 'PARALLEL' && tree[i].parent === null)) {
+			tree.splice(i, 1);
+			tree_cleaner(tree);
+		}
+		if (tree[i] && tree[i].child && tree[i].child.length !== 0)
+			tree_cleaner(tree[i].child);
+	}
+}
+
 function build_flow_tree(arr)
 {
 	var tree = [];
@@ -32,37 +57,34 @@ function build_flow_tree(arr)
 			mappedArr[mappedArr[id].parent].child.push(mappedArr[id]);
 		else
 			tree.push(mappedArr[id]);
+	tree_cleaner(tree);
 	tree_flatter(tree);
-	return tree.sort((elem1, elem2) => elem1.id - elem2.id);
+	return tree//.sort((elem1, elem2) => elem1.id - elem2.id);
 }
 
-function tree_flatter(tree)
+async function get_branch_flow(url, name, proj)
 {
-	for (var i = 0; i < tree.length; i++) {
-		if (tree[i].child.length === 1) {
-			tree_flatter(tree[i].child[0]);
-			tree.push(tree[i].child[0]);
-			delete tree[i].child;
-		} else if (tree[i].child.length > 1)
-			for (var j = 0; j < tree[i].child.length; j++)
-				tree_flatter(tree[i].child[j].child);
-	}
-}
+	var res = await axios.get(url);
 
-async function get_branch_flow(url)
-{
-	const res = await axios.get(url);
-
-	return build_flow_tree(res.data.map(x => {
+	res = res.data.map(x => {
 		return {
 			name: x.displayName,
 			result: x.result,
 			state: x.state,
 			duration: x.durationInMillis,
+			type: x.type,
 			id: x.id,
 			parent: x.firstParent
 		}
-	})/*.filter(x => x.state !== 'SKIPPED')*/);
+	});//.filter(x => x.state !== 'SKIPPED' && x.type !== 'PARALLEL');
+
+	// console.log();
+	// console.log();
+	// console.log(proj, name, res);
+	// console.log();
+	// console.log();
+
+	return build_flow_tree(res);
 }
 
 function get_tree_lenght(obj)
@@ -115,7 +137,7 @@ async function get_branch_array(local_url, branch_url, project_name)
 	for (var i = 0; i < res.data.length; i++) {
 		const name = res.data[i].name;
 		const id = res.data[i].latestRun.id;
-		const flow = await get_branch_flow(`${branch_url}/${name}/runs/${id}/nodes`);
+		const flow = await get_branch_flow(`${branch_url}/${name}/runs/${id}/nodes`, name, project_name);
 
 		var branch = {
 			name: res.data[i].displayName,
@@ -132,7 +154,6 @@ async function get_branch_array(local_url, branch_url, project_name)
 			github_url: res.data[i].branch.url,
 			pull_request: res.data[i].pullRequest,
 			flow: flow
-			// flow: JSON.stringify(flow, null, " ")
 		};
 		if (branch.state === 'RUNNING') {
 			branch.result = 'RUNNING';

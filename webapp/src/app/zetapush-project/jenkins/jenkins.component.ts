@@ -49,7 +49,12 @@ export class JenkinsComponent implements OnInit {
 	on_get_data(tmp: Jenkins[]) {
 		if (!tmp)
 			return;
-		console.log(tmp);
+		console.log(tmp.map(x => x.branches.map(x => {
+			return {
+				name: x.name,
+				flow: x.flow
+			}
+		})));
 		this.data = tmp;
 		const branch_new_build = this.get_new_data(this.data);
 		if (branch_new_build !== null)

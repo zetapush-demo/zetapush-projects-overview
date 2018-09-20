@@ -73,6 +73,7 @@ interface JenkinsBranch {
 	in_progress?: boolean;
 	url: string;
 	time: string;
+	flow: any[];
 }
 
 interface JiraSprint {

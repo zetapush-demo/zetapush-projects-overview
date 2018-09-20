@@ -26,10 +26,9 @@
 							</mat-panel-title>
 						</mat-expansion-panel-header>
 
-						<p> {{branch.flow}} </p>
-						<!-- <div *ngFor="let flow of branch.flow; let index = index">
+						<div *ngFor="let flow of branch.flow; let index = index">
 							<p> {{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms </p>
-						</div> -->
+						</div>
 						<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
 
 					</mat-expansion-panel>
@@ -54,10 +53,9 @@
 							</mat-expansion-panel-header>
 
 							<p> {{branch.pull_request.author}} </p>
-							<p> {{branch.flow}} </p>
-							<!-- <div *ngFor="let flow of branch.flow; let index = index">
+							<div *ngFor="let flow of branch.flow; let index = index">
 								<p> {{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms </p>
-							</div> -->
+							</div>
 							<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
 
 					</mat-expansion-panel>

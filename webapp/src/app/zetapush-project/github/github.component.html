@@ -116,10 +116,9 @@
 
 								<mat-card-content>
 									<a href="{{pull_request.build.github_url}}"> {{pull_request.build.github_url}} </a>
-									<p> {{pull_request.build.flow}} </p>
-									<!-- <div *ngFor="let flow of pull_request.build.flow; let index = index">
+									<div *ngFor="let flow of pull_request.build.flow; let index = index">
 										<p> {{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms </p>
-									</div> -->
+									</div>
 								</mat-card-content>
 
 							</mat-card>
