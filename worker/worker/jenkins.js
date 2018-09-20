@@ -32,49 +32,22 @@ function build_flow_tree(arr)
 			mappedArr[mappedArr[id].parent].child.push(mappedArr[id]);
 		else
 			tree.push(mappedArr[id]);
-	tree_flatter(tree);
-	return tree;
+	return tree_flatter(tree).sort((elem1, elem2) => elem1.id - elem2.id);
 }
 
 function tree_flatter(tree)
 {
 	for (var i = 0; i < tree.length; i++) {
-		if (tree[i].child && tree[i].child.length === 1) {
+		if (tree[i].child.length === 1) {
 			tree_flatter(tree[i].child[0]);
 			tree.push(tree[i].child[0]);
 			delete tree[i].child;
-		} else
-			for (var j = 0; j < tree[i].child; j++) {
-				tree_flatter(tree[i].child[j]);
-			}
+		} else if (tree[i].child.length > 1)
+			for (var j = 0; j < tree[i].child.length; j++)
+				tree_flatter(tree[i].child[j].child);
 	}
+	return tree;
 }
-
-// function build_flow_tree(arr)
-// {
-// 	var tab = [];
-
-// 	arr = arr.filter(x => x.state !== 'SKIPPED');
-// 	// tab.push(arr[0]);
-// 	for (var i = 1; i < arr.length; i++) {
-// 		const tmp = arr[i];
-
-// 		arr[i].child = [];
-// 		for (var j = 0; j < arr.length; j++) {
-// 			if (arr[j].parent === arr[i].id) {
-// 				arr[i].child.push(arr[j]);
-// 				arr.splice(i, 1);
-// 			}
-// 		}
-// 		const child = arr.filter(x => x.parent === arr[i].id);
-// 		if (child.length > 1) {
-// 			arr[i].child = child;
-// 			i += child.length;
-// 		}
-// 		tab.push(tmp);
-// 	}
-// 	return tab;
-// }
 
 async function get_branch_flow(url)
 {
