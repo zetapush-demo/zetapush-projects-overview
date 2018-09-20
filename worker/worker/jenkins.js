@@ -51,9 +51,9 @@ function tree_flatter(tree)
 
 async function get_branch_flow(url)
 {
-	var res = await axios.get(url);
+	const res = await axios.get(url);
 
-	res = res.data.map(x => {
+	return build_flow_tree(res.data.map(x => {
 		return {
 			name: x.displayName,
 			result: x.result,
@@ -62,8 +62,7 @@ async function get_branch_flow(url)
 			id: x.id,
 			parent: x.firstParent
 		}
-	}).filter(x => x.state !== 'SKIPPED');
-	return build_flow_tree(res);
+	})/*.filter(x => x.state !== 'SKIPPED')*/);
 }
 
 function get_tree_lenght(obj)
