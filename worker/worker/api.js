@@ -32,16 +32,17 @@ function merge_data(github, jenkins)
 (async function()
 {
 	var data = {};
+	var tab = [
+		// { name: 'github', func: require('./github')() },
+		{ name: 'jenkins', func: require('./jenkins')() },
+		// { name: 'jira', func: require('./jira')() }
+	]
 
-	await Promise.all([
-		require('./github')(),
-		require('./jenkins')(),
-		require('./jira')()
-	]).then(res => {
-		data.github = res[0];
-		data.jenkins = res[1];
-		data.sprint = res[2];
-	});
+	await Promise.all(tab.map(x => x.func))
+		.then(res => {
+			for (var i = 0; i < res.length; i++)
+				data[tab[i].name] = res[i];
+		});
 	// merge_data(data.github, data.jenkins);
 	console.log(data);
 })();
