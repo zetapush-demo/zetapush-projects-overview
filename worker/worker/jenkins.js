@@ -32,7 +32,8 @@ function build_flow_tree(arr)
 			mappedArr[mappedArr[id].parent].child.push(mappedArr[id]);
 		else
 			tree.push(mappedArr[id]);
-	return tree_flatter(tree).sort((elem1, elem2) => elem1.id - elem2.id);
+	tree_flatter(tree);
+	return tree.sort((elem1, elem2) => elem1.id - elem2.id);
 }
 
 function tree_flatter(tree)
@@ -46,7 +47,6 @@ function tree_flatter(tree)
 			for (var j = 0; j < tree[i].child.length; j++)
 				tree_flatter(tree[i].child[j].child);
 	}
-	return tree;
 }
 
 async function get_branch_flow(url)
