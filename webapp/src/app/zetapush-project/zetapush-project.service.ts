@@ -137,7 +137,7 @@ export class ZetapushProjectService {
 	}
 
 	async get_last_data() {
-		return await this.api.get_last_data();
+		return await this.api.get_last_data().catch(err => console.log(err));
 	}
 
 	async listen() {
@@ -164,9 +164,9 @@ export class ZetapushProjectService {
 	}
 
 	async connect() {
-		await this.client.connect();
+		await this.client.connect().catch(err => console.log(err));
 		if (!this.client.isStronglyAuthenticated())
-			await this.smart_connect();
+			await this.smart_connect().catch(err => console.log(err));
 	}
 
 	get_data(): Observable<DataStruct> {
