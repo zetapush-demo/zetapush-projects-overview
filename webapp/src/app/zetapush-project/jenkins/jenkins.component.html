@@ -26,9 +26,21 @@
 							</mat-panel-title>
 						</mat-expansion-panel-header>
 
-						<div *ngFor="let flow of branch.flow; let index = index">
-							<p> {{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms </p>
-						</div>
+						<ul *ngFor="let flow of branch.flow; let index = index">
+							<li>
+								{{index}} -> {{flow.name}} {{flow.result}} {{flow.state}} {{flow.duration}}ms
+								<ul *ngIf="flow.child && flow.child.length">
+									<li *ngFor="let subflow of flow.child; let index = index">
+										{{index}} -> {{subflow.name}} {{subflow.result}} {{subflow.state}} {{subflow.duration}}ms
+										<ul *ngIf="subflow.child && subflow.child.length">
+												<li *ngFor="let subsubflow of subflow.child; let index = index">
+													{{index}} -> {{subsubflow.name}} {{subsubflow.result}} {{subsubflow.state}} {{subsubflow.duration}}ms
+												</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
 						<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
 
 					</mat-expansion-panel>
