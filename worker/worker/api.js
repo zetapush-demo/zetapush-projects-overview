@@ -44,6 +44,6 @@ function merge_data(github, jenkins)
 				data[tab[i].name] = res[i];
 		});
 	// merge_data(data.github, data.jenkins);
-	console.log(data);
+	console.log(data.jenkins[0]);
 })();
 */
