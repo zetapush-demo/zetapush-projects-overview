@@ -9,10 +9,11 @@ const api_url = 'blue/rest/organizations/jenkins/pipelines/ZetaPush%20Github/pip
 async function get_repo_urls(jenkins_url)
 {
 	const res = await axios.get(`${jenkins_url}/${api_url}`).catch(err => {
-		if (err.response.status != 200) {
+		if (err && err.response && err.response.status != 200)
 			console.log(err.response.status, err.response.statusText);
-			process.exit(1);
-		}
+		else
+			console.log(err.errno, require('path').basename(__filename));
+		process.exit(1);
 	});
 
 	return res.data.map(x => `${jenkins_url}${x._links.self.href}`);

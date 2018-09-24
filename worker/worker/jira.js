@@ -7,12 +7,13 @@ async function get_board_list(project_list, config)
 {
 	var boards_id = [];
 	var res = await axios.get(`${api}/board/`, config).catch(err => {
-		if (err.response.status != 200) {
+		if (err && err.response && err.response.status != 200) {
 			console.error(err.response.status, err.response.statusText);
 			console.error('Bad credentials => .zetarc =>');
 			console.error('jira: {\n\t email || password => .zetarc');
-			process.exit(1);
-		}
+		} else
+			console.log(err.errno, require('path').basename(__filename));
+		process.exit(1);
 	});
 
 	res = res.data.values;

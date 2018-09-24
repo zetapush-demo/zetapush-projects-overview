@@ -9,13 +9,14 @@ async function concat_repo_name(repos, config)
 
 	for (var i = 0; i < repos.length; i++) {
 		const tmp = await axios.get(`https://api.github.com/orgs/${repos[i].owner}/repos`, config).catch(err => {
-			if (err.response.status != 200) {
+			if (err && err.response && err.response.status != 200) {
 				console.error(err.response.status, err.response.statusText);
 				console.error(`Something bad in .zetarc, this github account/organization doesn't exist, or bad credentials =>\n\tgithub:`);
 				console.error(`\t\trepos: [{\n\t\t\tname: "${JSON.stringify(repos[i])}"`);
 				console.error(`\t\t}]\n\t}\n}`);
-				process.exit(1);
-			}
+			} else
+				console.log(err.errno, require('path').basename(__filename));
+			process.exit(1);
 		});
 		res = res.concat(tmp.data);
 	}
