@@ -32,7 +32,7 @@ function merge_data(github, jenkins)
 (async function()
 {
 	var data = {};
-	var tab = [
+	const tab = [
 		// { name: 'github', func: require('./github')() },
 		{ name: 'jenkins', func: require('./jenkins')() },
 		// { name: 'jira', func: require('./jira')() }
@@ -44,6 +44,6 @@ function merge_data(github, jenkins)
 				data[tab[i].name] = res[i];
 		});
 	// merge_data(data.github, data.jenkins);
-	console.log(data.jenkins[0].branches[12].flow[4]);
+	console.log(data);
 })();
 */
