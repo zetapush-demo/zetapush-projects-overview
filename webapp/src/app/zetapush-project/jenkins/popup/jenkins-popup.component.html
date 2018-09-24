@@ -15,19 +15,19 @@
 		<ul>
 			<li *ngFor="let flow of data.branch.flow">
 				<mat-icon style="color: green" *ngIf="flow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-				<mat-icon color="warn" *ngIf="flow.result === 'FAILURE' || flow.result === 'ABORTED'"> cancel </mat-icon>
+				<mat-icon color="warn" *ngIf="flow.result !== 'SUCCESS' && flow.result !== 'UNKNOWN'"> cancel </mat-icon>
 				<mat-icon color="primary" *ngIf="flow.state === 'RUNNING'"> refresh </mat-icon>
 				{{flow.name}} {{flow.duration}}ms
 				<ul *ngIf="flow.child && flow.child.length">
 					<li *ngFor="let subflow of flow.child">
 						<mat-icon style="color: green" *ngIf="subflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-						<mat-icon color="warn" *ngIf="subflow.result === 'FAILURE' || subflow.result === 'ABORTED'"> cancel </mat-icon>
+						<mat-icon color="warn" *ngIf="subflow.result !== 'SUCCESS' && subflow.result !== 'UNKNOWN'"> cancel </mat-icon>
 						<mat-icon color="primary" *ngIf="subflow.state === 'RUNNING'"> refresh </mat-icon>
 						{{subflow.name}} {{subflow.duration}}ms
 						<ul *ngIf="subflow.child && subflow.child.length">
 							<li *ngFor="let subsubflow of subflow.child">
 								<mat-icon style="color: green" *ngIf="subsubflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-								<mat-icon color="warn" *ngIf="subsubflow.result === 'FAILURE' || subsubflow.result === 'ABORTED'"> cancel </mat-icon>
+								<mat-icon color="warn" *ngIf="subsubflow.result !== 'SUCCESS' && subsubflow.result !== 'UNKNOWN'"> cancel </mat-icon>
 								<mat-icon color="primary" *ngIf="subsubflow.state === 'RUNNING'"> refresh </mat-icon>
 								{{subsubflow.name}} {{subsubflow.duration}}ms
 							</li>
