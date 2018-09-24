@@ -60,10 +60,10 @@ function build_flow_tree(arr)
 			tree.push(mappedArr[id]);
 	tree_cleaner(tree);
 	tree_flatter(tree);
-	return tree//.sort((elem1, elem2) => elem1.id - elem2.id);
+	return tree.sort((elem1, elem2) => elem1.id - elem2.id);
 }
 
-async function get_branch_flow(url, name, proj)
+async function get_branch_flow(url)
 {
 	var res = await axios.get(url);
 
@@ -77,45 +77,36 @@ async function get_branch_flow(url, name, proj)
 			id: x.id,
 			parent: x.firstParent
 		}
-	});//.filter(x => x.state !== 'SKIPPED' && x.type !== 'PARALLEL');
-
-	// console.log();
-	// console.log();
-	// console.log(proj, name, res);
-	// console.log();
-	// console.log();
-
+	});
 	return build_flow_tree(res);
 }
 
-function get_tree_lenght(obj)
+function get_tree_lenght(tree)
 {
 	var depth = 0;
 
-	if (obj.child)
-		for (var i = 0; i < obj.child.length; i++) {
-			const tmp = get_tree_lenght(obj.child[i]);
-
-			if (tmp > depth)
-				depth = tmp;
-		}
+	for (var i = 0; i < tree.length; i++)
+		if (tree[i].child)
+			for (var j = 0; j < tree[i].child.length; j++)
+				depth += get_tree_lenght(tree[i].child[j]);
+		else
+			depth++;
 	return depth + 1;
 }
 
-function get_tree_max_lenght_until(obj, field, pattern)
+function get_tree_max_lenght_until(tree, field, value)
 {
 	var depth = 0;
 
-	if (obj[field] !== pattern)
-		return depth;
-	if (obj.child)
-		for (var i = 0; i < obj.child.length; i++) {
-			const tmp = get_tree_max_lenght_until(obj.child[i], field, pattern);
-
-			if (tmp > depth)
-				depth = tmp;
-		}
-	return depth + 1;
+	for (var i = 0; i < tree.length; i++) {
+		if ((!tree[i].child || tree[i].child.length === 0) && tree[i][field] !== value)
+			return depth;
+		if (tree[i].child)
+				depth += get_tree_max_lenght_until(tree[i].child, field, value);
+		else
+			depth++;
+	}
+	return depth;
 }
 
 function get_icon_by_flow(flow)
@@ -138,7 +129,7 @@ async function get_branch_array(local_url, branch_url, project_name)
 	for (var i = 0; i < res.data.length; i++) {
 		const name = res.data[i].name;
 		const id = res.data[i].latestRun.id;
-		const flow = await get_branch_flow(`${branch_url}/${name}/runs/${id}/nodes`, name, project_name);
+		const flow = await get_branch_flow(`${branch_url}/${name}/runs/${id}/nodes`);
 
 		var branch = {
 			name: res.data[i].displayName,
