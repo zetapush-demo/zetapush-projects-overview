@@ -7,6 +7,10 @@
 	margin-bottom: 50px;
 }
 
+.popup ul {
+	text-align: justify;
+}
+
 .title {
 	font-size: 2em;
 }
