@@ -25,7 +25,7 @@ export class JenkinsComponent implements OnInit {
 
 		if (!this.is_dialog_open) {
 			dialog_ref = this.dialog.open(JenkinsPopupComponent, {
-				width: '500px',
+				width: '600px',
 				data: branch_new_build
 			});
 			this.is_dialog_open = true;
