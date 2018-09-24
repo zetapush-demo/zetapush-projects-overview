@@ -9,6 +9,8 @@ import { MatDialogModule, MatButtonModule, MatSelectModule} from '@angular/mater
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
@@ -36,6 +38,7 @@ import { AppRoutingModule } from './app-routing.module';
 		MatCardModule,
 		MatProgressBarModule,
 		MatProgressSpinnerModule,
+		MatIconModule,
 		FlexLayoutModule
 	],
 	declarations: [
@@ -48,7 +51,10 @@ import { AppRoutingModule } from './app-routing.module';
 		JiraComponent,
 	],
 	providers: [],
-	entryComponents: [GithubPopupComponent, JenkinsPopupComponent],
+	entryComponents: [
+		GithubPopupComponent,
+		JenkinsPopupComponent
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule {}
