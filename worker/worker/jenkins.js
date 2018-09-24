@@ -102,11 +102,11 @@ function get_tree_max_lenght_until(tree, field, value)
 		if ((!tree[i].child || tree[i].child.length === 0) && tree[i][field] !== value)
 			return depth;
 		if (tree[i].child)
-				depth += get_tree_max_lenght_until(tree[i].child, field, value);
+				depth += get_tree_max_lenght_until(tree[i].child, field, value) - 1;
 		else
 			depth++;
 	}
-	return depth;
+	return depth + 1;
 }
 
 function get_icon_by_flow(flow)
