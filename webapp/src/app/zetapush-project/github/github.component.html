@@ -20,7 +20,7 @@
 
 		<div>
 			<mat-card fxFlex="50%">
-				<mat-card-title style="text-align: center"> Issues </mat-card-title>
+				<mat-card-title class="title"> Issues </mat-card-title>
 				<mat-accordion>
 					<mat-expansion-panel *ngFor="let issue of repo.issues">
 
@@ -62,7 +62,7 @@
 			</mat-card>
 
 			<mat-card fxFlex="50%">
-				<mat-card-title style="text-align: center"> Pull Request </mat-card-title>
+				<mat-card-title class="title"> Pull Request </mat-card-title>
 				<mat-accordion>
 					<mat-expansion-panel *ngFor="let pull_request of repo.pull_request">
 
@@ -79,70 +79,64 @@
 							</mat-panel-title>
 						</mat-expansion-panel-header>
 
-						<div>
-							<mat-card fxFlex="50%">
-								<div *ngIf="pull_request.user" class="item_info">
-									<a href="{{pull_request.user.url}}">
-										<img src="{{pull_request.user.avatar}}" alt="img not found">
-									</a>
-									<a class="username" href="{{pull_request.user.url}}">
-										{{pull_request.user.name}}
-									</a>
-									<p> wants to merge {{pull_request.commits}} into <span class="commit-ref">{{pull_request.base}} </span> from
-										<span class="commit-ref"> {{pull_request.head}} </span> at {{pull_request.created}} </p>
-								</div>
+						<div *ngIf="pull_request.user" class="item_info">
+							<a href="{{pull_request.user.url}}">
+								<img src="{{pull_request.user.avatar}}" alt="img not found">
+							</a>
+							<a class="username" href="{{pull_request.user.url}}">
+								{{pull_request.user.name}}
+							</a>
+							<p> wants to merge {{pull_request.commits}} into <span class="commit-ref">{{pull_request.base}} </span> from
+								<a href="{{pull_request.build.github_url}}" class="commit-ref"> {{pull_request.head}} </a> <br> at {{pull_request.created}} </p>
+						</div>
 
-								<ul class="item_info" *ngIf="pull_request.assignees && pull_request.assignees.length">
-									Reviewers :
-									<li class="username" *ngFor="let reviewer of pull_request.assignees">
-										<p> {{reviewer.login}} </p>
-										<img src="{{reviewer.avatar_url}}" alt="img not found">
-									</li>
-								</ul>
-								<div class="body">
-									<markdown class="markdown-body" [data]="pull_request.body"></markdown>
-								</div>
-							</mat-card>
+						<ul class="item_info" *ngIf="pull_request.assignees && pull_request.assignees.length">
+							Reviewers :
+							<li class="username" *ngFor="let reviewer of pull_request.assignees">
+								<p> {{reviewer.login}} </p>
+								<img src="{{reviewer.avatar_url}}" alt="img not found">
+							</li>
+						</ul>
 
-							<mat-card *ngIf="pull_request.build" fxFlex="50%">
-								<div class="item_info">
-									<a href="{{pull_request.build.url}}">
-										<img src="{{pull_request.build.icon}}" alt="img not found" />
-									</a>
-									<i> {{pull_request.build.result}} </i>
-									<span style="flex: 1 1 auto;"> </span>
-									<p *ngIf="!pull_request.build.in_progress"> {{pull_request.build.time.duration}} - {{pull_request.build.time.end}} </p>
-								</div>
+						<div class="jenkins_build">
+							<div class="item_info">
+								<a href="{{pull_request.build.url}}">
+									<img src="{{pull_request.build.icon}}" alt="img not found" />
+								</a>
+								<i> {{pull_request.build.result}} </i>
+								<b> Last build </b>
+								<span style="flex: 1 1 auto;"> </span>
+								<p *ngIf="!pull_request.build.in_progress"> {{pull_request.build.time.duration}} - {{pull_request.build.time.end}} </p>
+							</div>
 
-								<mat-card-content>
-									<a href="{{pull_request.build.github_url}}"> {{pull_request.build.github_url}} </a>
-									<ul>
-										<li *ngFor="let flow of pull_request.build.flow">
-											<mat-icon style="color: green" *ngIf="flow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-											<mat-icon color="warn" *ngIf="flow.result !== 'SUCCESS' && flow.result !== 'UNKNOWN'"> cancel </mat-icon>
-											<mat-icon color="primary" *ngIf="flow.state === 'RUNNING'"> refresh </mat-icon>
-											{{flow.name}} {{flow.duration}}ms
-											<ul *ngIf="flow.child && flow.child.length">
-												<li *ngFor="let subflow of flow.child">
-													<mat-icon style="color: green" *ngIf="subflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-													<mat-icon color="warn" *ngIf="subflow.result !== 'SUCCESS' && subflow.result !== 'UNKNOWN'"> cancel </mat-icon>
-													<mat-icon color="primary" *ngIf="subflow.state === 'RUNNING'"> refresh </mat-icon>
-													{{subflow.name}} {{subflow.duration}}ms
-													<ul *ngIf="subflow.child && subflow.child.length">
-														<li *ngFor="let subsubflow of subflow.child">
-															<mat-icon style="color: green" *ngIf="subsubflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-															<mat-icon color="warn" *ngIf="subsubflow.result !== 'SUCCESS' && subsubflow.result !== 'UNKNOWN'"> cancel </mat-icon>
-															<mat-icon color="primary" *ngIf="subsubflow.state === 'RUNNING'"> refresh </mat-icon>
-															{{subsubflow.name}} {{subsubflow.duration}}ms
-														</li>
-													</ul>
+							<ul>
+								<li *ngFor="let flow of pull_request.build.flow">
+									<mat-icon style="color: green" *ngIf="flow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
+									<mat-icon color="warn" *ngIf="flow.result !== 'SUCCESS' && flow.result !== 'UNKNOWN'"> cancel </mat-icon>
+									<mat-icon color="primary" *ngIf="flow.state === 'RUNNING'"> refresh </mat-icon>
+									{{flow.name}} {{flow.duration}}ms
+									<ul *ngIf="flow.child && flow.child.length">
+										<li *ngFor="let subflow of flow.child">
+											<mat-icon style="color: green" *ngIf="subflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
+											<mat-icon color="warn" *ngIf="subflow.result !== 'SUCCESS' && subflow.result !== 'UNKNOWN'"> cancel </mat-icon>
+											<mat-icon color="primary" *ngIf="subflow.state === 'RUNNING'"> refresh </mat-icon>
+											{{subflow.name}} {{subflow.duration}}ms
+											<ul *ngIf="subflow.child && subflow.child.length">
+												<li *ngFor="let subsubflow of subflow.child">
+													<mat-icon style="color: green" *ngIf="subsubflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
+													<mat-icon color="warn" *ngIf="subsubflow.result !== 'SUCCESS' && subsubflow.result !== 'UNKNOWN'"> cancel </mat-icon>
+													<mat-icon color="primary" *ngIf="subsubflow.state === 'RUNNING'"> refresh </mat-icon>
+													{{subsubflow.name}} {{subsubflow.duration}}ms
 												</li>
 											</ul>
 										</li>
 									</ul>
-								</mat-card-content>
+								</li>
+							</ul>
+						</div>
 
-							</mat-card>
+						<div class="body">
+							<markdown class="markdown-body" [data]="pull_request.body"></markdown>
 						</div>
 
 					</mat-expansion-panel>

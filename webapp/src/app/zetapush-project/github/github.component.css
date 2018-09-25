@@ -48,3 +48,13 @@ img {
 	background-color: #eff7ff;
 	border-radius: 3px;
 }
+
+.jenkins_build {
+	border: solid;
+	border-radius: 4px;
+}
+
+.jenkins_build b {
+	text-align: center;
+	font-size: 1em;
+}
