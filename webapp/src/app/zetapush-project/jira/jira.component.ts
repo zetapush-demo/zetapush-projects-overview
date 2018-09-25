@@ -28,7 +28,7 @@ export class JiraComponent implements OnInit {
 		if (!tmp)
 			return;
 		this.on_get_data(tmp['jira']);
-		this.zetapush_service.get_data().subscribe(
+		this.zetapush_service.observer.subscribe(
 			(data: DataStruct) => this.on_get_data(data.jira)
 		);
 	}

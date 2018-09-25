@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscriber } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { SmartClient, ProxyService } from '@zetapush/client';
 import { Messaging } from '@zetapush/platform-legacy/lib/';
@@ -124,17 +124,10 @@ export class ZetapushProjectService {
 	});
 	api: ProxyService = this.client.createProxyTaskService();
 	data: DataStruct;
-	obs: Observable<DataStruct>;
-	observer: Subscriber<DataStruct>;
+	observer: Subject<DataStruct> = new Subject();
 	email = 'pacome.francon@zetapush.com';
 	login = 'angular';
 	password = 'angular';
-
-	init_observable() {
-		this.obs = new Observable((observer) => {
-			this.observer = observer;
-		});
-	}
 
 	async get_last_data() {
 		return await this.api.get_last_data().catch(err => console.log(err));
@@ -167,9 +160,5 @@ export class ZetapushProjectService {
 		await this.client.connect().catch(err => console.log(err));
 		if (!this.client.isStronglyAuthenticated())
 			await this.smart_connect().catch(err => console.log(err));
-	}
-
-	get_data(): Observable<DataStruct> {
-		return this.obs;
 	}
 }

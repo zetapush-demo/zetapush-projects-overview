@@ -15,7 +15,6 @@ class Resolver implements Resolve<any> {
 	) {}
 
 	async resolve() {
-		this.zetapush_service.init_observable();
 		await this.zetapush_service.connect();
 		await this.zetapush_service.listen();
 	}

@@ -142,7 +142,7 @@ export class GithubComponent implements OnInit {
 		if (!tmp)
 			return;
 		this.on_get_data(tmp['github']);
-		this.zetapush_service.get_data().subscribe(
+		this.zetapush_service.observer.subscribe(
 			(data: DataStruct) => this.on_get_data(data.github)
 		);
 	}
