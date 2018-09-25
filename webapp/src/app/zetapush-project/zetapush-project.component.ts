@@ -9,6 +9,8 @@ import { ZetapushProjectService } from './zetapush-project.service';
 })
 export class ZetapushProjectComponent implements OnInit {
 
+	ready = false;
+
 	constructor(
 		private zetapush_service: ZetapushProjectService
 	) { }
@@ -16,5 +18,6 @@ export class ZetapushProjectComponent implements OnInit {
 	async ngOnInit() {
 		await this.zetapush_service.connect();
 		await this.zetapush_service.listen();
+		this.ready = true;
 	}
 }

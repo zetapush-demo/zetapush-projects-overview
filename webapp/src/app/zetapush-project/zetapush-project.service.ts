@@ -120,7 +120,7 @@ export class ZetapushProjectService {
 
 	client = new SmartClient({
 		platformUrl: 'https://celtia.zetapush.com/zbo/pub/business',
-		appName: 'oJjkJCOM'
+		appName: 'NVyT51rX'
 	});
 	api: ProxyService = this.client.createProxyTaskService();
 	data: DataStruct;

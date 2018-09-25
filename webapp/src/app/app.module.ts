@@ -21,13 +21,11 @@ import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
 import { JenkinsPopupComponent } from './zetapush-project/jenkins/popup/jenkins-popup.component';
 import { JiraComponent } from './zetapush-project/jira/jira.component';
 
-import { AppRoutingModule } from './app-routing.module';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 
 @NgModule({
 	imports: [
 		BrowserModule,
-		AppRoutingModule,
 		HttpClientModule,
 		MarkdownModule.forRoot(),
 		BrowserAnimationsModule,
@@ -50,7 +48,7 @@ import { MonitoringComponent } from './monitoring/monitoring.component';
 		JenkinsComponent,
 		JenkinsPopupComponent,
 		JiraComponent,
-		MonitoringComponent,
+		MonitoringComponent
 	],
 	providers: [],
 	entryComponents: [

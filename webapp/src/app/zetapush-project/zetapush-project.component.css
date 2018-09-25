@@ -1,6 +1,5 @@
 :host {
 	display: block;
-	position: absolute;
 	height: calc(100% - 100px);
 	width: 100%;
 	top: 100px;

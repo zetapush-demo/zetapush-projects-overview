@@ -19,7 +19,6 @@ export class MonitoringComponent implements OnInit {
 		const elements: any = document.querySelectorAll('[zeta-admin]');
 
 		for (var i = 0; i < elements.length; i++) {
-			console.log('mdr');
 			var url = elements[i].parentNode.children[1].firstChild.href;
 
 			elements[i].innerHTML = `<a href="${url}browse/" target="_blank"> Open </a>`;
