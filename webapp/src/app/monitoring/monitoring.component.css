@@ -1,0 +1,61 @@
+body {
+	font-family: Helvetica;
+	font-size:16px;
+}
+table {
+	margin-left: auto;
+	margin-right: auto;
+	width:1300px;
+}
+td,th {
+        padding:5px 15px;
+}
+
+thead tr {
+        background-color: #AAA
+}
+
+tbody:nth-child(odd) {
+        background-color: #CCC
+}
+
+tbody:nth-child(even) {
+        background-color: #EEE
+}
+
+.zf, .z, .zt {
+        width:30px;
+}
+
+.zu {
+        width:240px;
+}
+
+.zv {
+        width:250px;
+}
+
+.zm {
+        width:220px;
+}
+
+.zt {
+        background-color: green
+}
+
+.zf {
+        background-color: grey
+}
+
+.ze {
+        background-color: red
+}
+
+.zw {
+        background-color: orange
+}
+
+a {
+        text-decoration: none;color:darkblue;
+}
+

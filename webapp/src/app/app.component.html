@@ -1,8 +1,15 @@
 <header id="header">
-    <a href="/">
-        <img class="home_button" src="https://zetapush.com/assets/img/zt_logo.png" height="80">
-    </a>
-    <h1> {{title}} </h1>
+	<a href="/">
+		<img class="home_button" src="https://zetapush.com/assets/img/zt_logo.png" height="80">
+	</a>
+	<h1> {{title}} </h1>
 </header>
 
-<router-outlet></router-outlet>
+<mat-tab-group class="tabs">
+	<mat-tab label="zetapush-project">
+		<app-zetapush-project></app-zetapush-project>
+	</mat-tab>
+	<mat-tab label="monitoring">
+		<app-monitoring></app-monitoring>
+	</mat-tab>
+</mat-tab-group>
