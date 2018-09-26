@@ -9,6 +9,7 @@ export class MonitoringComponent implements OnInit {
 
 	constructor() { }
 
+	displayedColumns = ['name', 'url'];
 	machines = [
 		{
 			env: "dev",

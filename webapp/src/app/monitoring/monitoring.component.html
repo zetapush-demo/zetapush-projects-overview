@@ -1,15 +1,23 @@
 <button mat-button (click)="refreshStatus();" > Refresh status </button>
 
-<mat-grid-list cols="{{machines.length / 2}}" rowHeight="4:3">
+<mat-grid-list cols="4" rowHeight="fit">
 	<mat-grid-tile *ngFor="let machine of machines">
-		<mat-grid-tile-header>
-			<p> {{machine.env}} </p>
-		</mat-grid-tile-header>
-		<ul class="machine_list">
-			<li *ngFor="let submachine of machine.list" [ngStyle]="{'background-color': submachine.color}">
-				<span *ngIf="submachine.status !== 200"> {{submachine.status}} </span>
-				<a href="{{submachine.url}}" target="_blank"> {{submachine.name}} </a>
-			</li>
-		</ul>
+		<mat-grid-tile-header> {{machine.env}} </mat-grid-tile-header>
+		<table mat-table [dataSource]="machine.list">
+
+			<ng-container matColumnDef="name">
+				<th mat-header-cell *matHeaderCellDef> Machine description </th>
+				<td mat-cell *matCellDef="let element"> {{element.name}} </td>
+			</ng-container>
+
+			<ng-container matColumnDef="url">
+				<th mat-header-cell *matHeaderCellDef> Url </th>
+				<td mat-cell *matCellDef="let element"> {{element.url}} </td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		</table>
+
 	</mat-grid-tile>
 </mat-grid-list>
