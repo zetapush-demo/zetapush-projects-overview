@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTableModule } from '@angular/material/table';
 
 import { AppComponent } from './app.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
@@ -41,7 +42,8 @@ import { JiraComponent } from './zetapush-project/jira/jira.component';
 		MatProgressSpinnerModule,
 		MatIconModule,
 		MatButtonModule,
-		MatGridListModule
+		MatGridListModule,
+		MatTableModule
 	],
 	declarations: [
 		AppComponent,
