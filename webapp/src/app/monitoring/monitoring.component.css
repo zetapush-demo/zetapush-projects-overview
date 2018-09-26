@@ -1,7 +1,17 @@
-mat-grid-tile {
+mat-grid-tile, table {
+	/* background: linear-gradient(0.25turn, #80cd3d 0%, #1db6f1 25%, #f1452a 50%, #fbc81e 75%); */
 	background: lightblue;
 }
 
-.table {
-	margin-top: 40px;
+table {
+	margin: 50px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+table th, td {
+	text-align: center;
+	padding: 20px;
 }

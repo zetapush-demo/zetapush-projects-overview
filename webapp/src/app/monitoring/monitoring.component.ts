@@ -9,7 +9,7 @@ export class MonitoringComponent implements OnInit {
 
 	constructor() { }
 
-	displayedColumns = ['name', 'url'];
+	displayedColumns = ['name', 'status', 'url'];
 	machines = [
 		{
 			env: "dev",
@@ -202,11 +202,10 @@ export class MonitoringComponent implements OnInit {
 	callback(xhr, machine) {
 		return () => {
 			if (xhr.readyState == 4) {
-				if (xhr.status !== 200) {
-					console.log(`status : ${xhr.status} - ${machine.url}`);
+				if (xhr.status !== 200)
 					machine['color'] = 'red';
-				} else
-					machine['color'] = 'none';
+				else
+					machine['color'] = 'green';
 				machine['status'] = xhr.status;
 			}
 		};
@@ -217,6 +216,7 @@ export class MonitoringComponent implements OnInit {
 			machine.list.forEach(machine => {
 				const xhr = new XMLHttpRequest();
 
+				machine['color'] = 'orange';
 				xhr.onreadystatechange = this.callback(xhr, machine);
 				xhr.open('GET', machine.url, true);
 				xhr.send(null);
