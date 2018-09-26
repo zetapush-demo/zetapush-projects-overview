@@ -195,18 +195,7 @@ export class MonitoringComponent implements OnInit {
 	];
 
 	ngOnInit() {
-		this.adminLinks();
 		this.refreshStatus();
-	}
-
-	adminLinks() {
-		const elements: any = document.querySelectorAll('[zeta-admin]');
-
-		for (var i = 0; i < elements.length; i++) {
-			var url = elements[i].parentNode.children[1].firstChild.href;
-
-			elements[i].innerHTML = `<a href="${url}browse/" target="_blank"> Open </a>`;
-		}
 	}
 
 	callback(xhr, machine) {
