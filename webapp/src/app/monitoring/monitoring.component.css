@@ -2,60 +2,70 @@ body {
 	font-family: Helvetica;
 	font-size:16px;
 }
+
 table {
 	margin-left: auto;
 	margin-right: auto;
 	width:1300px;
 }
+
 td,th {
-        padding:5px 15px;
+	padding:5px 15px;
 }
 
 thead tr {
-        background-color: #AAA
+	background-color: #AAA
 }
 
 tbody:nth-child(odd) {
-        background-color: #CCC
+	background-color: #CCC
 }
 
 tbody:nth-child(even) {
-        background-color: #EEE
+	background-color: #EEE
 }
 
 .zf, .z, .zt {
-        width:30px;
+	width:30px;
 }
 
 .zu {
-        width:240px;
+	width:240px;
 }
 
 .zv {
-        width:250px;
+	width:250px;
 }
 
 .zm {
-        width:220px;
+	width:220px;
 }
 
 .zt {
-        background-color: green
+	background-color: green
 }
 
 .zf {
-        background-color: grey
+	background-color: grey
 }
 
 .ze {
-        background-color: red
+	background-color: red
 }
 
 .zw {
-        background-color: orange
+	background-color: orange
 }
 
 a {
-        text-decoration: none;color:darkblue;
+	text-decoration: none;
+	color:darkblue;
 }
 
+mat-grid-tile {
+	background: lightblue;
+}
+
+.machine_list {
+	margin-top: 40px;
+}
