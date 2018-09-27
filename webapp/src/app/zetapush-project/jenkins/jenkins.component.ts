@@ -72,7 +72,7 @@ export class JenkinsComponent implements OnInit {
 		this.paginator_branches({
 			pageIndex: 0,
 			length: tmp[0].branches.length,
-			pageSize: 5,
+			pageSize: 10,
 		}, 0);
 		const branch_new_build = this.get_new_data(this.data);
 		if (branch_new_build !== null)
