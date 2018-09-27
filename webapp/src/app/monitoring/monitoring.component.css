@@ -1,17 +1,34 @@
-mat-grid-tile, table {
-	/* background: linear-gradient(0.25turn, #80cd3d 0%, #1db6f1 25%, #f1452a 50%, #fbc81e 75%); */
-	background: lightblue;
+button {
+	margin: 20px 10px;
+	padding: 20px 10px;
+	width: calc(100% - 20px);
 }
 
-table {
-	margin: 50px;
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
+mat-card {
+	margin: 8px;
+	min-height: 300px;
 }
 
-table th, td {
-	text-align: center;
-	padding: 20px;
+mat-card-header {
+	margin: -24px -24px 0px -24px !important;
+	color: white;
+	padding: 1rem 0 !important;
+	background: #145e79 !important;
+}
+
+mat-card-content{
+	margin: 0 -24px !important;
+}
+
+mat-table {
+	width: 100% !important;
+}
+
+mat-table mat-cell, mat-header-cell {
+	justify-content: center;
+	padding: 0 !important;
+}
+
+mat-table mat-header-cell {
+	color: #29A8D6;
 }

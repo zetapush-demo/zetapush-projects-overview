@@ -15,6 +15,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { CdkTableModule } from '@angular/cdk/table'
 
 import { AppComponent } from './app.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
@@ -43,7 +46,9 @@ import { JiraComponent } from './zetapush-project/jira/jira.component';
 		MatIconModule,
 		MatButtonModule,
 		MatGridListModule,
-		MatTableModule
+		MatTableModule,
+		MatTooltipModule,
+		CdkTableModule
 	],
 	declarations: [
 		AppComponent,

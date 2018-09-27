@@ -9,7 +9,7 @@ export class MonitoringComponent implements OnInit {
 
 	constructor() { }
 
-	displayedColumns = ['name', 'status', 'url'];
+	displayedColumns = ['name', 'status'];
 	machines = [
 		{
 			env: "dev",
@@ -203,9 +203,9 @@ export class MonitoringComponent implements OnInit {
 		return () => {
 			if (xhr.readyState == 4) {
 				if (xhr.status !== 200)
-					machine['color'] = 'red';
+					machine['color'] = '#f15b3e';
 				else
-					machine['color'] = 'green';
+					machine['color'] = '#86c65b';
 				machine['status'] = xhr.status;
 			}
 		};

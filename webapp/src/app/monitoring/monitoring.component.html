@@ -1,30 +1,31 @@
-<button mat-button (click)="refreshStatus();" > Refresh status </button>
+<button mat-flat-button color="warn" (click)="refreshStatus();">
+	<mat-icon> refresh </mat-icon>
+</button>
 
-<mat-grid-list cols="4">
-	<mat-grid-tile *ngFor="let machine of machines">
-		<mat-grid-tile-header> {{machine.env}} </mat-grid-tile-header>
-		<table mat-table [dataSource]="machine.list">
+<div fxLayout="row wrap">
+	<mat-card fxFlex="calc(50% - 16px)" fxFlex.gt-sm="calc(100%/3 - 16px)" fxFlex.gt-md="calc(25% - 16px)" fxFlex.gt-lg="calc(15% - 16px)" *ngFor="let machine of machines">
+		<mat-card-header> {{machine.env}} </mat-card-header>
+		<mat-card-content>
+			<mat-table [dataSource]="machine.list">
 
-			<ng-container matColumnDef="name">
-				<th mat-header-cell *matHeaderCellDef> Machine description </th>
-				<td mat-cell *matCellDef="let element"> {{element.name}} </td>
-			</ng-container>
+				<mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+				<mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
 
-			<ng-container matColumnDef="status">
-				<th mat-header-cell *matHeaderCellDef> Status </th>
-				<td mat-cell *matCellDef="let element" [ngStyle]="{'background-color': element.color}"> {{element.status}} </td>
-			</ng-container>
+				<ng-container cdkColumnDef="name">
+					<mat-header-cell *cdkHeaderCellDef> Machine description </mat-header-cell>
+					<mat-cell matTooltip="{{element.url}}" *cdkCellDef="let element">
+						<a href="{{element.url}}"> {{element.name}} </a>
+					</mat-cell>
+				</ng-container>
 
-			<ng-container matColumnDef="url">
-				<th mat-header-cell *matHeaderCellDef> Url </th>
-				<td mat-cell *matCellDef="let element">
-					<a href="{{element.url}}"> {{element.url}} </a>
-				</td>
-			</ng-container>
+				<ng-container cdkColumnDef="status">
+					<mat-header-cell *cdkHeaderCellDef> Status </mat-header-cell>
+					<mat-cell *cdkCellDef="let element" [ngStyle]="{'background-color': element.color}">
+						{{element.status}}
+					</mat-cell>
+				</ng-container>
 
-			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-		</table>
-
-	</mat-grid-tile>
-</mat-grid-list>
+			</mat-table>
+		</mat-card-content>
+	</mat-card>
+</div>
