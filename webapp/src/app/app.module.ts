@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MarkdownModule } from 'ngx-markdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { CdkTableModule } from '@angular/cdk/table'
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule} from '@angular/material/select';
@@ -17,8 +18,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
-import { CdkTableModule } from '@angular/cdk/table'
 
 import { AppComponent } from './app.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
@@ -36,6 +35,7 @@ import { JiraComponent } from './zetapush-project/jira/jira.component';
 		MarkdownModule.forRoot(),
 		BrowserAnimationsModule,
 		FlexLayoutModule,
+		CdkTableModule,
 		MatExpansionModule,
 		MatTabsModule,
 		MatDialogModule,
@@ -49,7 +49,6 @@ import { JiraComponent } from './zetapush-project/jira/jira.component';
 		MatGridListModule,
 		MatTableModule,
 		MatTooltipModule,
-		CdkTableModule,
 		MatPaginatorModule
 	],
 	declarations: [
