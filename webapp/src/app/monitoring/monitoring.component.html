@@ -1,9 +1,10 @@
-<button mat-flat-button color="warn" (click)="refreshStatus();">
+<button mat-flat-button (click)="refreshStatus();">
 	<mat-icon> refresh </mat-icon>
+	REFRESH
 </button>
 
 <div fxLayout="row wrap">
-	<mat-card fxFlex="calc(50% - 16px)" fxFlex.gt-sm="calc(100%/3 - 16px)" fxFlex.gt-md="calc(25% - 16px)" fxFlex.gt-lg="calc(15% - 16px)" *ngFor="let machine of machines">
+	<mat-card fxFlex="calc(50% - 16px)" fxFlex.gt-sm="calc(40% - 16px)" fxFlex.gt-md="calc(30% - 16px)" fxFlex.gt-lg="calc(20% - 16px)" *ngFor="let machine of machines">
 		<mat-card-header> {{machine.env}} </mat-card-header>
 		<mat-card-content>
 			<mat-table [dataSource]="machine.list">
@@ -22,6 +23,13 @@
 					<mat-header-cell *cdkHeaderCellDef> Status </mat-header-cell>
 					<mat-cell *cdkCellDef="let element" [ngStyle]="{'background-color': element.color}">
 						{{element.status}}
+					</mat-cell>
+				</ng-container>
+
+				<ng-container cdkColumnDef="version">
+					<mat-header-cell *cdkHeaderCellDef> Version </mat-header-cell>
+					<mat-cell *cdkCellDef="let element">
+						{{element.version}}
 					</mat-cell>
 				</ng-container>
 

@@ -9,7 +9,7 @@ export class MonitoringComponent implements OnInit {
 
 	constructor() { }
 
-	displayedColumns = ['name', 'status'];
+	displayedColumns = ['name', 'status', 'version'];
 	machines = [
 		{
 			env: "dev",
@@ -195,13 +195,17 @@ export class MonitoringComponent implements OnInit {
 		}
 	];
 
-	callback(xhr, machine) {
+	callback(xhr: XMLHttpRequest, machine) {
 		return () => {
 			if (xhr.readyState == 4) {
 				if (xhr.status !== 200)
 					machine['color'] = '#f15b3e';
 				else
 					machine['color'] = '#86c65b';
+				if (xhr.responseText.startsWith('<'))
+					machine['version'] = xhr.responseText.split('>')[2].split('<')[0];
+				else
+					machine['version'] = xhr.responseText;
 				machine['status'] = xhr.status;
 			}
 		};
