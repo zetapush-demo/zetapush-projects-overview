@@ -16,6 +16,11 @@ a {
 	color: inherit;
 }
 
+body {
+	margin: 0;
+	overflow: hidden;
+}
+
 a:hover {
 	text-decoration: underline;
 }
