@@ -195,10 +195,6 @@ export class MonitoringComponent implements OnInit {
 		}
 	];
 
-	ngOnInit() {
-		this.refreshStatus();
-	}
-
 	callback(xhr, machine) {
 		return () => {
 			if (xhr.readyState == 4) {
@@ -222,5 +218,12 @@ export class MonitoringComponent implements OnInit {
 				xhr.send(null);
 			})
 		});
+	}
+
+	ngOnInit() {
+		this.refreshStatus();
+		setInterval(() => {
+			this.refreshStatus();
+		}, 1000 * 60 * 15); // 15 minutes
 	}
 }
