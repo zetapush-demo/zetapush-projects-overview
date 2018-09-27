@@ -65,7 +65,7 @@ export interface PullRequest extends GithubIssue {
 	head: string;
 }
 
-interface JenkinsBranch {
+export interface JenkinsBranch {
 	description: string;
 	icon: string;
 	name: string;

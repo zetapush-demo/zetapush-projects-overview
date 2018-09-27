@@ -124,27 +124,28 @@ function get_icon_by_flow(flow)
 async function get_branch_array(local_url, branch_url, project_name)
 {
 	var branches = [];
-	const res = await axios.get(branch_url);
+	var res = await axios.get(branch_url);
 
-	for (var i = 0; i < res.data.length; i++) {
-		const name = res.data[i].name;
-		const id = res.data[i].latestRun.id;
+	res = res.data.filter(x => !x.pullRequest);
+	for (var i = 0; i < res.length; i++) {
+		const name = res[i].name;
+		const id = res[i].latestRun.id;
 		const flow = await get_branch_flow(`${branch_url}/${name}/runs/${id}/nodes`);
 
 		var branch = {
-			name: res.data[i].displayName,
+			name: res[i].displayName,
 			time: {
-				start: parse_time(res.data[i].latestRun.startTime),
-				end: parse_time(res.data[i].latestRun.endTime),
-				duration: new Date(res.data[i].latestRun.durationInMillis).toISOString().substr(11, 8),
+				start: parse_time(res[i].latestRun.startTime),
+				end: parse_time(res[i].latestRun.endTime),
+				duration: new Date(res[i].latestRun.durationInMillis).toISOString().substr(11, 8),
 			},
 			url: `${local_url}/${blue_url}${project_name}/detail/${name}/${id}`,
 			icon: flow && get_icon_by_flow(flow),
-			result: res.data[i].latestRun.result,
-			state: res.data[i].latestRun.state,
-			runSummary: res.data[i].latestRun.runSummary,
-			github_url: res.data[i].branch.url,
-			pull_request: res.data[i].pullRequest,
+			result: res[i].latestRun.result,
+			state: res[i].latestRun.state,
+			runSummary: res[i].latestRun.runSummary,
+			github_url: res[i].branch.url,
+			pull_request: res[i].pullRequest,
 			flow: flow
 		};
 		if (branch.state === 'RUNNING') {
@@ -168,14 +169,12 @@ module.exports = async function()
 
 	for (var i = 0; i < repo_urls.length; i++) {
 		const res = await axios.get(repo_urls[i]);
-		const branches = await get_branch_array(jenkins.url, `${repo_urls[i]}branches`, res.data.name);
 
 		data.push({
 			name: res.data.displayName,
 			description: res.data.fullDisplayName,
 			url: `${jenkins.url}/${blue_url}${res.data.name}/activity`,
-			branches: branches.filter(x => !x.pull_request),
-			pull_request: branches.filter(x => x.pull_request)
+			branches: await get_branch_array(jenkins.url, `${repo_urls[i]}branches`, res.data.name)
 		});
 	}
 	return data.reverse();

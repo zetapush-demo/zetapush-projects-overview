@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { CdkTableModule } from '@angular/cdk/table'
 
@@ -48,7 +49,8 @@ import { JiraComponent } from './zetapush-project/jira/jira.component';
 		MatGridListModule,
 		MatTableModule,
 		MatTooltipModule,
-		CdkTableModule
+		CdkTableModule,
+		MatPaginatorModule
 	],
 	declarations: [
 		AppComponent,

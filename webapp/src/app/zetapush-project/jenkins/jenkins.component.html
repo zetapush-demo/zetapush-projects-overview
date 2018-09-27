@@ -1,6 +1,6 @@
 <mat-spinner id="undefined_data" *ngIf="!data || !data.length"> </mat-spinner>
-<mat-tab-group *ngIf="data && data.length">
-	<mat-tab *ngFor="let app of data" label="{{app.name}}">
+<mat-tab-group *ngIf="data && data.length" [selectedIndex]="index.value" (selectedIndexChange)="index.setValue($event)">
+	<mat-tab *ngFor="let app of data" [label]="app.name">
 		<div class="title">
 				<div>
 					<img src="https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/jenkins-redbg.png" alt="img not found" />
@@ -8,102 +8,52 @@
 				<a href="{{app.url}}"> {{app.name}} </a>
 		</div>
 
-		<div>
-			<mat-card fxFlex="50%">
-				<mat-card-title style="text-align: center"> Branches </mat-card-title>
-				<mat-accordion>
-					<mat-expansion-panel *ngFor="let branch of app.branches">
+		<mat-accordion>
+			<mat-paginator [length]="length[index.value]" [pageSize]="pageSize[index.value]" [pageSizeOptions]="[5, 10, 25, 100]"
+				(page)="paginator_branches($event, index.value)">
+			</mat-paginator>
+			<mat-expansion-panel *ngFor="let branch of app.branches">
 
-						<mat-expansion-panel-header>
-							<mat-panel-title fxLayout="row wrap">
-								<a href="{{branch.url}}">
-									<img src="{{branch.icon}}" alt="img not found" />
-								</a>
-								<i> {{branch.result}} </i>
-								<h4> {{branch.name}} </h4>
-								<span style="flex: 1 1 auto;"> </span>
-								<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
-							</mat-panel-title>
-						</mat-expansion-panel-header>
+				<mat-expansion-panel-header>
+					<mat-panel-title fxLayout="row wrap">
+						<a href="{{branch.url}}">
+							<img src="{{branch.icon}}" alt="img not found" />
+						</a>
+						<i> {{branch.result}} </i>
+						<h4> {{branch.name}} </h4>
+						<span style="flex: 1 1 auto;"> </span>
+						<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
+					</mat-panel-title>
+				</mat-expansion-panel-header>
 
-						<ul>
-							<li *ngFor="let flow of branch.flow">
-								<mat-icon style="color: green" *ngIf="flow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-								<mat-icon color="warn" *ngIf="flow.result !== 'SUCCESS' && flow.result !== 'UNKNOWN'"> cancel </mat-icon>
-								<mat-icon color="primary" *ngIf="flow.state === 'RUNNING'"> refresh </mat-icon>
-								{{flow.name}} {{flow.duration}}ms
-								<ul *ngIf="flow.child && flow.child.length">
-									<li *ngFor="let subflow of flow.child">
-										<mat-icon style="color: green" *ngIf="subflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-										<mat-icon color="warn" *ngIf="subflow.result !== 'SUCCESS' && subflow.result !== 'UNKNOWN'"> cancel </mat-icon>
-										<mat-icon color="primary" *ngIf="subflow.state === 'RUNNING'"> refresh </mat-icon>
-										{{subflow.name}} {{subflow.duration}}ms
-										<ul *ngIf="subflow.child && subflow.child.length">
-											<li *ngFor="let subsubflow of subflow.child">
-												<mat-icon style="color: green" *ngIf="subsubflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-												<mat-icon color="warn" *ngIf="subsubflow.result !== 'SUCCESS' && subsubflow.result !== 'UNKNOWN'"> cancel </mat-icon>
-												<mat-icon color="primary" *ngIf="subsubflow.state === 'RUNNING'"> refresh </mat-icon>
-												{{subsubflow.name}} {{subsubflow.duration}}ms
-											</li>
-										</ul>
+				<ul>
+					<li *ngFor="let flow of branch.flow">
+						<mat-icon style="color: green" *ngIf="flow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
+						<mat-icon color="warn" *ngIf="flow.result !== 'SUCCESS' && flow.result !== 'UNKNOWN'"> cancel </mat-icon>
+						<mat-icon color="primary" *ngIf="flow.state === 'RUNNING'"> refresh </mat-icon>
+						{{flow.name}} {{flow.duration}}ms
+						<ul *ngIf="flow.child && flow.child.length">
+							<li *ngFor="let subflow of flow.child">
+								<mat-icon style="color: green" *ngIf="subflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
+								<mat-icon color="warn" *ngIf="subflow.result !== 'SUCCESS' && subflow.result !== 'UNKNOWN'"> cancel </mat-icon>
+								<mat-icon color="primary" *ngIf="subflow.state === 'RUNNING'"> refresh </mat-icon>
+								{{subflow.name}} {{subflow.duration}}ms
+								<ul *ngIf="subflow.child && subflow.child.length">
+									<li *ngFor="let subsubflow of subflow.child">
+										<mat-icon style="color: green" *ngIf="subsubflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
+										<mat-icon color="warn" *ngIf="subsubflow.result !== 'SUCCESS' && subsubflow.result !== 'UNKNOWN'"> cancel </mat-icon>
+										<mat-icon color="primary" *ngIf="subsubflow.state === 'RUNNING'"> refresh </mat-icon>
+										{{subsubflow.name}} {{subsubflow.duration}}ms
 									</li>
 								</ul>
 							</li>
 						</ul>
-						<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
+					</li>
+				</ul>
+				<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
 
-					</mat-expansion-panel>
-				</mat-accordion>
-			</mat-card>
-
-			<mat-card fxFlex="50%">
-				<mat-card-title style="text-align: center"> Pull Request </mat-card-title>
-				<mat-accordion>
-					<mat-expansion-panel *ngFor="let branch of app.pull_request">
-
-						<mat-expansion-panel-header>
-							<mat-panel-title fxLayout="row wrap">
-								<a href="{{branch.url}}">
-									<img src="{{branch.icon}}" alt="img not found" />
-								</a>
-								<i> {{branch.result}} </i>
-								<h4> {{branch.name}} : {{branch.pull_request.title}}</h4>
-								<span style="flex: 1 1 auto;"> </span>
-								<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
-							</mat-panel-title>
-						</mat-expansion-panel-header>
-
-						<p> {{branch.pull_request.author}} </p>
-						<ul>
-							<li *ngFor="let flow of branch.flow">
-								<mat-icon style="color: green" *ngIf="flow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-								<mat-icon color="warn" *ngIf="flow.result !== 'SUCCESS' && flow.result !== 'UNKNOWN'"> cancel </mat-icon>
-								<mat-icon color="primary" *ngIf="flow.state === 'RUNNING'"> refresh </mat-icon>
-								{{flow.name}} {{flow.duration}}ms
-								<ul *ngIf="flow.child && flow.child.length">
-									<li *ngFor="let subflow of flow.child">
-										<mat-icon style="color: green" *ngIf="subflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-										<mat-icon color="warn" *ngIf="subflow.result !== 'SUCCESS' && subflow.result !== 'UNKNOWN'"> cancel </mat-icon>
-										<mat-icon color="primary" *ngIf="subflow.state === 'RUNNING'"> refresh </mat-icon>
-										{{subflow.name}} {{subflow.duration}}ms
-										<ul *ngIf="subflow.child && subflow.child.length">
-											<li *ngFor="let subsubflow of subflow.child">
-												<mat-icon style="color: green" *ngIf="subsubflow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
-												<mat-icon color="warn" *ngIf="subsubflow.result !== 'SUCCESS' && subsubflow.result !== 'UNKNOWN'"> cancel </mat-icon>
-												<mat-icon color="primary" *ngIf="subsubflow.state === 'RUNNING'"> refresh </mat-icon>
-												{{subsubflow.name}} {{subsubflow.duration}}ms
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
-						<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
-
-					</mat-expansion-panel>
-				</mat-accordion>
-			</mat-card>
-		</div>
+			</mat-expansion-panel>
+		</mat-accordion>
 
 	</mat-tab>
 </mat-tab-group>

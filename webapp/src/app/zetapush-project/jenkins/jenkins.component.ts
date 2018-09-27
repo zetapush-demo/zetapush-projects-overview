@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, PageEvent } from '@angular/material';
 
-import { ZetapushProjectService, DataStruct, Jenkins } from '../zetapush-project.service';
+import { ZetapushProjectService, DataStruct, Jenkins, JenkinsBranch } from '../zetapush-project.service';
 import { JenkinsPopupComponent } from './popup/jenkins-popup.component';
+import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-jenkins',
@@ -12,13 +13,28 @@ import { JenkinsPopupComponent } from './popup/jenkins-popup.component';
 export class JenkinsComponent implements OnInit {
 
 	data: Jenkins[];
+	branches_save: JenkinsBranch[][];
 
 	is_dialog_open = false;
+
+	index: FormControl = new FormControl(0);
+	length: number[] = [];
+	pageSize: number[] = [];
 
 	constructor(
 		private zetapush_service: ZetapushProjectService,
 		private dialog: MatDialog
 	) { }
+
+	paginator_branches(pageEvent: PageEvent, index: number) {
+		const data = this.data[index];
+
+		data.branches = JSON.parse(JSON.stringify(this.branches_save[index]));
+		data.branches = data.branches.filter((branch, index) => {
+			if (index > (pageEvent.pageIndex * pageEvent.pageSize - 1) && index < (pageEvent.pageIndex * pageEvent.pageSize + pageEvent.pageSize))
+				return branch;
+		});
+	}
 
 	openDialog(branch_new_build) {
 		var dialog_ref;
@@ -51,6 +67,13 @@ export class JenkinsComponent implements OnInit {
 			return;
 		console.log(tmp);
 		this.data = tmp;
+		this.branches_save = JSON.parse(JSON.stringify(tmp.map(x => x.branches)));
+		this.length = tmp.map(x => x.branches.length);
+		this.paginator_branches({
+			pageIndex: 0,
+			length: tmp[0].branches.length,
+			pageSize: 5,
+		}, 0);
 		const branch_new_build = this.get_new_data(this.data);
 		if (branch_new_build !== null)
 			this.openDialog(branch_new_build);
