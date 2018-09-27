@@ -10,14 +10,15 @@
 			<a href="{{repo.url}}"> {{repo.name}} </a>
 			<i> {{repo.tag}} </i>
 		</div>
-		<mat-form-field *ngFor="let form of filter_form[repo_index.value]; let index = index">
-			<mat-select (selectionChange)="filter_data_by(repo_index.value, filter_form[repo_index.value])" [(value)]="form.selected"
-			 [placeholder]="form.placeholder">
-				<mat-option> None </mat-option>
-				<mat-option *ngFor="let option of form.available_list" [value]="option"> {{option}} </mat-option>
-			</mat-select>
-		</mat-form-field>
-
+		<div class="form">
+			<mat-form-field *ngFor="let form of filter_form[repo_index.value]; let index = index">
+				<mat-select (selectionChange)="filter_data_by(repo_index.value, filter_form[repo_index.value])" [(value)]="form.selected"
+				[placeholder]="form.placeholder">
+					<mat-option> None </mat-option>
+					<mat-option *ngFor="let option of form.available_list" [value]="option"> {{option}} </mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
 		<div>
 			<mat-card fxFlex="50%">
 				<mat-card-title class="title"> Issues </mat-card-title>

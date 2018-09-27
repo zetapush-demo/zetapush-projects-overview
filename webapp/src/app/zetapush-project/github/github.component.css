@@ -2,6 +2,14 @@ mat-panel-title h4 i {
 	color: #a3aab1;
 }
 
+.form {
+	text-align: center;
+}
+
+.form mat-form-field {
+	margin-right: 1rem;
+}
+
 .label_list li {
 	padding: 5px;
 	margin-left: 10px;
