@@ -1,12 +1,16 @@
-<button mat-flat-button (click)="refreshStatus();">
+<button class="refresh_all" mat-flat-button (click)="refreshStatus();">
 	<mat-icon> refresh </mat-icon>
 	REFRESH
 </button>
 
 <div fxLayout="row wrap">
 	<mat-card fxFlex="calc(50% - 16px)" fxFlex.gt-sm="calc(40% - 16px)" fxFlex.gt-md="calc(30% - 16px)" fxFlex.gt-lg="calc(20% - 16px)" *ngFor="let machine of machines">
-		<mat-card-header> {{machine.env}} </mat-card-header>
-		<mat-card-content>
+		<mat-card-header (click)="refreshStatus(machine.env);">
+			{{machine.env}}
+			<span style="flex: 1 1 auto"></span>
+			<mat-icon class="touch"> refresh </mat-icon>
+		</mat-card-header>
+			<mat-card-content>
 			<mat-table [dataSource]="machine.list">
 
 				<mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>

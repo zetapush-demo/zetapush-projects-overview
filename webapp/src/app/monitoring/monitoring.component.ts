@@ -1,5 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 
+interface MachineGroup {
+	env: string;
+	list: Machine[];
+}
+
+interface Machine {
+	name: string;
+	url: string;
+	version?: string;
+	color?: string;
+}
+
 @Component({
 	selector: 'app-monitoring',
 	templateUrl: './monitoring.component.html',
@@ -10,9 +22,9 @@ export class MonitoringComponent implements OnInit {
 	constructor() { }
 
 	displayedColumns = ['name', 'status', 'version'];
-	machines = [
+	machines: MachineGroup[] = [
 		{
-			env: "dev",
+			env: 'dev',
 			list: [
 				{
 					name: 'Dev ZBO',
@@ -195,7 +207,7 @@ export class MonitoringComponent implements OnInit {
 		}
 	];
 
-	callback(xhr: XMLHttpRequest, machine) {
+	xhr_callback(xhr: XMLHttpRequest, machine: Machine) {
 		return () => {
 			if (xhr.readyState == 4) {
 				if (xhr.status !== 200)
@@ -211,16 +223,22 @@ export class MonitoringComponent implements OnInit {
 		};
 	}
 
-	refreshStatus() {
- 		this.machines.forEach(machine => {
-			machine.list.forEach(machine => {
-				const xhr = new XMLHttpRequest();
+	send_request(machine: Machine) {
+		const xhr = new XMLHttpRequest();
 
-				machine['color'] = 'orange';
-				xhr.onreadystatechange = this.callback(xhr, machine);
-				xhr.open('GET', machine.url, true);
-				xhr.send(null);
-			})
+		machine['color'] = 'orange';
+		xhr.onreadystatechange = this.xhr_callback(xhr, machine);
+		xhr.open('GET', machine.url, true);
+		xhr.send(null);
+	}
+
+	refreshStatus(select_machine?: string) {
+		var tmp = this.machines;
+
+		if (select_machine)
+			tmp = [this.machines.find(x => x.env === select_machine)];
+ 		tmp.forEach(machine => {
+			machine.list.forEach(machine => this.send_request(machine))
 		});
 	}
 
