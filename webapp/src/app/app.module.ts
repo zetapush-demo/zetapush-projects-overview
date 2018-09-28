@@ -27,6 +27,7 @@ import { GithubPopupComponent } from './zetapush-project/github/popup/github-pop
 import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
 import { JenkinsPopupComponent } from './zetapush-project/jenkins/popup/jenkins-popup.component';
 import { JiraComponent } from './zetapush-project/jira/jira.component';
+import { BuildFlowComponent } from './zetapush-project/jenkins/build-flow/build-flow.component';
 
 @NgModule({
 	imports: [
@@ -59,7 +60,8 @@ import { JiraComponent } from './zetapush-project/jira/jira.component';
 		GithubPopupComponent,
 		JenkinsComponent,
 		JenkinsPopupComponent,
-		JiraComponent
+		JiraComponent,
+		BuildFlowComponent
 	],
 	providers: [],
 	entryComponents: [
