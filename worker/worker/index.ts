@@ -1,6 +1,6 @@
 import { Simple, Messaging, Groups, BasicAuthenticatedUser } from '@zetapush/platform-legacy';
 import { Injectable } from '@zetapush/core'
-import * as get_api_data from './api';
+import { get_api_data } from './api';
 
 const GROUP_ID = 'githubGroup';
 

@@ -1,4 +1,4 @@
-module.exports = async () => {
+module.exports.get_api_data = async () => {
 	const github = await require('./github')();
 	const jenkins = await require('./jenkins')();
 	const jira = await require('./jira')();
