@@ -143,7 +143,6 @@ async function get_branch_array(local_url, branch_url, project_name)
 			icon: flow && get_icon_by_flow(flow),
 			result: res[i].latestRun.result,
 			state: res[i].latestRun.state,
-			runSummary: res[i].latestRun.runSummary,
 			github_url: res[i].branch.url,
 			pull_request: res[i].pullRequest,
 			flow: flow

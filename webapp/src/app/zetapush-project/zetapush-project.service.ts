@@ -26,11 +26,9 @@ export interface Jenkins {
 }
 
 export interface Jira {
-	issues: JiraIssue[];
-	project: {
-		project: string;
-		sprint: JiraSprint[]
-	}[];
+	project: string;
+	sprint: JiraSprint[];
+	url: string;
 }
 
 export interface GithubIssue {
@@ -63,17 +61,29 @@ export interface FilterForm {
 export interface PullRequest extends GithubIssue {
 	base: string;
 	head: string;
+	build: JenkinsBranch;
 }
 
 export interface JenkinsBranch {
-	description: string;
+	flow: {
+		duration: number;
+		id: number;
+		name: string;
+		result: string;
+		state: string;
+		type: string;
+	}[];
+	github_url: string;
 	icon: string;
 	name: string;
-	score?: number;
-	in_progress?: boolean;
+	result: string;
+	time: {
+		duration: string;
+		end: string;
+		start: string;
+	};
 	url: string;
-	time: string;
-	flow: any[];
+	in_progress?: boolean;
 }
 
 interface JiraSprint {
@@ -90,26 +100,24 @@ interface JiraSprint {
 
 interface JiraIssue {
 	created: string;
+	description?: string;
 	issuetype: {
 		iconUrl: string;
 		name: string;
 	};
+	key: string;
 	priority: {
-		id: number;
 		iconUrl: string;
+		id: number;
 	};
 	reporter: {
-		avatarUrls: string;
-		displayName: string;
-	};
-	assignee?: {
 		avatarUrls: string;
 		displayName: string;
 	};
 	status: string;
 	subtasks?: JiraIssue[];
 	summary: string;
-	description?: string;
+	url: string;
 }
 
 @Injectable({
