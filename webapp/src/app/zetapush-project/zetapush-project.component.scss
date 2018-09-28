@@ -1,0 +1,8 @@
+@import '~src/variables.scss';
+
+:host {
+	display: block;
+	height: calc(100% - #{$header_height});
+	width: 100%;
+	top: $header_height;
+}

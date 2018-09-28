@@ -1,9 +1,11 @@
+@import '~src/variables.scss';
+
 header {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 100px;
+	height: $header_height;
 	z-index: 10;
 	background: white;
 	box-shadow: 0 7px 8px rgba(0, 0, 0, 0.12);
@@ -15,7 +17,7 @@ header::after {
 	width: 100%;
 	position: absolute;
 	left: 0;
-	top: 100px;
+	top: $header_height;
 	height: 4px;
 }
 
@@ -29,8 +31,8 @@ h1 {
 }
 
 main {
-	margin-top: 100px;
-	height: calc(100% - 100px);
+	margin-top: $header_height;
+	height: calc(100% - #{$header_height});
 	overflow: auto;
 	width: 100%;
 	position: absolute;

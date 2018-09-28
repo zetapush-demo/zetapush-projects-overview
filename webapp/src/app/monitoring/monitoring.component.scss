@@ -1,8 +1,10 @@
+@import '~src/variables.scss';
+
 button {
 	margin: 20px 10px;
 	padding: 20px 10px;
 	width: calc(100% - 20px);
-	background: #145e79 !important;
+	background: $primary !important;
 }
 
 mat-card {
@@ -14,7 +16,7 @@ mat-card-header {
 	margin: -24px -24px 0px -24px !important;
 	color: white;
 	padding: 1rem 0 !important;
-	background: #145e79 !important;
+	background: $primary !important;
 }
 
 mat-card-content {

@@ -5,7 +5,7 @@ import { ZetapushProjectService } from './zetapush-project.service';
 @Component({
 	selector: 'app-zetapush-project',
 	templateUrl: './zetapush-project.component.html',
-	styleUrls: ['./zetapush-project.component.css']
+	styleUrls: ['./zetapush-project.component.scss']
 })
 export class ZetapushProjectComponent implements OnInit {
 
