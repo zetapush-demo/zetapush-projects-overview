@@ -22,6 +22,7 @@
 		<div>
 			<mat-card fxFlex="50%">
 				<mat-card-title class="title"> Issues </mat-card-title>
+				<p style="text-align: center" *ngIf="!repo.issues || !repo.issues.length"> Nothing to show. </p>
 				<mat-accordion>
 					<mat-expansion-panel *ngFor="let issue of repo.issues">
 
@@ -64,6 +65,7 @@
 
 			<mat-card fxFlex="50%">
 				<mat-card-title class="title"> Pull Request </mat-card-title>
+				<p style="text-align: center" *ngIf="!repo.pull_request || !repo.pull_request.length"> Nothing to show. </p>
 				<mat-accordion>
 					<mat-expansion-panel *ngFor="let pull_request of repo.pull_request">
 
