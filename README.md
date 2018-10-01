@@ -1,15 +1,13 @@
 # ZetapushProjectsOverview
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+The goal of this project is to develop of a dashboard for developers, to allow them to have a simplified view of their projects through different tools (GitHub, Jenkins, Jira).
 
-## Development server
+## Architecture
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### webapp/
 
-## Build
+- Webapp develop with [Angular](https://github.com/angular/angular)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+### worker/
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+- Back-end part : request differents API and communicate with clients with [Zetapush BaaS](https://github.com/zetapush/zetapush)
