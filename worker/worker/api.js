@@ -1,13 +1,19 @@
 module.exports.get_api_data = async () => {
-	const github = await require('./github')();
-	const jenkins = await require('./jenkins')();
-	const jira = await require('./jira')();
+	var data = {};
+	const tab = [
+		require('./github')(),
+		require('./jenkins')(),
+		require('./jira')()
+	]
 
-	return {
-		github: merge_data(github, jenkins),
-		jenkins: jenkins,
-		jira: jira,
-	};
+	await Promise.all(tab).then(res => {
+		data.github = res[0];
+		data.jenkins = res[1];
+		data.jira = res[2];
+	});
+	data.github = merge_data(data.github, data.jenkins);
+	return data;
+
 };
 
 function merge_pr(pull_request, branches)
