@@ -3,49 +3,28 @@ const { get_config, parse_time, obj_tab_filter, get_good_color } = require('./ut
 
 const api_url = 'https://api.github.com/repos';
 
-async function concat_repo_name(repos, config)
-{
-	var res = [];
-
-	for (var i = 0; i < repos.length; i++) {
-		const tmp = await axios.get(`https://api.github.com/orgs/${repos[i].owner}/repos`, config).catch(err => {
-			if (err && err.response && err.response.status != 200) {
-				console.error(err.response.status, err.response.statusText);
-				console.error(`Something bad in .zetarc, this github account/organization doesn't exist, or bad credentials =>\n\tgithub:`);
-				console.error(`\t\trepos: [{\n\t\t\tname: "${JSON.stringify(repos[i])}"`);
-				console.error(`\t\t}]\n\t}\n}`);
-			} else
-				console.log(err.errno, require('path').basename(__filename));
-			process.exit(1);
-		});
-		res = res.concat(tmp.data);
-	}
-	return res;
-}
-
-async function get_repo_list(repos, config)
+async function get_valid_repo_list(repos, config)
 {
 	var repo_list = [];
-	const config_repo_list = repos.map(x => x.repos).join().split(',');
-	const res = await concat_repo_name(repos, config);
 
 	for (var i = 0; i < repos.length; i++) {
 		for (var j = 0; j < repos[i].repos.length; j++) {
-			const tmp = res.find(x => {
-				if (x.name === repos[i].repos[j])
-					return repo_list.push({
-						owner: repos[i].owner,
-						name: x.name,
-						issues_nb: x.open_issues
-					});
+			const tmp = await axios.get(`${api_url}/${repos[i].owner}/${repos[i].repos[j]}`, config).catch(err => {
+				if (err && err.response && err.response.status != 200) {
+					console.error(err.response.status, err.response.statusText);
+					console.error(`Something bad in .zetarc, this github account/organization/repository doesn't exist, or bad credentials =>\n\tgithub:`);
+					console.error(`\t\trepos: [{\n\t\t\tname: "${JSON.stringify(repos[i])}"`);
+					console.error(`\t\t}]\n\t}\n}`);
+				} else
+					console.log(err.errno, require('path').basename(__filename));
+				process.exit(1);
 			});
 
-			if (!tmp) {
-				console.error(`Something bad in .zetarc, this github repository doesn't exist =>\n\tgithub:`);
-				console.error(`\t\trepos: [{\n\t\t\tname: "${JSON.stringify(config_repo_list[i])}"`);
-				console.error(`\t\t}]\n\t}\n}`);
-				process.exit(1);
-			}
+			repo_list.push({
+				owner: repos[i].owner,
+				name: repos[i].repos[j],
+				issues_nb: tmp.data && tmp.data.open_issues
+			});
 		}
 	}
 	return repo_list;
@@ -105,7 +84,7 @@ async function get_data(config, api_search_field, repos, issues_nb)
 module.exports = async function()
 {
 	const config = get_config('github');
-	const repo_list = await get_repo_list(config.repos, config.http);
+	const repo_list = await get_valid_repo_list(config.repos, config.http);
 	var data = [];
 
 	for (var i = 0; i < repo_list.length; i++) {
