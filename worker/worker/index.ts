@@ -1,5 +1,5 @@
 import { Simple, Messaging, Groups, BasicAuthenticatedUser } from '@zetapush/platform-legacy';
-import { Injectable } from '@zetapush/core'
+import { Injectable, Context } from '@zetapush/core'
 import { get_api_data } from './api';
 
 const GROUP_ID = 'githubGroup';
@@ -8,6 +8,7 @@ const GROUP_ID = 'githubGroup';
 export default class Api {
 
 	last_data: object;
+	requestContext: Context;
 
 	async onApplicationBootstrap() {
 		const { exists } = await this.groups.exists({
@@ -29,10 +30,10 @@ export default class Api {
 		private simple: Simple
 	) { }
 
-	async addMeToConversation(parameters: any, context: any) {
+	async addMeToConversation() {
 		await this.groups.addUser({
 			group: GROUP_ID,
-			user: context.owner
+			user: this.requestContext.owner
 		});
 	}
 
