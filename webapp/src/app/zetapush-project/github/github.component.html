@@ -90,7 +90,7 @@
 								{{pull_request.user.name}}
 							</a>
 							<p> wants to merge {{pull_request.commits}} into <span class="commit-ref">{{pull_request.base}} </span> from
-								<a href="{{pull_request.build.github_url}}" class="commit-ref"> {{pull_request.head}} </a> <br> at {{pull_request.created}} </p>
+								<span class="commit-ref"> {{pull_request.head}} </span> <br> at {{pull_request.created}} </p>
 						</div>
 
 						<ul class="item_info" *ngIf="pull_request.assignees && pull_request.assignees.length">
@@ -101,7 +101,7 @@
 							</li>
 						</ul>
 
-						<div class="jenkins_build">
+						<div class="jenkins_build" *ngIf="pull_request.build">
 							<div class="item_info">
 								<a href="{{pull_request.build.url}}">
 									<img src="{{pull_request.build.icon}}" alt="img not found" />
