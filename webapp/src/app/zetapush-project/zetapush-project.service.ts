@@ -151,22 +151,32 @@ export class ZetapushProjectService {
 	}
 
 	async smart_connect() {
-		await this.api.createUser({
-			'email': this.email,
-			'login': this.login,
-			'password': this.password
-		});
-		await this.client.setCredentials({
-			login: this.login,
-			password: this.password
-		});
-		await this.client.connect();
-		await this.api.addMeToConversation();
+		try {
+			await this.api.createUser({
+				'email': this.email,
+				'login': this.login,
+				'password': this.password
+			});
+			await this.client.setCredentials({
+				login: this.login,
+				password: this.password
+			});
+			await this.client.connect();
+			await this.api.addMeToConversation();
+		}
+		catch(err) {
+			console.log(err);
+		}
 	}
 
 	async connect() {
-		await this.client.connect().catch(err => console.log(err));
-		if (!this.client.isStronglyAuthenticated())
-			await this.smart_connect().catch(err => console.log(err));
+		try {
+			await this.client.connect();
+			if (!this.client.isStronglyAuthenticated())
+				await this.smart_connect();
+		}
+		catch(err) {
+			console.log(err);
+		}
 	}
 }
