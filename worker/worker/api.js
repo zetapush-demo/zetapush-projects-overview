@@ -13,7 +13,6 @@ module.exports.get_api_data = async () => {
 	});
 	data.github = merge_data(data.github, data.jenkins);
 	return data;
-
 };
 
 function merge_pr(pull_request, branches)
@@ -39,9 +38,9 @@ function merge_data(github, jenkins)
 {
 	var data = {};
 	const tab = [
-		// { name: 'github', func: require('./github')() },
+		{ name: 'github', func: require('./github')() },
 		{ name: 'jenkins', func: require('./jenkins')() },
-		// { name: 'jira', func: require('./jira')() }
+		{ name: 'jira', func: require('./jira')() }
 	]
 
 	await Promise.all(tab.map(x => x.func))
@@ -49,7 +48,7 @@ function merge_data(github, jenkins)
 			for (var i = 0; i < res.length; i++)
 				data[tab[i].name] = res[i];
 		});
-	// merge_data(data.github, data.jenkins);
-	console.log(data.jenkins[0]);
+	merge_data(data.github, data.jenkins);
+	console.log(data);
 })();
 */
