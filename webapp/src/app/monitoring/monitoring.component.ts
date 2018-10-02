@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable, Input } from '@angular/core';
 
-interface MachineGroup {
+export interface MachineGroup {
 	env: string;
 	list: Machine[];
 }
@@ -12,6 +12,9 @@ interface Machine {
 	color?: string;
 }
 
+@Injectable({
+	providedIn: 'root'
+})
 @Component({
 	selector: 'app-monitoring',
 	templateUrl: './monitoring.component.html',
@@ -22,7 +25,7 @@ export class MonitoringComponent implements OnInit {
 	constructor() { }
 
 	displayedColumns = ['name', 'status', 'version'];
-	machines: MachineGroup[] = [
+	@Input() machines: MachineGroup[] = [
 		{
 			env: 'dev',
 			list: [
