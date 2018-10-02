@@ -9,13 +9,13 @@ import { ZetapushProjectService, DataStruct, Jira } from '../zetapush-project.se
 })
 export class JiraComponent implements OnInit {
 
-	data: Jira;
+	data: Jira[];
 
 	constructor(
 		private zetapush_service: ZetapushProjectService,
 	) { }
 
-	on_get_data(tmp: Jira) {
+	on_get_data(tmp: Jira[]) {
 		if (!tmp)
 			return;
 		this.data = tmp;

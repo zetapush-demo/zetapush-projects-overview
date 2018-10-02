@@ -7,7 +7,7 @@ import { Messaging } from '@zetapush/platform-legacy/lib/';
 export interface DataStruct {
 	github: Github[];
 	jenkins: Jenkins[];
-	jira: Jira;
+	jira: Jira[];
 }
 
 export interface Github {
