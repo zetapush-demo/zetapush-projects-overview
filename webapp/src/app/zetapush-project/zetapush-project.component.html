@@ -1,6 +1,6 @@
 <mat-spinner id="undefined_data" *ngIf="!ready"></mat-spinner>
-<ng-container *ngIf="ready">
-    <app-github fxFlex="33%"></app-github>
-    <app-jenkins fxFlex="33%"></app-jenkins>
-    <app-jira fxFlex="33%"></app-jira>
+<ng-container style="position: absolute; top: 50%" *ngIf="ready">
+    <app-github></app-github>
+    <app-jenkins></app-jenkins>
+    <app-jira></app-jira>
 </ng-container>

@@ -38,11 +38,11 @@ main {
 	position: absolute;
 }
 
-.tabs {
+mat-tab-group {
 	padding: 0 1rem;
 	min-height: 100%;
 }
 
-.tabs ::ng-deep .mat-tab-body-wrapper {
+mat-tab-group ::ng-deep .mat-tab-body-wrapper {
 	flex: 1;
 }

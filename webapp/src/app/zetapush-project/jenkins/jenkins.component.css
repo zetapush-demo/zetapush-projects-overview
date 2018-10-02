@@ -5,6 +5,11 @@ mat-spinner ::ng-deep svg {
 	background-position: center center;
 }
 
+mat-spinner {
+	position: absolute;
+	top: 40%;
+}
+
 mat-panel-title h4, i {
         margin-left: 8px;
 }

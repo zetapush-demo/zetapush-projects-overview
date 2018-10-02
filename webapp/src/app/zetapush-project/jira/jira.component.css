@@ -6,6 +6,11 @@ mat-spinner ::ng-deep svg {
 	background-position: center center;
 }
 
+mat-spinner {
+	position: absolute;
+	top: 65%;
+}
+
 .reporter {
 	background-color: #d1d5da;
 	color: #586069;

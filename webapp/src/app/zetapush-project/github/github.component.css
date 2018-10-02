@@ -3,6 +3,11 @@ mat-spinner ::ng-deep svg {
 	background-size: contain;
 }
 
+mat-spinner {
+	position: absolute;
+	top: 15%;
+}
+
 mat-panel-title h4 i {
 	color: #a3aab1;
 }
