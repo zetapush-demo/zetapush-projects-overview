@@ -1,3 +1,8 @@
+mat-spinner ::ng-deep svg {
+	background-image: url('https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png');
+	background-size: contain;
+}
+
 mat-panel-title h4 i {
 	color: #a3aab1;
 }
