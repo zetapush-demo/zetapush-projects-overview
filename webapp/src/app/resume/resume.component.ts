@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 
 import { MonitoringComponent, MachineGroup } from '../monitoring/monitoring.component';
-import { ZetapushProjectService, DataStruct } from '../zetapush-project/zetapush-project.service';
+import { ZetapushProjectService, DataStruct, Github, Jenkins, JiraSprint } from '../zetapush-project/zetapush-project.service';
 
 @Component({
 	selector: 'app-resume',
 	templateUrl: './resume.component.html',
-	styleUrls: ['./resume.component.sass']
+	styleUrls: ['./resume.component.css']
 })
 export class ResumeComponent implements OnInit {
 
-	data: DataStruct;
+	jira: JiraSprint;
+	jenkins: Jenkins;
+	github: Github;
 	machine_group: MachineGroup[];
 	accept_machine = ['dev', 'hq', 'prod', 'celtia'];
 
@@ -22,8 +24,14 @@ export class ResumeComponent implements OnInit {
 	on_get_data(tmp: DataStruct) {
 		if (!tmp)
 			return;
-		this.data = tmp;
-		console.log(this.data);
+		this.github = tmp.github.find(x => x.name === 'zetapush');
+		this.jenkins = tmp.jenkins.find(x => x.name === 'zetapush');
+		this.jira = tmp.jira.find(x => x.project === 'PLATEFORME-V3').sprint[0];
+		console.log({
+			github: this.github,
+			jenkins: this.jenkins,
+			jira: this.jira
+		});
 	}
 
 	async ngOnInit() {

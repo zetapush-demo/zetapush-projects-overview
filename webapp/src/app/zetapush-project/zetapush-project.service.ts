@@ -86,7 +86,7 @@ export interface JenkinsBranch {
 	in_progress?: boolean;
 }
 
-interface JiraSprint {
+export interface JiraSprint {
 	start: string;
 	end: string;
 	sprint: string;
