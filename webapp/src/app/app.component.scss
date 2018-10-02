@@ -40,4 +40,9 @@ main {
 
 .tabs {
 	padding: 0 1rem;
+	min-height: 100%;
+}
+
+.tabs ::ng-deep .mat-tab-body-wrapper {
+	flex: 1;
 }

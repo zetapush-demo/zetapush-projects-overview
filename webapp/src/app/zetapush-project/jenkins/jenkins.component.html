@@ -2,10 +2,10 @@
 <mat-tab-group *ngIf="data && data.length" [selectedIndex]="index.value" (selectedIndexChange)="index.setValue($event)">
 	<mat-tab *ngFor="let app of data" [label]="app.name">
 		<div class="title">
-				<div>
-					<img src="https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/jenkins-redbg.png" alt="img not found" />
-				</div>
-				<a href="{{app.url}}"> {{app.name}} </a>
+			<div>
+				<img src="https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/jenkins-redbg.png" alt="img not found" />
+			</div>
+			<a href="{{app.url}}"> {{app.name}} </a>
 		</div>
 
 		<mat-accordion>
