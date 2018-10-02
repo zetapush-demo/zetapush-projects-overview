@@ -29,7 +29,7 @@
 						<mat-expansion-panel-header>
 							<mat-panel-title fxLayout="row wrap">
 								<a href="{{issue.url}}">
-									<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="wtf l'api est down">
+									<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="img not found">
 								</a>
 								<h4 fxFlex> {{issue.name}} <i> #{{issue.id}} </i> </h4>
 								<ul fxLayout="row wrap" class="label_list" *ngIf="issue.labels">
@@ -40,7 +40,7 @@
 
 						<div *ngIf="issue.user" class="item_info">
 							<a href="{{issue.user.url}}">
-								<img src="{{issue.user.avatar}}" alt="wtf l'api est down">
+								<img src="{{issue.user.avatar}}" alt="img not found">
 							</a>
 							<a class="username" href="{{issue.user.url}}">
 								{{issue.user.name}}
@@ -72,7 +72,7 @@
 						<mat-expansion-panel-header>
 							<mat-panel-title fxLayout="row wrap">
 								<a href="{{pull_request.url}}">
-									<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="wtf l'api est down">
+									<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="img not found">
 								</a>
 								<h4> {{pull_request.name}} <i> #{{pull_request.id}} </i> </h4>
 								<span style="flex: 1 1 auto;"> </span>
