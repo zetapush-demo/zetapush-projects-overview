@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { MonitoringComponent, MachineGroup } from '../monitoring/monitoring.component';
-import { ZetapushProjectService, DataStruct, Github, Jenkins, JiraSprint } from '../zetapush-project/zetapush-project.service';
+import { ZetapushProjectService, DataStruct, GithubIssue, Jenkins, JiraSprint } from '../zetapush-project/zetapush-project.service';
 
 @Component({
 	selector: 'app-resume',
@@ -12,7 +12,7 @@ export class ResumeComponent implements OnInit {
 
 	jira: JiraSprint;
 	jenkins: Jenkins;
-	github: Github;
+	github: GithubIssue[];
 	machine_group: MachineGroup[];
 	accept_machine = ['dev', 'hq', 'prod', 'celtia'];
 
@@ -24,7 +24,7 @@ export class ResumeComponent implements OnInit {
 	on_get_data(tmp: DataStruct) {
 		if (!tmp)
 			return;
-		this.github = tmp.github.find(x => x.name === 'zetapush');
+		this.github = tmp.github.find(x => x.name === 'zetapush').issues.slice(0, 5);
 		this.jenkins = tmp.jenkins.find(x => x.name === 'zetapush');
 		this.jira = tmp.jira.find(x => x.project === 'PLATEFORME-V3').sprint[0];
 		console.log({

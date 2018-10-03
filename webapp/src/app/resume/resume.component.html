@@ -1,23 +1,42 @@
 <app-monitoring [machines]="machine_group"> </app-monitoring>
 
-<div fxFlex="33%" *ngIf="jira">
-	<h2 class="sprint"> {{jira.sprint}} <i *ngIf="jira.start && jira.end"> ({{jira.start}} au {{jira.end}}) </i> </h2>
-	<div *ngIf="jira.time" class="time">
-		<div>
-			<p fxFlex=""> Spent: <b> {{jira.time.spent / 3600}}h </b> </p>
-			<p fxFlex=""> Really spent: <b> {{jira.time.remaining / 3600}}h </b> </p>
-			<p fxFlex=""> Estimate: <b> {{jira.time.estimate / 3600}}h </b> </p>
+<div>
+	<div fxFlex="33%" *ngIf="jira">
+		<h2 class="sprint"> {{jira.sprint}} <i *ngIf="jira.start && jira.end"> ({{jira.start}} au {{jira.end}}) </i> </h2>
+		<div *ngIf="jira.time" class="time">
+			<div>
+				<p fxFlex=""> Spent: <b> {{jira.time.spent / 3600}}h </b> </p>
+				<p fxFlex=""> Really spent: <b> {{jira.time.remaining / 3600}}h </b> </p>
+				<p fxFlex=""> Estimate: <b> {{jira.time.estimate / 3600}}h </b> </p>
+			</div>
+			<p *ngIf="jira.time.spent > jira.time.remaining"> Early of : <b> {{(jira.time.spent - jira.time.remaining) / 3600}}h </b> </p>
+			<p *ngIf="jira.time.spent < jira.time.remaining"> Late of : <b> {{(jira.time.spent - jira.time.remaining) / 3600}}h </b> </p>
 		</div>
-		<p *ngIf="jira.time.spent > jira.time.remaining"> Early of : <b> {{(jira.time.spent - jira.time.remaining) / 3600}}h </b> </p>
-		<p *ngIf="jira.time.spent < jira.time.remaining"> Late of : <b> {{(jira.time.spent - jira.time.remaining) / 3600}}h </b> </p>
-	</div>
-	<mat-progress-bar mode="buffer"	[value]="jira.time.spent / jira.time.estimate * 100" [bufferValue]="jira.time.remaining / jira.time.estimate * 100"></mat-progress-bar>
+		<mat-progress-bar mode="buffer"	[value]="jira.time.spent / jira.time.estimate * 100" [bufferValue]="jira.time.remaining / jira.time.estimate * 100"></mat-progress-bar>
 
-	<mat-card *ngFor="let issue of jira.issues">
-		<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="img not found"/>
-		<i> {{issue.key}} </i>
-		<i> {{issue.status}} </i>
-		<i *ngIf="issue.subtasks.length"> {{issue.subtasks.length}} sous-tâches </i>
-		<h4> {{issue.summary}} </h4>
-	</mat-card>
-</div>
+		<mat-card *ngFor="let issue of jira.issues">
+			<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="img not found"/>
+			<i> {{issue.key}} </i>
+			<i> {{issue.status}} </i>
+			<i *ngIf="issue.subtasks.length"> {{issue.subtasks.length}} sous-tâches </i>
+			<h4> {{issue.summary}} </h4>
+		</mat-card>
+	</div>
+	<div fxFlex="33%" *ngIf="github">
+		<mat-card *ngFor="let issue of github">
+			<a *ngIf="issue.user" class="username" href="{{issue.user.url}}">
+				<img src="{{issue.user.avatar}}" alt="img not found" width="30px">
+				{{issue.user.name}}
+			</a>
+			<i> {{issue.created}} </i>
+			<h4> {{issue.name}} <i> #{{issue.id}} </i> </h4>
+			<div>
+				<ul *ngIf="issue.labels && issue.labels.length" class="label_list">
+					<li [ngStyle]="{'background-color': label.color}" *ngFor="let label of issue.labels"> {{label.name}} </li>
+				</ul>
+			</div>
+		</mat-card>
+	</div>
+	<div fxFlex="33%" *ngIf="jenkins">
+	</div>
+<div>
