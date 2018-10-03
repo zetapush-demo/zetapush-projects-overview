@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, PageEvent } from '@angular/material';
 import { FormControl } from '@angular/forms';
 
 import { ZetapushProjectService, Github, DataStruct, FilterForm } from '../zetapush-project.service';
@@ -16,6 +16,8 @@ export class GithubComponent implements OnInit {
 	data_save: Github[];
 
 	repo_index: FormControl = new FormControl(0);
+	length: number[] = [];
+	pageSize: number[] = [];
 
 	form_field_name = {
 		field: ['assignees', 'labels', 'user'],
@@ -29,6 +31,21 @@ export class GithubComponent implements OnInit {
 		private zetapush_service: ZetapushProjectService,
 		private dialog: MatDialog
 	) { }
+
+	paginator_branches(pageEvent: PageEvent, index: number) {
+		const data = this.data[index];
+
+		data.issues = JSON.parse(JSON.stringify(this.data_save[index].issues));
+		data.pull_request = JSON.parse(JSON.stringify(this.data_save[index].pull_request));
+		data.issues = data.issues.filter((branch, index) => {
+			if (index > (pageEvent.pageIndex * pageEvent.pageSize - 1) && index < (pageEvent.pageIndex * pageEvent.pageSize + pageEvent.pageSize))
+				return branch;
+		});
+		data.pull_request = data.pull_request.filter((branch, index) => {
+			if (index > (pageEvent.pageIndex * pageEvent.pageSize - 1) && index < (pageEvent.pageIndex * pageEvent.pageSize + pageEvent.pageSize))
+				return branch;
+		});
+	}
 
 	openDialog(popup_data, repo_name: string, message: string) {
 		var dialog_ref;
@@ -131,6 +148,15 @@ export class GithubComponent implements OnInit {
 					placeholder: this.form_field_name.placeholder[j]
 				});
 			}
+		}
+		for (var i = 0; i < this.data.length; i++) {
+			this.length[i] = Math.max(this.data[i].issues.length, this.data[i].pull_request.length);
+			this.pageSize[i] = 10;
+			this.paginator_branches({
+				pageIndex: 0,
+				length: this.length[i],
+				pageSize: 10,
+			}, i);
 		}
 		console.log(this.data);
 		this.popup_on_new_data(1000 * 60 * 60 * 24 * 7 * 1); // 1 week

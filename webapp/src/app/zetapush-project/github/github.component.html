@@ -19,6 +19,9 @@
 				</mat-select>
 			</mat-form-field>
 		</div>
+		<mat-paginator [length]="length[repo_index.value]" [pageSize]="pageSize[repo_index.value]" [pageSizeOptions]="[5, 10, 25, 100]"
+			(page)="paginator_branches($event, repo_index.value)">
+		</mat-paginator>
 		<div>
 			<mat-card fxFlex="50%">
 				<mat-card-title class="title"> Issues </mat-card-title>
