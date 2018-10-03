@@ -27,11 +27,6 @@ export class ResumeComponent implements OnInit {
 		this.github = tmp.github.find(x => x.name === 'zetapush').issues.slice(0, 5);
 		this.jenkins = tmp.jenkins.find(x => x.name === 'zetapush').branches.filter(x => x.name === 'master' || x.name === 'develop');
 		this.jira = tmp.jira.find(x => x.project === 'PLATEFORME-V3').sprint[0];
-		console.log({
-			github: this.github,
-			jenkins: this.jenkins,
-			jira: this.jira
-		});
 	}
 
 	async ngOnInit() {
