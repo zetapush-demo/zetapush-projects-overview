@@ -22,7 +22,7 @@ export class ResumeComponent implements OnInit {
 	) { }
 
 	on_get_data(tmp: DataStruct) {
-		if (!tmp)
+		if (!tmp || !tmp.github || !tmp.jenkins || !tmp.jira)
 			return;
 		this.github = tmp.github.find(x => x.name === 'zetapush').issues.slice(0, 5);
 		this.jenkins = tmp.jenkins.find(x => x.name === 'zetapush').branches.filter(x => x.name === 'master' || x.name === 'develop');
