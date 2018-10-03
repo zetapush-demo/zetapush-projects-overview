@@ -10,7 +10,7 @@ export class GithubPopupComponent {
 
 	constructor(
 		public dialogRef: MatDialogRef<GithubPopupComponent>,
-		@Inject(MAT_DIALOG_DATA) public data: object
+		@Inject(MAT_DIALOG_DATA) public data: any
 	) { }
 
 	closeDialog() {

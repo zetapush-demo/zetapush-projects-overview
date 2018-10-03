@@ -10,7 +10,7 @@ export class JenkinsPopupComponent {
 
 	constructor(
 		public dialogRef: MatDialogRef<JenkinsPopupComponent>,
-		@Inject(MAT_DIALOG_DATA) public data: object
+		@Inject(MAT_DIALOG_DATA) public data: any
 	) { }
 
 	closeDialog() {

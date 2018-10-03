@@ -62,24 +62,28 @@ export class JenkinsComponent implements OnInit {
 		return null;
 	}
 
-	on_get_data(tmp: Jenkins[]) {
-		if (!tmp)
-			return;
-		console.log(tmp);
-		this.data = tmp;
-		this.branches_save = JSON.parse(JSON.stringify(tmp.map(x => x.branches)));
+	init_paginator(tmp: Jenkins[]) {
 		for (var i = 0; i < tmp.length; i++) {
 			this.length[i] = tmp[i].branches.length;
-			this.pageSize[i] = 10;
+			this.pageSize[i] = 5;
 			this.paginator_branches({
 				pageIndex: 0,
 				length: tmp[i].branches.length,
-				pageSize: 10,
+				pageSize: 5,
 			}, i);
 		}
+	}
+
+	on_get_data(tmp: Jenkins[]) {
+		if (!tmp)
+			return;
+		this.data = tmp;
+		this.branches_save = JSON.parse(JSON.stringify(this.data.map(x => x.branches)));
+		this.init_paginator(this.data);
 		const branch_new_build = this.get_new_data(this.data);
 		if (branch_new_build !== null)
 			this.openDialog(branch_new_build);
+		console.log(tmp);
 	}
 
 	async ngOnInit() {
