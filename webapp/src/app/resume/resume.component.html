@@ -38,5 +38,15 @@
 		</mat-card>
 	</div>
 	<div fxFlex="33%" *ngIf="jenkins">
+		<mat-card *ngFor="let branch of jenkins" fxLayout="row wrap">
+			<a href="{{branch.url}}">
+				<img src="{{branch.icon}}" alt="img not found" />
+			</a>
+			<i> {{branch.result}} </i>
+			<h4> {{branch.name}} </h4>
+			<span style="flex: 1 1 auto;"> </span>
+			<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
+			<app-build-flow [flows]="branch.flow"></app-build-flow>
+		</mat-card>
 	</div>
 <div>
