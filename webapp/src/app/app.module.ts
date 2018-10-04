@@ -23,13 +23,13 @@ import { AppComponent } from './app.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
 import { GithubComponent } from './zetapush-project/github/github.component';
+import { RepositoryComponent } from './zetapush-project/github/repository/repository.component';
 import { GithubPopupComponent } from './zetapush-project/github/popup/github-popup.component';
 import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
 import { JenkinsPopupComponent } from './zetapush-project/jenkins/popup/jenkins-popup.component';
 import { JiraComponent } from './zetapush-project/jira/jira.component';
 import { BuildFlowComponent } from './zetapush-project/jenkins/build-flow/build-flow.component';
 import { ResumeComponent } from './resume/resume.component';
-import { RepositoryComponent } from './zetapush-project/github/repository/repository.component';
 
 @NgModule({
 	imports: [
@@ -57,15 +57,15 @@ import { RepositoryComponent } from './zetapush-project/github/repository/reposi
 	declarations: [
 		AppComponent,
 		MonitoringComponent,
+		ResumeComponent,
 		ZetapushProjectComponent,
 		GithubComponent,
+		RepositoryComponent,
 		GithubPopupComponent,
 		JenkinsComponent,
-		JenkinsPopupComponent,
-		JiraComponent,
 		BuildFlowComponent,
-		ResumeComponent,
-		RepositoryComponent
+		JenkinsPopupComponent,
+		JiraComponent
 	],
 	providers: [],
 	entryComponents: [
