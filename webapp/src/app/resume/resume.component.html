@@ -40,13 +40,5 @@
 			<p *ngIf="jira.time.spent < jira.time.remaining"> Late of : <b> {{(jira.time.spent - jira.time.remaining) / 3600}}h </b> </p>
 		</div>
 		<mat-progress-bar mode="buffer"	[value]="jira.time.spent / jira.time.estimate * 100" [bufferValue]="jira.time.remaining / jira.time.estimate * 100"></mat-progress-bar>
-
-		<mat-card *ngFor="let issue of jira.issues">
-			<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="img not found"/>
-			<i> {{issue.key}} </i>
-			<i> {{issue.status}} </i>
-			<i *ngIf="issue.subtasks.length"> {{issue.subtasks.length}} sous-tâches </i>
-			<h4> {{issue.summary}} </h4>
-		</mat-card>
 	</div>
 <div>
