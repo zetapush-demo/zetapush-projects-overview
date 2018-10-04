@@ -5,11 +5,12 @@ export interface MachineGroup {
 	list: Machine[];
 }
 
-interface Machine {
+export interface Machine {
 	name: string;
 	url: string;
 	version?: string;
 	color?: string;
+	status?: number;
 }
 
 @Injectable({

@@ -1,3 +1,5 @@
+@import '~src/variables.scss';
+
 mat-progress-bar {
 	height: 20px;
 	margin-top: 80px;
@@ -30,6 +32,24 @@ mat-card h4 i {
 mat-card {
 	border: 1px solid #d1d5da;
 	border-radius: 4px;
+}
+
+.monitoring mat-card {
+	margin: 8px;
+	min-height: 100px;
+}
+
+.monitoring mat-card-header {
+	margin: -24px -24px 0px -24px !important;
+	color: white;
+	padding: 1rem 0 !important;
+	background: $primary !important;
+}
+
+.monitoring mat-card-content {
+	margin: 0 -24px !important;
+	height: 100%;
+	width: 100%;
 }
 
 .label_list {
