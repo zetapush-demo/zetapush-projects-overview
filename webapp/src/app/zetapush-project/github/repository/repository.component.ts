@@ -27,9 +27,6 @@ export class RepositoryComponent implements OnInit {
 	constructor() { }
 
 	paginator_branches(pageEvent: PageEvent) {
-		this.filter_form.forEach(x => x.selected = '');
-		this.data.issues = JSON.parse(JSON.stringify(this.data_save.issues));
-		this.data.pull_request = JSON.parse(JSON.stringify(this.data_save.pull_request));
 		this.data.issues = this.data.issues.filter((branch, index) => {
 			if (index > (pageEvent.pageIndex * pageEvent.pageSize - 1) && index < (pageEvent.pageIndex * pageEvent.pageSize + pageEvent.pageSize))
 				return branch;
@@ -40,17 +37,13 @@ export class RepositoryComponent implements OnInit {
 		});
 	}
 
-	filter_data_by(formvalue: FilterForm[]) {
+	filter_data_by(formvalue: FilterForm[], pageEvent?: PageEvent) {
 		const field: string[] = this.form_field_name.field;
 		const subfield: string[] = this.form_field_name.subfield;
 		const value: string[] = formvalue.map(x => x.selected); // please trust me
 
 		this.data = JSON.parse(JSON.stringify(this.data_save));
-		if (value.length !== field.length || field.length !== subfield.length)
-			return;
-		if (field.includes(undefined) || subfield.includes(undefined) || value.every(x => !x))
-			return;
-		function foo(elem) {
+		function callback(elem) {
 			var occurrence_counter = 0;
 
 			for (var i = 0; i < value.length; i++) {
@@ -67,8 +60,17 @@ export class RepositoryComponent implements OnInit {
 			if (occurrence_counter === value.filter(x => x).length)
 				return elem;
 		};
-		this.data.issues = this.data.issues.filter(foo);
-		this.data.pull_request = this.data.pull_request.filter(foo);
+		this.data.issues = this.data.issues.filter(callback);
+		this.data.pull_request = this.data.pull_request.filter(callback);
+
+		if (pageEvent)
+			this.pageSize = pageEvent.pageSize;
+		this.length = Math.max(this.data.issues.length, this.data.pull_request.length);
+		this.paginator_branches(pageEvent || {
+			pageIndex: 0,
+			length: this.length,
+			pageSize: this.pageSize,
+		});
 	}
 
 	get_list(data: Github, field: string, subfield: string) {
@@ -94,19 +96,20 @@ export class RepositoryComponent implements OnInit {
 		}
 	}
 
-	init_paginator() {
+	init_paginator(pageSize?: number) {
 		this.length = Math.max(this.data.issues.length, this.data.pull_request.length);
-		this.pageSize = 5;
+		if (pageSize)
+			this.pageSize = pageSize;
 		this.paginator_branches({
 			pageIndex: 0,
 			length: this.length,
-			pageSize: 5,
+			pageSize: this.pageSize,
 		});
 	}
 
 	ngOnInit() {
 		this.data_save = JSON.parse(JSON.stringify(this.data));
 		this.init_form();
-		this.init_paginator();
+		this.init_paginator(5);
 	}
 }

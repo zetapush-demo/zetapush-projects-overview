@@ -17,7 +17,7 @@
 </div>
 
 <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]"
-	(page)="paginator_branches($event)">
+	(page)="filter_data_by(filter_form, $event)">
 </mat-paginator>
 
 <div>
