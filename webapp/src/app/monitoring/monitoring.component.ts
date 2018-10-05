@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable, Input } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 
 export interface MachineGroup {
 	env: string;
@@ -26,7 +26,7 @@ export class MonitoringComponent implements OnInit {
 	constructor() { }
 
 	displayedColumns = ['name', 'status', 'version'];
-	@Input() machines: MachineGroup[] = [
+	machines: MachineGroup[] = [
 		{
 			env: 'dev',
 			list: [

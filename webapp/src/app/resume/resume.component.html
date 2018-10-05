@@ -1,8 +1,8 @@
-<div fxLayout="row wrap" class="monitoring">
+<div fxLayout="row wrap" class="monitoring" (click)="refreshStatus()">
 	<mat-card fxFlex="calc(50% - 16px)" fxFlex.gt-sm="calc(40% - 16px)" fxFlex.gt-md="calc(30% - 16px)" fxFlex.gt-lg="calc(20% - 16px)" *ngFor="let machine of machine_group">
 		<mat-card-header> {{machine.env}} </mat-card-header>
 		<mat-card-content [ngStyle]="{'background-color': machine.color}">
-			{{machine['fail']}}
+			<p> {{machine['fail']}} </p>
 		</mat-card-content>
 	</mat-card>
 </div>
