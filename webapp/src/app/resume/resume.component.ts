@@ -26,8 +26,7 @@ export class ResumeComponent implements OnInit {
 				if (xhr.status !== 200) {
 					machine_group['color'] = '#f15b3e';
 					machine_group['fail'] = machine.name;
-				} else
-					machine_group['color'] = '#86c65b';
+				}
 			}
 		};
 	}
@@ -35,7 +34,7 @@ export class ResumeComponent implements OnInit {
 	send_request(machine: Machine, machine_group: MachineGroup) {
 		const xhr = new XMLHttpRequest();
 
-		machine_group['color'] = 'orange';
+		machine_group['color'] = '#86c65b';
 		xhr.onreadystatechange = this.xhr_callback(xhr, machine, machine_group);
 		xhr.open('GET', machine.url, true);
 		xhr.send(null);
@@ -43,12 +42,11 @@ export class ResumeComponent implements OnInit {
 
 	refreshStatus() {
 		this.machine_group = this.monitoring.machines.filter(x => ['dev', 'hq', 'prod', 'celtia'].find(y => y === x.env))
+		for (var i = 0; i < this.machine_group.length; i++) {
+			for (var j = 0; j < this.machine_group[i].list.length; j++)
+				this.send_request(this.machine_group[i].list[j], this.machine_group[i]);
+		}
 		console.log(this.machine_group);
-		this.machine_group.forEach(machine_group => {
-			machine_group.list.forEach(machine => {
-				this.send_request(machine, machine_group);
-			});
-		});
 	}
 
 	on_get_data(tmp: DataStruct) {
