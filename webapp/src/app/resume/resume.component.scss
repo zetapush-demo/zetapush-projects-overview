@@ -49,6 +49,12 @@ mat-card {
 .monitoring mat-card-content {
 	margin: 0 -24px !important;
 	height: 100%;
+	display: flex;
+}
+
+.monitoring mat-card-content h1 {
+	font-size: 2em !important;
+	margin: auto;
 }
 
 .label_list {
