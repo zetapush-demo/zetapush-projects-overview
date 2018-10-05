@@ -35,7 +35,7 @@
 								<h4> {{issue.summary}} </h4>
 								<span class="priority_img"></span>
 								<a *ngIf="issue.url" href="{{issue.url}}">
-									<mat-icon> link </mat-icon>
+									<mat-icon matTooltip="{{issue.url}}"> link </mat-icon>
 								</a>
 								<img *ngIf="issue.priority" src="{{issue.priority.iconUrl}}" alt="img not found" width="30"/>
 							</mat-panel-title>
@@ -56,8 +56,8 @@
 								<b> {{sub.status}} </b>
 								<h4> {{sub.summary}} </h4>
 								<span class="priority_img"></span>
-								<a *ngIf="issue.url" href="{{issue.url}}">
-									<mat-icon> link </mat-icon>
+								<a *ngIf="sub.url" href="{{sub.url}}">
+									<mat-icon matTooltip="{{sub.url}}"> link </mat-icon>
 								</a>
 								<img *ngIf="sub.priority" src="{{sub.priority.iconUrl}}" alt="img not found" width="30"/>
 							</mat-card-content>
