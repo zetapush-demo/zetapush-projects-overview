@@ -80,7 +80,7 @@ function compute_sprint_timetracking(issues)
 			sprint_time.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds || 0;
 		}
 	}
-	sprint_time.remaining = sprint_time.estimate - sprint_time.remaining;
+	// sprint_time.remaining = sprint_time.estimate - sprint_time.remaining;
 	return sprint_time;
 }
 
