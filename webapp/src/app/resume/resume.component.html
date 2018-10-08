@@ -43,7 +43,7 @@
 				<p fxFlex=""> Estimate: <b> {{jira.time.estimate / 3600}}h </b> </p>
 			</div>
 			<p *ngIf="jira.time.spent > jira.time.remaining"> Early of : <b> {{(jira.time.spent - jira.time.remaining) / 3600}}h </b> </p>
-			<p *ngIf="jira.time.spent < jira.time.remaining"> Late of : <b> {{(jira.time.spent - jira.time.remaining) / 3600}}h </b> </p>
+			<p *ngIf="jira.time.spent < jira.time.remaining"> Late of : <b> {{-(jira.time.spent - jira.time.remaining) / 3600}}h </b> </p>
 		</div>
 		<mat-progress-bar mode="buffer"	[value]="jira.time.spent / jira.time.estimate * 100" [bufferValue]="jira.time.remaining / jira.time.estimate * 100"></mat-progress-bar>
 	</div>
