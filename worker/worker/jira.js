@@ -65,7 +65,7 @@ function compute_sprint_timetracking(issues, end, project_config)
 {
 	var sprint_time = {
 		estimate: 0,
-		remaining: (Date.now() - new Date(end).valueOf()) / 1000,
+		remaining: (new Date(end).valueOf() - Date.now()) / 1000,
 		spent: 0
 	};
 
