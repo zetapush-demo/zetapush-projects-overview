@@ -36,15 +36,6 @@
 	</div>
 	<div fxFlex="33%" *ngIf="jira">
 		<h2 class="sprint"> {{jira.sprint}} <i *ngIf="jira.start && jira.end"> ({{jira.start}} au {{jira.end}}) </i> </h2>
-		<div *ngIf="jira.time" class="time">
-			<div>
-				<p fxFlex=""> Spent: <b> {{jira.time.spent / 3600}}h </b> </p>
-				<p fxFlex=""> Really spent: <b> {{jira.time.remaining / 3600}}h </b> </p>
-				<p fxFlex=""> Estimate: <b> {{jira.time.estimate / 3600}}h </b> </p>
-			</div>
-			<p *ngIf="jira.time.spent > jira.time.remaining"> Early of : <b> {{(jira.time.spent - jira.time.remaining) / 3600}}h </b> </p>
-			<p *ngIf="jira.time.spent < jira.time.remaining"> Late of : <b> {{-(jira.time.spent - jira.time.remaining) / 3600}}h </b> </p>
-		</div>
-		<mat-progress-bar mode="buffer"	[value]="jira.time.spent / jira.time.estimate * 100" [bufferValue]="jira.time.remaining / jira.time.estimate * 100"></mat-progress-bar>
+		<app-sprint-progress [time]="jira.time"></app-sprint-progress>
 	</div>
 <div>

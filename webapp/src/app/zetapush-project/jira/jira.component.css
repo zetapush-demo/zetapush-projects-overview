@@ -43,21 +43,10 @@ mat-panel-title * {
 	margin: 0.5vw;
 }
 
-mat-progress-bar {
-	height: 20px;
-	margin-top: 80px;
-	margin-bottom: 40px;
-}
-
 .priority_img {
 	flex: 1 1 auto;
 }
 
 .sprint {
 	text-align: center;
-}
-
-.time {
-	text-align: center;
-	margin-bottom: -60px;
 }
