@@ -78,7 +78,6 @@ exports.get_issues_list = async function get_issues_list(api_url, board_id, proj
 
 	for (var i = 0; i < max; i += 100) {
 		res = await axios.get(`${api_url}&startAt=${i}&maxResults=100`, config);
-		res.data.issues = res.data.issues.filter(issue => issue.fields.status.name !== project_config.close_state);
 		issues = issues.concat(filter_data(res.data.issues, board_id));
 	}
 	return issues;

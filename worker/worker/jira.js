@@ -61,7 +61,7 @@ function put_sub_issues(sprint)
 	sprint.issues.forEach(issue => issue.subtasks && issue.subtasks.forEach(x => delete x.parent));
 }
 
-function compute_sprint_timetracking(issues)
+function compute_sprint_timetracking(issues, project_config)
 {
 	var sprint_time = {
 		estimate: 0,
@@ -75,12 +75,12 @@ function compute_sprint_timetracking(issues)
 		for (var j = 0; j < issues[i].subtasks.length; j++) {
 			if (!issues[i].subtasks[j].timetracking)
 				continue;
-			sprint_time.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds || 0;
+			if (issues[i].subtasks[j].status !== project_config.close_state)
+				sprint_time.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds || 0;
 			sprint_time.remaining += issues[i].subtasks[j].timetracking.remainingEstimateSeconds || 0;
 			sprint_time.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds || 0;
 		}
 	}
-	// sprint_time.remaining = sprint_time.estimate - sprint_time.remaining;
 	return sprint_time;
 }
 
@@ -102,7 +102,13 @@ async function get_current_sprint(project_config, board_id, config)
 			issues: await get_issues_list(api_url, board_id, project_config, config)
 		};
 		put_sub_issues(sprint);
-		sprint.time = compute_sprint_timetracking(sprint.issues);
+		sprint.time = compute_sprint_timetracking(sprint.issues, project_config);
+		sprint.issues = sprint.issues.filter(issue => {
+			if (issue.subtasks)
+				issue.subtasks = issue.subtasks.filter(sub => sub.status !== project_config.close_state);
+			if (issue.status !== project_config.close_state)
+				return issue;
+		});
 		data.push(sprint);
 	}
 	return data;
