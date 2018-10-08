@@ -10,4 +10,4 @@
   <p *ngIf="time.remaining < 0"> Late of : <b> {{-time.remaining + time.estimate - time.spent}}h </b> </p>
 </div>
 <mat-progress-bar *ngIf="time && time.remaining > 0" mode="buffer" [value]="time.spent / time.estimate * 100" [bufferValue]="100 - time.remaining / time.estimate * 100"> </mat-progress-bar>
-<mat-progress-bar *ngIf="time && time.remaining < 0" mode="buffer" [value]="time.spent / time.estimate * 100" [bufferValue]="100"> </mat-progress-bar>
+<mat-progress-bar *ngIf="time && time.remaining <= 0" mode="buffer" [value]="time.spent / time.estimate * 100" [bufferValue]="100"> </mat-progress-bar>
