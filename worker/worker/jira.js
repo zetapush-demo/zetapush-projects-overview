@@ -61,11 +61,11 @@ function put_sub_issues(sprint)
 	sprint.issues.forEach(issue => issue.subtasks && issue.subtasks.forEach(x => delete x.parent));
 }
 
-function compute_sprint_timetracking(issues, project_config)
+function compute_sprint_timetracking(issues, end, project_config)
 {
 	var sprint_time = {
 		estimate: 0,
-		remaining: 0,
+		remaining: (Date.now() - new Date(end).valueOf()) / 1000,
 		spent: 0
 	};
 
@@ -77,10 +77,11 @@ function compute_sprint_timetracking(issues, project_config)
 				continue;
 			if (issues[i].subtasks[j].status !== project_config.close_state)
 				sprint_time.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds || 0;
-			sprint_time.remaining += issues[i].subtasks[j].timetracking.remainingEstimateSeconds || 0;
 			sprint_time.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds || 0;
 		}
 	}
+	for (var key in sprint_time)
+		sprint_time[key] = Math.round(sprint_time[key] / 3600);
 	return sprint_time;
 }
 
@@ -97,18 +98,20 @@ async function get_current_sprint(project_config, board_id, config)
 		api_url = `${api}/sprint/${res[i].id}/issue?jql`;
 		var sprint = {
 			sprint: res[i].name,
-			start: parse_time(res[i].startDate).slice(0, -9),
-			end: parse_time(res[i].endDate).slice(0, -9),
+			start: res[i].startDate,
+			end: res[i].endDate,
 			issues: await get_issues_list(api_url, board_id, project_config, config)
 		};
 		put_sub_issues(sprint);
-		sprint.time = compute_sprint_timetracking(sprint.issues, project_config);
+		sprint.time = compute_sprint_timetracking(sprint.issues, sprint.end, project_config);
 		sprint.issues = sprint.issues.filter(issue => {
 			if (issue.subtasks)
 				issue.subtasks = issue.subtasks.filter(sub => sub.status !== project_config.close_state);
 			if (issue.status !== project_config.close_state)
 				return issue;
 		});
+		sprint.start = parse_time(sprint.start).slice(0, -9);
+		sprint.end = parse_time(sprint.end).slice(0, -9);
 		data.push(sprint);
 	}
 	return data;
