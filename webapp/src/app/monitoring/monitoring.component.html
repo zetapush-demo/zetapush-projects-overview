@@ -19,7 +19,7 @@
 				<ng-container cdkColumnDef="name">
 					<mat-header-cell *cdkHeaderCellDef> Machine description </mat-header-cell>
 					<mat-cell matTooltip="{{element.url}}" *cdkCellDef="let element">
-						<a href="{{element.url}}"> {{element.name}} </a>
+						<a target="_blank" href="{{element.url}}"> {{element.name}} </a>
 					</mat-cell>
 				</ng-container>
 
