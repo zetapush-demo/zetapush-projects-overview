@@ -37,12 +37,3 @@ main {
 	width: 100%;
 	position: absolute;
 }
-
-mat-tab-group {
-	padding: 0 1rem;
-	min-height: 100%;
-}
-
-mat-tab-group ::ng-deep .mat-tab-body-wrapper {
-	flex: 1;
-}

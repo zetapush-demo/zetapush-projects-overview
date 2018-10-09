@@ -20,6 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { ResumeComponent } from './resume/resume.component';
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
@@ -31,9 +32,11 @@ import { BuildFlowComponent } from './zetapush-project/jenkins/build-flow/build-
 import { JenkinsPopupComponent } from './zetapush-project/jenkins/popup/jenkins-popup.component';
 import { JiraComponent } from './zetapush-project/jira/jira.component';
 import { SprintProgressComponent } from './zetapush-project/jira/sprint-progress/sprint-progress.component';
+import { TabsComponent } from './tabs/tabs.component';
 
 @NgModule({
 	imports: [
+		AppRoutingModule,
 		BrowserModule,
 		HttpClientModule,
 		MarkdownModule.forRoot(),
@@ -67,7 +70,8 @@ import { SprintProgressComponent } from './zetapush-project/jira/sprint-progress
 		BuildFlowComponent,
 		JenkinsPopupComponent,
 		JiraComponent,
-		SprintProgressComponent
+		SprintProgressComponent,
+		TabsComponent
 	],
 	providers: [],
 	entryComponents: [

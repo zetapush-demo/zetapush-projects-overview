@@ -1,20 +1,10 @@
 <header id="header">
-	<a href="/">
+	<a routerLink="/">
 		<img class="home_button" src="https://zetapush.com/assets/img/zt_logo.png" height="80">
 	</a>
 	<h1> {{title}} </h1>
 </header>
 
 <main>
-	<mat-tab-group mat-stretch-tabs class="tabs">
-		<mat-tab label="zetapush-project" *ngIf="ready">
-			<app-zetapush-project></app-zetapush-project>
-		</mat-tab>
-		<mat-tab label="monitoring">
-			<app-monitoring></app-monitoring>
-		</mat-tab>
-		<mat-tab label="resume" *ngIf="ready">
-			<app-resume> </app-resume>
-		</mat-tab>
-	</mat-tab-group>
+	<router-outlet *ngIf="ready"> </router-outlet>
 </main>

@@ -1,0 +1,15 @@
+<mat-tab-group mat-stretch-tabs class="tabs">
+	<mat-tab *ngFor="let tab of tabs">
+		<ng-template mat-tab-label>
+			<a class="link" routerLink="{{tab.name}}">
+				<mat-icon> link </mat-icon>
+			</a>
+			{{tab.name}}
+		</ng-template>
+		<ng-container [ngSwitch]="tab.name">
+			<app-zetapush-project *ngSwitchCase="'zetapush-project'"></app-zetapush-project>
+			<app-monitoring *ngSwitchCase="'monitoring'"></app-monitoring>
+			<app-resume *ngSwitchCase="'resume'"></app-resume>
+		</ng-container>
+	</mat-tab>
+</mat-tab-group>
