@@ -117,10 +117,11 @@ exports.get_good_color = function get_good_color(objtab)
 
 exports.get_config = function get_config(data_field)
 {
-        var data = JSON.parse(fs.readFileSync('./.zetarc'));
+	const config_file = './application.json';
+        var data = JSON.parse(fs.readFileSync(config_file));
 
 	if (!data[data_field]) {
-		console.error(`'${data_field}' doesn't exist in '.zetarc'...`);
+		console.error(`'${data_field}' doesn't exist in ${config_file}...`);
 		process.exit(1);
 	}
 	return data[data_field];
