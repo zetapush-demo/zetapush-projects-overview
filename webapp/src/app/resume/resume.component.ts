@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MonitoringComponent, MachineGroup, Machine } from '../monitoring/monitoring.component';
+import { MachineGroup, Machine } from '../monitoring/monitoring.component';
 import { ZetapushProjectService, DataStruct, GithubIssue, JenkinsBranch, JiraSprint } from '../zetapush-project/zetapush-project.service';
 
 @Component({
@@ -16,7 +16,6 @@ export class ResumeComponent implements OnInit {
 	machine_group: MachineGroup[];
 
 	constructor(
-		private monitoring: MonitoringComponent,
 		private zetapush_service: ZetapushProjectService
 	) { }
 
@@ -41,7 +40,9 @@ export class ResumeComponent implements OnInit {
 	}
 
 	refreshStatus() {
-		this.machine_group = this.monitoring.machines.filter(x => ['dev', 'hq', 'prod', 'celtia'].find(y => y === x.env))
+		const tmp = require('../../../../worker/application.json');
+
+		this.machine_group = tmp.machines.filter(x => ['dev', 'hq', 'prod', 'celtia'].find(y => y === x.env));
 		for (var i = 0; i < this.machine_group.length; i++) {
 			for (var j = 0; j < this.machine_group[i].list.length; j++)
 				this.send_request(this.machine_group[i].list[j], this.machine_group[i]);
