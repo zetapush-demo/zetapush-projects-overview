@@ -11,3 +11,4 @@ node_modules
 
 # ZetaPush Config
 .zetarc
+application.json
