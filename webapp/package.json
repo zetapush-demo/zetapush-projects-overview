@@ -28,7 +28,7 @@
     "@zetapush/platform-legacy": "^0.34.2",
     "core-js": "^2.5.4",
     "github-markdown-css": "^2.10.0",
-    "ngx-markdown": "^6.2.1",
+    "ngx-markdown": "^6.2.2",
     "prismjs": "^1.15.0",
     "rxjs": "^6.3.3",
     "typescript": "^2.9.2",
