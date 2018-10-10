@@ -65,6 +65,7 @@ function filter_data(issue)
 			url: issue.user.html_url
 		},
 		created: parse_time(issue.created_at),
+		timestamp: new Date(issue.created_at).valueOf(),
 		labels: get_good_color(obj_tab_filter(issue.labels, ['name', 'color'])),
 		body: issue.body,
 		assignees: obj_tab_filter(issue.requested_reviewers || issue.assignees, ['login', 'avatar_url']),

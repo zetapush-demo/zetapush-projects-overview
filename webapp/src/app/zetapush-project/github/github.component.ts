@@ -41,14 +41,9 @@ export class GithubComponent implements OnInit {
 		function get_last_data(tab: any[]) {
 			if (!tab || !tab.length)
 				return null;
-			const last_timestamp = Math.max(...tab.map(x => new Date(x.created).valueOf()));
+			const last_timestamp = Math.max(...tab.map(x => x.timestamp));
 
-			return tab.find(x => {
-				const current_timestamp = new Date(x.created).valueOf();
-
-				if (current_timestamp === last_timestamp && current_timestamp > gap)
-					return x;
-			});
+			return tab.find(x => x.timestamp === last_timestamp && x.timestamp > gap);
 		}
 		for (var i = 0; i < this.data.length; i++) {
 			const concat_data = this.data[i].issues.concat(this.data[i].pull_request);

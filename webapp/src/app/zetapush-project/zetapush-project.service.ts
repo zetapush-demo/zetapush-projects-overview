@@ -38,6 +38,7 @@ export interface GithubIssue {
 	}[];
 	body: string;
 	created: string;
+	timestamp: number;
 	id: number;
 	labels: {
 		color: string;
