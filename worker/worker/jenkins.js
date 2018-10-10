@@ -6,15 +6,19 @@ const jenkins_assets = 'https://raw.githubusercontent.com/jenkinsci/jenkins/mast
 const blue_url = 'blue/organizations/jenkins/ZetaPush%20Github%2F';
 const api_url = 'blue/rest/organizations/jenkins/pipelines/ZetaPush%20Github/pipelines/';
 
+function http_error_handler(err)
+{
+	console.log('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
+	if (err && err.response && err.response.status != 200)
+		console.log(err.response.status, err.response.statusText);
+	else
+		console.log(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
+	process.exit(1);
+}
+
 async function get_repo_urls(jenkins_url)
 {
-	const res = await axios.get(`${jenkins_url}/${api_url}`).catch(err => {
-		if (err && err.response && err.response.status != 200)
-			console.log(err.response.status, err.response.statusText);
-		else
-			console.log(err.errno, require('path').basename(__filename));
-		process.exit(1);
-	});
+	const res = await axios.get(`${jenkins_url}/${api_url}`).catch(http_error_handler);
 
 	return res.data.map(x => `${jenkins_url}${x._links.self.href}`);
 }
@@ -65,7 +69,7 @@ function build_flow_tree(arr)
 
 async function get_branch_flow(url)
 {
-	var res = await axios.get(url);
+	var res = await axios.get(url).catch(http_error_handler);
 
 	res = res.data.map(x => {
 		return {
@@ -124,7 +128,7 @@ function get_icon_by_flow(flow)
 async function get_branch_array(local_url, branch_url, project_name)
 {
 	var branches = [];
-	var res = await axios.get(branch_url);
+	var res = await axios.get(branch_url).catch(http_error_handler);
 
 	res = res.data.filter(x => !x.pullRequest);
 	for (var i = 0; i < res.length; i++) {
@@ -167,7 +171,7 @@ module.exports = async function()
 	const repo_urls = await get_repo_urls(jenkins.url);
 
 	for (var i = 0; i < repo_urls.length; i++) {
-		const res = await axios.get(repo_urls[i]);
+		const res = await axios.get(repo_urls[i]).catch(http_error_handler);
 
 		data.push({
 			name: res.data.displayName,
