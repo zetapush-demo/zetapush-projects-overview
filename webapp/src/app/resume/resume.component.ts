@@ -24,7 +24,7 @@ export class ResumeComponent implements OnInit {
 			if (xhr.readyState == 4) {
 				if (xhr.status !== 200) {
 					machine_group['color'] = '#f15b3e';
-					machine_group['fail'] = machine.name;
+					machine_group['fail'].push(machine.name);
 				}
 			}
 		};
@@ -33,6 +33,7 @@ export class ResumeComponent implements OnInit {
 	send_request(machine: Machine, machine_group: MachineGroup) {
 		const xhr = new XMLHttpRequest();
 
+		machine_group['fail'] = [];
 		machine_group['color'] = '#86c65b';
 		xhr.onreadystatechange = this.xhr_callback(xhr, machine, machine_group);
 		xhr.open('GET', machine.url, true);
