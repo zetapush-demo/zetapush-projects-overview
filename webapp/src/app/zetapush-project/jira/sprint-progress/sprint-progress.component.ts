@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 
 @Component({
 	selector: 'app-sprint-progress',
@@ -9,9 +9,11 @@ export class SprintProgressComponent implements OnInit {
 
 	@Input() time;
 
+	constructor(
+		private cd: ChangeDetectorRef
+	) {}
+
 	format_hour(hour: number): string {
-		if (typeof hour === 'undefined')
-			return;
 		if (hour > 8)
 			return `${Math.round(hour / 8)}d ${hour % 8}h`;
 		else if (hour < 0)
@@ -20,16 +22,16 @@ export class SprintProgressComponent implements OnInit {
 			return `${hour}h`;
 	}
 
-	compute_early_time(time): number {
+	compute_early_time(time): string {
 		if (time.estimate - time.spent < time.remaining)
-			return time.spent - time.remaining;
+			return this.format_hour(time.spent - time.remaining);
 	}
 
-	compute_late_time(time): number {
+	compute_late_time(time): string {
 		if (time.remaining > 0 && time.estimate - time.spent > time.remaining)
-			return time.spent - time.remaining;
+			return this.format_hour(time.spent - time.remaining);
 		else if (time.remaining < 0)
-			return -time.remaining + time.estimate - time.spent;
+			return this.format_hour(-time.remaining + time.estimate - time.spent);
 	}
 
 	compute_progress_bar_data(time) {
@@ -42,11 +44,15 @@ export class SprintProgressComponent implements OnInit {
 	ngOnInit() {
 		if (this.time) {
 			this.time.progress_bar = this.compute_progress_bar_data(this.time);
-			this.time.early = this.format_hour(this.compute_early_time(this.time));
-			this.time.late = this.format_hour(this.compute_late_time(this.time));
+			this.time.early = this.compute_early_time(this.time);
+			this.time.late = this.compute_late_time(this.time);
 			this.time.spent = this.format_hour(this.time.spent);
 			this.time.remaining = this.format_hour(this.time.remaining);
 			this.time.estimate = this.format_hour(this.time.estimate);
 		}
+	}
+
+	ngAfterViewInit() {
+		this.cd.detectChanges();
 	}
 }
