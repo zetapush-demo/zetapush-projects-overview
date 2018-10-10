@@ -35,7 +35,9 @@
 		</mat-card>
 	</div>
 	<div fxFlex="33%" *ngIf="jira">
-		<h2 class="sprint"> {{jira.sprint}} <i *ngIf="jira.start && jira.end"> ({{jira.start}} au {{jira.end}}) </i> </h2>
-		<app-sprint-progress [time]="jira.time"></app-sprint-progress>
+		<mat-card *ngFor="let sprint of jira">
+			<h2 class="sprint"> {{sprint.sprint}} <i *ngIf="sprint.start && sprint.end"> ({{sprint.start}} au {{sprint.end}}) </i> </h2>
+			<app-sprint-progress [time]="sprint.time"></app-sprint-progress>
+		</mat-card>
 	</div>
 <div>

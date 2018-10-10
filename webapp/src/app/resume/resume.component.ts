@@ -10,7 +10,7 @@ import { ZetapushProjectService, DataStruct, GithubIssue, JenkinsBranch, JiraSpr
 })
 export class ResumeComponent implements OnInit {
 
-	jira: JiraSprint;
+	jira: JiraSprint[];
 	jenkins: JenkinsBranch[];
 	github: GithubIssue[];
 	machine_group: MachineGroup[];
@@ -53,7 +53,7 @@ export class ResumeComponent implements OnInit {
 			return;
 		this.github = tmp.github.find(x => x.name === 'zetapush').issues.slice(0, 5);
 		this.jenkins = tmp.jenkins.find(x => x.name === 'zetapush').branches.filter(x => x.name === 'master' || x.name === 'develop');
-		this.jira = tmp.jira.find(x => x.project === 'PLATEFORME-V3').sprint[0];
+		this.jira = tmp.jira.find(x => x.project === 'PLATEFORME-V3').sprint;
 	}
 
 	async ngOnInit() {
