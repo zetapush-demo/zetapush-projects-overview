@@ -3,18 +3,22 @@ const { parse_time, get_config, get_issues_list } = require('./utils');
 
 const api = 'https://zetapush.atlassian.net/rest/agile/1.0';
 
+function http_error_handler(err)
+{
+	console.log('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
+	if (err && err.response && err.response.status != 200) {
+		console.error(err.response.status, err.response.statusText);
+		console.error('Maybe bad credentials => application.json =>');
+		console.error('jira: {\n\t email || password\n}');
+	} else
+		console.log(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
+		process.exit(1);
+}
+
 async function get_board_list(project_list, config)
 {
 	var boards_id = [];
-	var res = await axios.get(`${api}/board/`, config).catch(err => {
-		if (err && err.response && err.response.status != 200) {
-			console.error(err.response.status, err.response.statusText);
-			console.error('Bad credentials => .zetarc =>');
-			console.error('jira: {\n\t email || password => .zetarc');
-		} else
-			console.log(err.errno, require('path').basename(__filename));
-		process.exit(1);
-	});
+	var res = await axios.get(`${api}/board/`, config).catch(http_error_handler);
 
 	res = res.data.values;
 	for (var i = 0; i < project_list.length; i++)
@@ -24,7 +28,7 @@ async function get_board_list(project_list, config)
 				break;
 			}
 			if (j === res.length - 1) {
-				console.error(`Something bad in .zetarc, or this project can't have sprint =>\njira: { \n\t sprint: {`);
+				console.error(`Something bad in application.json, or this project can't have sprint =>\njira: { \n\t sprint: {`);
 				console.error(`\t\t project_list: [{\n\t\t\t name: "${project_list[i].name}"`);
 				console.error(`\t\t\t key: "${project_list[i].key}"`);
 				console.error(`\t\t\t close_state: "${project_list[i].close_state}"`);
@@ -87,7 +91,7 @@ function compute_sprint_timetracking(issues, end, project_config)
 
 async function get_current_sprint(project_config, board_id, config)
 {
-	var res = await axios.get(`${api}/board/${board_id}/sprint?state=active`, config);
+	var res = await axios.get(`${api}/board/${board_id}/sprint?state=active`, config).catch(http_error_handler);
 	var api_url;
 	var data = [];
 
@@ -126,7 +130,7 @@ module.exports = async function()
 	console.assert(boards_id.length === config.sprint.length);
 	if (boards_id.length === 0) {
 		console.error('No valid projects were found =>');
-		console.error('jira: {\n\tconfig.sprint: {name || key}\n} => .zetarc');
+		console.error('jira: {\n\tconfig.sprint: {name || key}\n} => application.json');
 		process.exit(1);
 	}
 	for (var i = 0; i < boards_id.length; i++) {
