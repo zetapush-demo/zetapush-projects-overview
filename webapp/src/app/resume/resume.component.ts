@@ -41,9 +41,6 @@ export class ResumeComponent implements OnInit {
 	}
 
 	refreshStatus() {
-		const tmp = require('../../../../worker/application.json');
-
-		this.machine_group = tmp.machines.filter(x => ['dev', 'hq', 'prod', 'celtia'].find(y => y === x.env));
 		for (var i = 0; i < this.machine_group.length; i++) {
 			for (var j = 0; j < this.machine_group[i].list.length; j++)
 				this.send_request(this.machine_group[i].list[j], this.machine_group[i]);
@@ -60,10 +57,14 @@ export class ResumeComponent implements OnInit {
 	}
 
 	async ngOnInit() {
+		const config_file = require('../../../../worker/application.json');
+
+		this.machine_group = config_file.machines.filter(x => ['dev', 'hq', 'prod', 'celtia'].find(y => y === x.env));
 		this.refreshStatus();
 		setInterval(() => {
 			this.refreshStatus();
-		}, 1000 * 60 * 15); // 15 minutes
+		}, eval(config_file.monitoring_refresh));
+
 		const tmp: any = await this.zetapush_service.get_last_data();
 
 		if (!tmp)

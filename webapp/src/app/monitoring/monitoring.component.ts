@@ -63,10 +63,12 @@ export class MonitoringComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.machines = require('../../../../worker/application.json').machines;
+		const config_file = require('../../../../worker/application.json');
+
+		this.machines = config_file.machines;
 		this.refreshStatus();
 		setInterval(() => {
 			this.refreshStatus();
-		}, 1000 * 60 * 15); // 15 minutes
+		}, eval(config_file.monitoring_refresh));
 	}
 }
