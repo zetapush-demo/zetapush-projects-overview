@@ -1,13 +1,10 @@
 <div *ngIf="time" class="time">
   <div>
-    <p fxFlex=""> Spent : <b> {{time.spent}}h </b> </p>
-    <p *ngIf="time.remaining > 0"> Remaining : <b> {{time.remaining}}h </b> </p>
-    <p *ngIf="time.remaining < 0"> Remaining : <b> Finished </b> </p>
-    <p fxFlex=""> Estimate : <b> {{time.estimate}}h </b> </p>
+    <p fxFlex=""> Spent : <b> {{time.spent}} </b> </p>
+    <p fxFlex=""> Remaining : <b> {{time.remaining}} </b> </p>
+    <p fxFlex=""> Estimate : <b> {{time.estimate}} </b> </p>
   </div>
-  <p *ngIf="time.estimate - time.spent < time.remaining"> Early of : <b> {{time.spent - time.remaining}}h </b> </p>
-  <p *ngIf="time.remaining > 0 && time.estimate - time.spent > time.remaining"> Late of : <b> {{time.spent - time.remaining}}h </b> </p>
-  <p *ngIf="time.remaining < 0"> Late of : <b> {{-time.remaining + time.estimate - time.spent}}h </b> </p>
+  <p *ngIf="time.late"> Late of : <b> {{time.late}} </b> </p>
+  <p *ngIf="time.early"> Early of : <b> {{time.early}} </b> </p>
 </div>
-<mat-progress-bar *ngIf="time && time.remaining > 0" mode="buffer" [value]="time.spent / time.estimate * 100" [bufferValue]="100 - time.remaining / time.estimate * 100"> </mat-progress-bar>
-<mat-progress-bar *ngIf="time && time.remaining <= 0" mode="buffer" [value]="time.spent / time.estimate * 100" [bufferValue]="100"> </mat-progress-bar>
+<mat-progress-bar *ngIf="time && time.progress_bar" mode="buffer" [value]="time.progress_bar.value" [bufferValue]="time.progress_bar.bufferValue"> </mat-progress-bar>
