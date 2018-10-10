@@ -1,5 +1,4 @@
 const axios = require('axios');
-const fs = require('fs');
 
 var exports = module.exports = {};
 
@@ -69,7 +68,7 @@ exports.get_issues_list = async function get_issues_list(api_url, board_id, proj
 	var res = await axios.get(`${api_url}&maxResults=1`, config).catch(err => {
 		if (err.response.status != 200) {
 			console.error(err.response.status, err.response.statusText);
-			console.error(`The authenticated account is not allowed to see\n\t => ${project_config.name}`);
+			console.error(`Maybe the authenticated account is not allowed to see\n\t => ${project_config.name}`);
 			process.exit(1);
 		}
 	});
@@ -117,8 +116,8 @@ exports.get_good_color = function get_good_color(objtab)
 
 exports.get_config = function get_config(data_field)
 {
-	const config_file = './application.json';
-        var data = JSON.parse(fs.readFileSync(config_file));
+	const config_file = '../application.json';
+	const data = require(config_file);
 
 	if (!data[data_field]) {
 		console.error(`'${data_field}' doesn't exist in ${config_file}...`);
