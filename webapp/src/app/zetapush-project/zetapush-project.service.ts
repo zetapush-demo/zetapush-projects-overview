@@ -120,22 +120,30 @@ interface JiraIssue {
 	url: string;
 }
 
+interface Credentials {
+	email: string;
+	login: string;
+	password: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
 export class ZetapushProjectService {
-	constructor() {}
 
-	client = new SmartClient({
-		platformUrl: 'http://hq.zpush.io:9080/zbo/pub/business/',
-		appName: '15pl6a4adp'
-	});
-	api: ProxyService = this.client.createProxyTaskService();
+	client: SmartClient;
+	api: ProxyService;
 	data: DataStruct;
 	observer: Subject<DataStruct> = new Subject();
-	email = 'pacome.francon@zetapush.com';
-	login = 'angular';
-	password = 'angular';
+	credentials: Credentials;
+
+	constructor() {
+		const config_file = require('../../../../worker/application.json');
+
+		this.client = new SmartClient(config_file.SmartClient);
+		this.credentials = config_file.SmartClient_credentials;
+		this.api = this.client.createProxyTaskService();
+	}
 
 	async get_last_data() {
 		return await this.api.get_last_data().catch(err => console.log(err));
@@ -152,14 +160,10 @@ export class ZetapushProjectService {
 
 	async smart_connect() {
 		try {
-			await this.api.createUser({
-				'email': this.email,
-				'login': this.login,
-				'password': this.password
-			});
+			await this.api.createUser(this.credentials);
 			await this.client.setCredentials({
-				login: this.login,
-				password: this.password
+				login: this.credentials.login,
+				password: this.credentials.password
 			});
 			await this.client.connect();
 			await this.api.addMeToConversation();
