@@ -3,6 +3,17 @@ const { get_config, parse_time, obj_tab_filter, get_good_color } = require('./ut
 
 const api_url = 'https://api.github.com/repos';
 
+function http_error_handler(err)
+{
+	console.log('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
+	if (err && err.response && err.response.status != 200) {
+		console.error(err.response.status, err.response.statusText);
+		console.error(`Something bad in application.json, or bad github credentials`);
+	} else
+		console.log(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
+	process.exit(1);
+}
+
 async function get_valid_repo_list(repos, config)
 {
 	var repo_list = [];
@@ -10,11 +21,14 @@ async function get_valid_repo_list(repos, config)
 	for (var i = 0; i < repos.length; i++) {
 		for (var j = 0; j < repos[i].repos.length; j++) {
 			const tmp = await axios.get(`${api_url}/${repos[i].owner}/${repos[i].repos[j]}`, config).catch(err => {
+				console.log('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
 				if (err && err.response && err.response.status != 200) {
 					console.error(err.response.status, err.response.statusText);
-					console.error(`Something bad in .zetarc, this github account/organization/repository doesn't exist, or bad credentials =>\n\tgithub:`);
-					console.error(`\t\trepos: [{\n\t\t\tname: "${JSON.stringify(repos[i])}"`);
-					console.error(`\t\t}]\n\t}\n}`);
+					console.error(`Something bad in application.json, this github account/organization/repository doesn't exist, or bad credentials =>`);
+					console.error(`github: {\n\trepos: {`)
+					console.error(`\t\towner: ${JSON.stringify(repos[i].owner)},`);
+					console.error(`\t\trepos: ${JSON.stringify(repos[i].repos)}`);
+					console.error(`\t}\n}`);
 				} else
 					console.log(err.errno, require('path').basename(__filename));
 				process.exit(1);
@@ -32,7 +46,7 @@ async function get_valid_repo_list(repos, config)
 
 async function get_tag(config, repo)
 {
-	const res = await axios.get(`${api_url}/${repo.owner}/${repo.name}/tags`, config.http);
+	const res = await axios.get(`${api_url}/${repo.owner}/${repo.name}/tags`, config.http).catch(http_error_handler);
 
 	if (!res.data.length)
 		return '';
@@ -69,7 +83,7 @@ async function get_data(config, api_search_field, repos, issues_nb)
 	var issues = [];
 
 	for (var i = 0; i < issues_nb; i += 30) {
-		res = await axios.get(`${api_url}/${repos.owner}/${repos.name}/${api_search_field}?page=${i / 30 + 1}`, config.http);
+		res = await axios.get(`${api_url}/${repos.owner}/${repos.name}/${api_search_field}?page=${i / 30 + 1}`, config.http).catch(http_error_handler);
 		if (!res.data.length)
 			break;
 		for (var j = 0; j < res.data.length; j++) {
