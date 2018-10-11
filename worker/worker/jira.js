@@ -20,6 +20,8 @@ async function get_board_list(project_list, config)
 	var boards_id = [];
 	var res = await axios.get(`${api}/board/`, config).catch(http_error_handler);
 
+	if (!res || !res.data || !res.data.values.length)
+		return [];
 	res = res.data.values;
 	for (var i = 0; i < project_list.length; i++)
 		for (var j = 0; j < res.length; j++) {
@@ -95,7 +97,7 @@ async function get_current_sprint(project_config, board_id, config)
 	var api_url;
 	var data = [];
 
-	if (!res.data.values.length)
+	if (!res || !res.data || !res.data.values.length)
 		return [];
 	res = res.data.values;
 	for (var i = 0; i < res.length; i++) {

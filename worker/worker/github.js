@@ -48,7 +48,7 @@ async function get_tag(config, repo)
 {
 	const res = await axios.get(`${api_url}/${repo.owner}/${repo.name}/tags`, config.http).catch(http_error_handler);
 
-	if (!res.data.length)
+	if (!res || !res.data || !res.data.length)
 		return '';
 	return res.data[0].name;
 }
@@ -85,7 +85,7 @@ async function get_data(config, api_search_field, repos, issues_nb)
 
 	for (var i = 0; i < issues_nb; i += 30) {
 		res = await axios.get(`${api_url}/${repos.owner}/${repos.name}/${api_search_field}?page=${i / 30 + 1}`, config.http).catch(http_error_handler);
-		if (!res.data.length)
+		if (!res || !res.data || !res.data.length)
 			break;
 		for (var j = 0; j < res.data.length; j++) {
 			if (res.data[j].pull_request)

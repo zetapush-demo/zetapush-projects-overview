@@ -20,6 +20,8 @@ async function get_repo_urls(jenkins_url)
 {
 	const res = await axios.get(`${jenkins_url}/${api_url}`).catch(http_error_handler);
 
+	if (!res || !res.data || !res.data.length)
+		return [];
 	return res.data.map(x => `${jenkins_url}${x._links.self.href}`);
 }
 
@@ -71,6 +73,8 @@ async function get_branch_flow(url)
 {
 	var res = await axios.get(url).catch(http_error_handler);
 
+	if (!res || !res.data || !res.data.length)
+		return [];
 	res = res.data.map(x => {
 		return {
 			name: x.displayName,
@@ -130,6 +134,8 @@ async function get_branch_array(local_url, branch_url, project_name)
 	var branches = [];
 	var res = await axios.get(branch_url).catch(http_error_handler);
 
+	if (!res || !res.data || !res.data.length)
+		return [];
 	res = res.data.filter(x => !x.pullRequest);
 	for (var i = 0; i < res.length; i++) {
 		const name = res[i].name;
@@ -173,6 +179,10 @@ module.exports = async function()
 	for (var i = 0; i < repo_urls.length; i++) {
 		const res = await axios.get(repo_urls[i]).catch(http_error_handler);
 
+		if (!res || !res.data) {
+			console.error(`Jenkins API return empty data on ${repo_urls[i]}...`);
+			continue;
+		}
 		data.push({
 			name: res.data.displayName,
 			description: res.data.fullDisplayName,

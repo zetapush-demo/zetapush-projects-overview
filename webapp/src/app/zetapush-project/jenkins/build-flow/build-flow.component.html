@@ -1,4 +1,4 @@
-<ul>
+<ul *ngIf="flows && flows.length">
 	<li *ngFor="let flow of flows">
 		<mat-icon style="color: green" *ngIf="flow.result === 'SUCCESS'"> check_circle_outline </mat-icon>
 		<mat-icon color="warn" *ngIf="flow.result !== 'SUCCESS' && flow.result !== 'UNKNOWN'"> cancel </mat-icon>
