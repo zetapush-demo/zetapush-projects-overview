@@ -45,7 +45,7 @@ export class GithubComponent implements OnInit {
 
 			return tab.find(x => x.timestamp === last_timestamp && x.timestamp > gap);
 		}
-		for (var i = 0; i < this.data.length; i++) {
+		for (var i = 0; this.data && i < this.data.length; i++) {
 			const concat_data = this.data[i].issues.concat(this.data[i].pull_request);
 			const popup_data = get_last_data(concat_data);
 

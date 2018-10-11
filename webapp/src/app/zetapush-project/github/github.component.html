@@ -1,5 +1,5 @@
 <mat-spinner id="undefined_data" *ngIf="!data"></mat-spinner>
-<mat-tab-group *ngIf="data">
+<mat-tab-group *ngIf="data && data.length">
 	<mat-tab *ngFor="let repo of data" [label]="repo.name">
 		<app-repository [data]="repo" ></app-repository>
 	</mat-tab>
