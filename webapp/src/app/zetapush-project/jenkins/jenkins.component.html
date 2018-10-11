@@ -1,4 +1,4 @@
-<mat-spinner id="undefined_data" *ngIf="!data || !data.length"> </mat-spinner>
+<mat-spinner id="undefined_data" *ngIf="!data"> </mat-spinner>
 <mat-tab-group *ngIf="data && data.length" [selectedIndex]="index.value" (selectedIndexChange)="index.setValue($event)">
 	<mat-tab *ngFor="let app of data" [label]="app.name">
 		<div class="title">
