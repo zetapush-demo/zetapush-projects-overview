@@ -13,6 +13,8 @@ export class SprintProgressComponent implements OnInit {
 	constructor() {}
 
 	format_hour(hour: number): string {
+		if (typeof hour !== 'number')
+			return hour;
 		if (hour > 8)
 			return `${Math.round(hour / 8)}d ${hour % 8}h`;
 		else if (hour < 0)
