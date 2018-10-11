@@ -45,7 +45,6 @@ export class ResumeComponent implements OnInit {
 			for (var j = 0; j < this.machine_group[i].list.length; j++)
 				this.send_request(this.machine_group[i].list[j], this.machine_group[i]);
 		}
-		console.log(this.machine_group);
 	}
 
 	on_get_data(tmp: DataStruct) {
