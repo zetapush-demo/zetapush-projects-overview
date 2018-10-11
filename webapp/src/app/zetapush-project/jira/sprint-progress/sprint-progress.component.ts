@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
 	selector: 'app-sprint-progress',
@@ -8,10 +8,9 @@ import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 export class SprintProgressComponent implements OnInit {
 
 	@Input() time;
+	tmp: any = {};
 
-	constructor(
-		private cd: ChangeDetectorRef
-	) {}
+	constructor() {}
 
 	format_hour(hour: number): string {
 		if (hour > 8)
@@ -43,16 +42,12 @@ export class SprintProgressComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.time) {
-			this.time.progress_bar = this.compute_progress_bar_data(this.time);
-			this.time.early = this.compute_early_time(this.time);
-			this.time.late = this.compute_late_time(this.time);
+			this.tmp.progress_bar = this.compute_progress_bar_data(this.time);
+			this.tmp.early = this.compute_early_time(this.time);
+			this.tmp.late = this.compute_late_time(this.time);
 			this.time.spent = this.format_hour(this.time.spent);
 			this.time.remaining = this.format_hour(this.time.remaining);
 			this.time.estimate = this.format_hour(this.time.estimate);
 		}
-	}
-
-	ngAfterViewInit() {
-		this.cd.detectChanges();
 	}
 }

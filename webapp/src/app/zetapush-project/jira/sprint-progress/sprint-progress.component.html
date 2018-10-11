@@ -1,10 +1,10 @@
-<div *ngIf="time" class="time">
+<div *ngIf="time && tmp" class="time">
   <div>
     <p fxFlex=""> Spent : <b> {{time.spent}} </b> </p>
     <p fxFlex=""> Remaining : <b> {{time.remaining}} </b> </p>
     <p fxFlex=""> Estimate : <b> {{time.estimate}} </b> </p>
   </div>
-  <p *ngIf="time.late"> Late of : <b> {{time.late}} </b> </p>
-  <p *ngIf="time.early"> Early of : <b> {{time.early}} </b> </p>
+  <p *ngIf="tmp.late"> Late of : <b> {{tmp.late}} </b> </p>
+  <p *ngIf="tmp.early"> Early of : <b> {{tmp.early}} </b> </p>
 </div>
-<mat-progress-bar *ngIf="time && time.progress_bar" mode="buffer" [value]="time.progress_bar.value" [bufferValue]="time.progress_bar.bufferValue"> </mat-progress-bar>
+<mat-progress-bar *ngIf="tmp && tmp.progress_bar" mode="buffer" [value]="tmp.progress_bar.value" [bufferValue]="tmp.progress_bar.bufferValue"> </mat-progress-bar>
