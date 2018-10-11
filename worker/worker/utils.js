@@ -65,18 +65,23 @@ function extract_data(src, keys)
 
 exports.get_issues_list = async function get_issues_list(api_url, board_id, project_config, config)
 {
-	var res = await axios.get(`${api_url}&maxResults=1`, config).catch(err => {
-		if (err.response.status != 200) {
+	const http_error_handler = (err) => {
+		console.log('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
+		if (err && err.response && err.response.status != 200) {
 			console.error(err.response.status, err.response.statusText);
 			console.error(`Maybe the authenticated account is not allowed to see\n\t => ${project_config.name}`);
+			console.error('Maybe bad credentials => application.json =>');
+			console.error('jira: {\n\t email || password\n}');
+		} else
+			console.log(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
 			process.exit(1);
-		}
-	});
+	};
+	var res = await axios.get(`${api_url}&maxResults=1`, config).catch(http_error_handler);
 	const max = res.data.total;
 	var issues = [];
 
 	for (var i = 0; i < max; i += 100) {
-		res = await axios.get(`${api_url}&startAt=${i}&maxResults=100`, config);
+		res = await axios.get(`${api_url}&startAt=${i}&maxResults=100`, config).catch(http_error_handler);
 		issues = issues.concat(filter_data(res.data.issues, board_id));
 	}
 	return issues;
