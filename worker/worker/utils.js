@@ -2,14 +2,6 @@ const axios = require('axios');
 
 var exports = module.exports = {};
 
-function get_substring(str, regex)
-{
-	var tmp = str.split(regex);
-
-	tmp.splice(-1, 1);
-	return tmp.splice(-1, 1).join();
-}
-
 function check_bracket(str)
 {
 	var tmp1 = str.indexOf('[');
@@ -52,7 +44,7 @@ exports.extract_data = function extract_data(src, keys)
 	for (var i = 0; i < keys.length; i++) {
 		if (keys[i] && check_bracket(keys[i])) {
 			const obj = keys[i].substring(0, keys[i].indexOf('['));
-			const key = get_substring(keys[i], /[\[\]]/);
+			const key = keys[i].split(/[\[\]]/)[1];
 
 			dest[obj] = extract_data(src[obj], [key])[key];
 		} else if (!src[keys[i]])
