@@ -25,16 +25,16 @@ function filter_data(issues, board_id)
 			key:		issues[i].key,
 			url:		`https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${board_id}&modal=detail&selectedIssue=${issues[i].key}`,
 			parent:		issues[i].fields.parent && issues[i].fields.parent.key,
-			priority:	extract_data(issues[i].fields.priority, ['id', 'iconUrl']),
-			issuetype:	extract_data(issues[i].fields.issuetype, ['name', 'iconUrl']),
+			priority:	exports.extract_data(issues[i].fields.priority, ['id', 'iconUrl']),
+			issuetype:	exports.extract_data(issues[i].fields.issuetype, ['name', 'iconUrl']),
 			status:		issues[i].fields.status.name,
 			summary:	issues[i].fields.summary,
 			created:	exports.parse_time(issues[i].fields.created),
 			description:	issues[i].fields.description,
-			reporter:	extract_data(issues[i].fields.reporter, ['displayName', 'avatarUrls[48x48]']),
-			assignee:	extract_data(issues[i].fields.assignee, ['displayName', 'avatarUrls[48x48]']),
+			reporter:	exports.extract_data(issues[i].fields.reporter, ['displayName', 'avatarUrls[48x48]']),
+			assignee:	exports.extract_data(issues[i].fields.assignee, ['displayName', 'avatarUrls[48x48]']),
 			subtasks:	issues[i].fields.subtasks,
-			timetracking:	extract_data(issues[i].fields.timetracking, ['originalEstimateSeconds', 'remainingEstimateSeconds', 'timeSpentSeconds'])
+			timetracking:	exports.extract_data(issues[i].fields.timetracking, ['originalEstimateSeconds', 'remainingEstimateSeconds', 'timeSpentSeconds'])
 		};
 		for (var tmp in issues[i])
 			if (!issues[i][tmp] || issues[i][tmp].length === 0 || (Object.keys(issues[i][tmp]).length === 0 && issues[i][tmp].constructor === Object))
@@ -43,14 +43,14 @@ function filter_data(issues, board_id)
 	return issues;
 }
 
-function extract_data(src, keys)
+exports.extract_data = function extract_data(src, keys)
 {
 	var dest = {};
 
 	if (!src || !keys)
 		return null;
 	for (var i = 0; i < keys.length; i++) {
-		if (check_bracket(keys[i])) {
+		if (keys[i] && check_bracket(keys[i])) {
 			const obj = keys[i].substring(0, keys[i].indexOf('['));
 			const key = get_substring(keys[i], /[\[\]]/);
 
