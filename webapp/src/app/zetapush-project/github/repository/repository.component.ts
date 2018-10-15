@@ -26,6 +26,16 @@ export class RepositoryComponent implements OnInit {
 
 	constructor() { }
 
+	unmute() {
+		const ignore: string[] = JSON.parse(localStorage.getItem('github_ignore')) || [];
+		const search_item: number = ignore.indexOf(this.data.name);
+
+		if (search_item !== -1) {
+			ignore.splice(search_item, 1);
+			localStorage.setItem('github_ignore', JSON.stringify(ignore));
+		}
+	}
+
 	paginator_branches(pageEvent: PageEvent) {
 		this.data.issues = this.data.issues.filter((branch, index) => {
 			if (index > (pageEvent.pageIndex * pageEvent.pageSize - 1) && index < (pageEvent.pageIndex * pageEvent.pageSize + pageEvent.pageSize))

@@ -21,11 +21,12 @@ export class GithubComponent implements OnInit {
 	) { }
 
 	openDialog(popup_data, repo_name: string, message: string) {
+		const ignore: string[] = JSON.parse(localStorage.getItem('github_ignore')) || [];
 		var dialog_ref;
 
 		popup_data.message = message;
 		popup_data.repo_name = repo_name;
-		if (!this.is_dialog_open) {
+		if (!this.is_dialog_open && !ignore.includes(repo_name)) {
 			dialog_ref = this.dialog.open(GithubPopupComponent, {
 				width: '500px',
 				data: popup_data
@@ -34,6 +35,7 @@ export class GithubComponent implements OnInit {
 			dialog_ref.afterClosed().subscribe(() => this.is_dialog_open = false);
 		}
 	}
+
 	popup_on_new_data(delay: number) {
 		const now = new Date().valueOf();
 		const gap = now - delay;

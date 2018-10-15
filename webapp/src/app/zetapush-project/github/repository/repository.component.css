@@ -6,7 +6,7 @@ mat-panel-title h4 i {
 	text-align: center;
 }
 
-.form mat-form-field {
+.form mat-form-field, button {
 	margin-right: 1rem;
 }
 
