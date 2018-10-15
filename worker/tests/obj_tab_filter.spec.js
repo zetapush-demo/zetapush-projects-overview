@@ -32,4 +32,28 @@ describe('obj_tab_filter', () => {
 
 	       expect(res).toEqual(expected);
 	});
+
+	it(': accept all input key', () => {
+		const res = obj_tab_filter(input, ['str', 'nb']);
+
+		expect(res).toEqual(input);
+	});
+
+	it(': accept array, empty string', () => {
+		const res = obj_tab_filter(input, ['', '']);
+
+		expect(res).toEqual(null);
+	});
+
+	it(': empty, accept array', () => {
+		const res = obj_tab_filter(input, []);
+
+		expect(res).toEqual(null);
+	});
+
+	it(': empty input', () => {
+		const res = obj_tab_filter([], ['str']);
+
+		expect(res).toEqual([]);
+	});
 });

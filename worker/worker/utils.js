@@ -81,6 +81,8 @@ exports.get_issues_list = async function get_issues_list(api_url, board_id, proj
 
 exports.obj_tab_filter = function obj_tab_filter(obj, accept)
 {
+	if (!obj || !accept || accept.every(x => !x.length))
+		return null;
 	return obj.map(x => {
 		var tmp = {};
 
