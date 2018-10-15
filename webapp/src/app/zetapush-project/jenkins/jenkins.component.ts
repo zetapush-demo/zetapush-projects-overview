@@ -26,6 +26,16 @@ export class JenkinsComponent implements OnInit {
 		private dialog: MatDialog
 	) { }
 
+	unmute(project_name) {
+		const ignore: string[] = JSON.parse(localStorage.getItem('jenkins_ignore')) || [];
+		const search_item: number = ignore.indexOf(project_name);
+
+		if (search_item !== -1) {
+			ignore.splice(search_item, 1);
+			localStorage.setItem('jenkins_ignore', JSON.stringify(ignore));
+		}
+	}
+
 	paginator_branches(pageEvent: PageEvent, index: number) {
 		const data = this.data[index];
 
@@ -37,9 +47,10 @@ export class JenkinsComponent implements OnInit {
 	}
 
 	openDialog(branch_new_build) {
+		const ignore: string[] = JSON.parse(localStorage.getItem('jenkins_ignore')) || [];
 		var dialog_ref;
 
-		if (!this.is_dialog_open) {
+		if (!this.is_dialog_open && !ignore.includes(branch_new_build.project)) {
 			dialog_ref = this.dialog.open(JenkinsPopupComponent, {
 				width: '600px',
 				data: branch_new_build

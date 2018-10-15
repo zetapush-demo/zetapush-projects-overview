@@ -3,6 +3,7 @@
 	<h2>
 		<p> {{data.project}} </p>
 		<a href="{{data.branch.url}}"> {{data.branch.name}}	</a>
+		<button mat-button (click)="mute()"> Mute </button>
 	</h2>
 	<div mat-dialog-content>
 		<p> {{data.branch.time.start}}</p>

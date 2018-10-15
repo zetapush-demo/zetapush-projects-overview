@@ -13,6 +13,15 @@ export class JenkinsPopupComponent {
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) { }
 
+	mute() {
+		const ignore: string[] = JSON.parse(localStorage.getItem('jenkins_ignore')) || [];
+
+		if (!ignore.includes(this.data.project)) {
+			ignore.push(this.data.project);
+			localStorage.setItem('jenkins_ignore', JSON.stringify(ignore));
+		}
+	}
+
 	closeDialog() {
 		this.dialogRef.close();
 	}
