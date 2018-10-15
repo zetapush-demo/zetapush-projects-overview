@@ -9,7 +9,9 @@
 		</div>
 
 		<mat-accordion>
-			<button mat-button (click)="unmute(app.name)"> Unmute </button>
+			<div class="mute_button">
+				<button mat-button (click)="unmute(app.name)"> Unmute </button>
+			</div>
 			<mat-paginator [length]="length[index.value]" [pageSize]="pageSize[index.value]" [pageSizeOptions]="[5, 10, 25, 100]"
 				(page)="paginator_branches($event, index.value)">
 			</mat-paginator>
