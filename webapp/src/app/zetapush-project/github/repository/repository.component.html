@@ -6,8 +6,10 @@
 	<i> {{data.tag}} </i>
 </div>
 
-<div class="form">
+<div class="mute_button">
 	<button mat-button (click)="unmute()"> Unmute </button>
+</div>
+<div class="form">
 	<mat-form-field *ngFor="let form of filter_form">
 		<mat-select (selectionChange)="filter_data_by(filter_form)" [(value)]="form.selected"
 		[placeholder]="form.placeholder">
