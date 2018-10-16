@@ -47,9 +47,9 @@ export class SprintProgressComponent implements OnInit {
 			this.tmp.progress_bar = this.compute_progress_bar_data(this.time);
 			this.tmp.early = this.compute_early_time(this.time);
 			this.tmp.late = this.compute_late_time(this.time);
-			this.time.spent = this.format_hour(this.time.spent);
-			this.time.remaining = this.format_hour(this.time.remaining);
-			this.time.estimate = this.format_hour(this.time.estimate);
+			this.tmp.spent = this.format_hour(this.time.spent);
+			this.tmp.remaining = this.format_hour(this.time.remaining);
+			this.tmp.estimate = this.format_hour(this.time.estimate);
 		}
 	}
 }
