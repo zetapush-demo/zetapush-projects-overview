@@ -26,7 +26,7 @@ export interface Jenkins {
 }
 
 export interface Jira {
-	project: string;
+	name: string;
 	sprint: JiraSprint[];
 	url: string;
 }

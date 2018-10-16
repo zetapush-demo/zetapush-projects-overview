@@ -136,13 +136,13 @@ module.exports = async function()
 		process.exit(1);
 	}
 	for (var i = 0; i < boards_id.length; i++) {
-		const sprint = {
-			project: config.sprint[i].name,
+		const project = {
+			name: config.sprint[i].name,
 			url: `https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${boards_id[i]}`,
 			sprint: await get_current_sprint(config.sprint[i], boards_id[i], config.http)
 		}
 
-		data.push(sprint);
+		data.push(project);
 	}
 	return data;
 }
