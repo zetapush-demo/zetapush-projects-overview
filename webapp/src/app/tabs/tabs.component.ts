@@ -6,16 +6,9 @@ import { Component } from '@angular/core';
 	styleUrls: ['./tabs.component.css']
 })
 export class TabsComponent {
-
 	tabs = [
-		{
-			name: 'zetapush-project'
-		},
-		{
-			name: 'monitoring'
-		},
-		{
-			name: 'resume'
-		}
-	]
+		'zetapush-project',
+		'monitoring',
+		'resume'
+	];
 }
