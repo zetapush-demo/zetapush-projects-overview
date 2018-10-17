@@ -66,6 +66,6 @@ export default class Api {
 	}
 
 	get_last_data() {
-		return (this.last_data);
+		return this.last_data;
 	}
 }

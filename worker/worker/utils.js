@@ -110,7 +110,7 @@ exports.get_good_color = function get_good_color(objtab)
 {
 	for (var i = 0; i < objtab.length; i++)
 		objtab[i].color = "#" + objtab[i].color;
-	return (objtab);
+	return objtab;
 }
 
 exports.get_config = function get_config(data_field)
