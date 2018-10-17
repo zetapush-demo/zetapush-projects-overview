@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog, PageEvent } from '@angular/material';
 
-import { ZetapushProjectService, DataStruct, Jenkins, JenkinsBranch } from '../zetapush-project.service';
+import { Jenkins, JenkinsBranch } from '../zetapush-project.service';
 import { JenkinsPopupComponent } from './popup/jenkins-popup.component';
 import { FormControl } from '@angular/forms';
 
@@ -12,17 +12,15 @@ import { FormControl } from '@angular/forms';
 })
 export class JenkinsComponent implements OnInit {
 
-	data: Jenkins[];
-	branches_save: JenkinsBranch[][];
+	@Input() data: Jenkins;
+	branches_save: JenkinsBranch[];
 
 	is_dialog_open = false;
 
-	index: FormControl = new FormControl(0);
-	length: number[] = [];
-	pageSize: number[] = [];
+	length: number;
+	pageSize: number;
 
 	constructor(
-		private zetapush_service: ZetapushProjectService,
 		private dialog: MatDialog
 	) { }
 
@@ -36,10 +34,10 @@ export class JenkinsComponent implements OnInit {
 		}
 	}
 
-	paginator_branches(pageEvent: PageEvent, index: number) {
-		const data = this.data[index];
+	paginator_branches(pageEvent: PageEvent) {
+		const data = this.data;
 
-		data.branches = JSON.parse(JSON.stringify(this.branches_save[index]));
+		data.branches = JSON.parse(JSON.stringify(this.branches_save));
 		data.branches = data.branches.filter((branch, index) => {
 			if (index > (pageEvent.pageIndex * pageEvent.pageSize - 1) && index < (pageEvent.pageIndex * pageEvent.pageSize + pageEvent.pageSize))
 				return branch;
@@ -60,51 +58,39 @@ export class JenkinsComponent implements OnInit {
 		}
 	}
 
-	get_new_data(tab: Jenkins[]) {
+	get_new_data(tab: Jenkins) {
 		if (!tab)
 			return null;
-		for (var i = 0; i < tab.length; i++)
-			for (var j = 0; j < tab[i].branches.length; j++)
-				if (tab[i].branches[j].in_progress)
-					return {
-						project: tab[i].name,
-						branch: tab[i].branches[j]
-					};
+		for (var i = 0; i < tab.branches.length; i++) {
+			if (tab.branches[i].in_progress)
+				return {
+					project: tab.name,
+					branch: tab.branches[i]
+				};
+		}
 		return null;
 	}
 
-	init_paginator(tmp: Jenkins[]) {
-		for (var i = 0; i < tmp.length; i++) {
-			this.length[i] = tmp[i].branches.length;
-			this.pageSize[i] = 5;
-			this.paginator_branches({
-				pageIndex: 0,
-				length: tmp[i].branches.length,
-				pageSize: 5,
-			}, i);
-		}
+	init_paginator(tmp: Jenkins) {
+		this.length = tmp.branches.length;
+		this.pageSize = 5;
+		this.paginator_branches({
+			pageIndex: 0,
+			length: tmp.branches.length,
+			pageSize: 5,
+		});
 	}
 
-	on_get_data(tmp: Jenkins[]) {
-		if (!tmp)
+	ngOnInit() {
+		if (!this.data)
 			return;
-		this.data = tmp;
-		this.branches_save = JSON.parse(JSON.stringify(this.data.map(x => x.branches)));
+		this.data = this.data;
+		this.branches_save = JSON.parse(JSON.stringify(this.data.branches));
 		this.init_paginator(this.data);
 		const branch_new_build = this.get_new_data(this.data);
-		if (branch_new_build !== null)
+
+		if (branch_new_build)
 			this.openDialog(branch_new_build);
-		console.log(tmp);
-	}
-
-	async ngOnInit() {
-		const tmp = await this.zetapush_service.get_last_data();
-
-		if (!tmp)
-			return;
-		this.on_get_data(tmp['jenkins']);
-		this.zetapush_service.observer.subscribe(
-			(data: DataStruct) => this.on_get_data(data.jenkins)
-		);
+		console.log(this.data);
 	}
 }

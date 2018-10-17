@@ -1,38 +1,35 @@
 <mat-spinner id="undefined_data" *ngIf="!data"> </mat-spinner>
-<mat-tab-group *ngIf="data && data.length" [selectedIndex]="index.value" (selectedIndexChange)="index.setValue($event)">
-	<mat-tab *ngFor="let app of data" [label]="app.name">
-		<div class="title">
-			<div>
-				<img src="https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/jenkins-redbg.png" alt="img not found" />
-			</div>
-			<a href="{{app.url}}"> {{app.name}} </a>
+<div *ngIf="data">
+	<div class="title">
+		<div>
+			<img src="https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/jenkins-redbg.png" alt="img not found" />
 		</div>
+		<a href="{{data.url}}"> {{data.name}} </a>
+	</div>
 
-		<mat-accordion>
-			<div class="mute_button">
-				<button mat-button (click)="unmute(app.name)"> Unmute </button>
-			</div>
-			<mat-paginator [length]="length[index.value]" [pageSize]="pageSize[index.value]" [pageSizeOptions]="[5, 10, 25, 100]"
-				(page)="paginator_branches($event, index.value)">
-			</mat-paginator>
-			<mat-expansion-panel *ngFor="let branch of app.branches">
+	<mat-accordion>
+		<div class="mute_button">
+			<button mat-button (click)="unmute(data.name)"> Unmute </button>
+		</div>
+		<mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]"
+			(page)="paginator_branches($event)">
+		</mat-paginator>
+		<mat-expansion-panel *ngFor="let branch of data.branches">
 
-				<mat-expansion-panel-header>
-					<mat-panel-title fxLayout="row wrap">
-						<a href="{{branch.url}}">
-							<img src="{{branch.icon}}" alt="img not found" />
-						</a>
-						<i> {{branch.result}} </i>
-						<h4> {{branch.name}} </h4>
-						<span style="flex: 1 1 auto;"> </span>
-						<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
-					</mat-panel-title>
-				</mat-expansion-panel-header>
-				<app-build-flow [flows]="branch.flow"></app-build-flow>
-				<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
+			<mat-expansion-panel-header>
+				<mat-panel-title fxLayout="row wrap">
+					<a href="{{branch.url}}">
+						<img src="{{branch.icon}}" alt="img not found" />
+					</a>
+					<i> {{branch.result}} </i>
+					<h4> {{branch.name}} </h4>
+					<span style="flex: 1 1 auto;"> </span>
+					<p *ngIf="!branch.in_progress"> {{branch.time.duration}} - {{branch.time.end}}</p>
+				</mat-panel-title>
+			</mat-expansion-panel-header>
+			<app-build-flow [flows]="branch.flow"></app-build-flow>
+			<a href="{{branch.github_url}}"> {{branch.github_url}} </a>
 
-			</mat-expansion-panel>
-		</mat-accordion>
-
-	</mat-tab>
-</mat-tab-group>
+		</mat-expansion-panel>
+	</mat-accordion>
+</div>
