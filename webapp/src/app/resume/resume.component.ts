@@ -62,7 +62,7 @@ export class ResumeComponent implements OnInit {
 
 	config_monitoring() {
 		const config_file = require('../../../../worker/application.json');
-		const interval = typeof config_file.monitoring_refresh === 'number' ? eval(config_file.monitoring_refresh) : null;
+		const interval = eval(config_file.monitoring_refresh);
 
 		if (!interval)
 			console.error('"monitoring_refresh" must be a number, default delay is 1 minute');
