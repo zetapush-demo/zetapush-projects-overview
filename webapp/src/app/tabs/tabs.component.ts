@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class TabsComponent {
 	tabs = [
 		'zetapush-project',
-		// 'monitoring',
-		// 'resume'
+		'monitoring',
+		'resume'
 	];
 }

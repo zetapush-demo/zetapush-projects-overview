@@ -5,9 +5,12 @@ import { SmartClient, ProxyService } from '@zetapush/client';
 import { Messaging } from '@zetapush/platform-legacy/lib/';
 
 export interface DataStruct {
-	github: Github[];
-	jenkins: Jenkins[];
-	jira: Jira[];
+	name: string;
+	tools: {
+		github?: Github;
+		jenkins?: Jenkins;
+		jira?: Jira;
+	}
 }
 
 export interface Github {
@@ -134,8 +137,8 @@ export class ZetapushProjectService {
 
 	client: SmartClient;
 	api: ProxyService;
-	data: DataStruct;
-	observer: Subject<DataStruct> = new Subject();
+	data: DataStruct[];
+	observer: Subject<DataStruct[]> = new Subject();
 	credentials: Credentials;
 
 	constructor() {

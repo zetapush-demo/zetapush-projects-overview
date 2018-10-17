@@ -64,11 +64,14 @@ export class MonitoringComponent implements OnInit {
 
 	ngOnInit() {
 		const config_file = require('../../../../worker/application.json');
+		const interval = typeof config_file.monitoring_refresh === 'number' ? eval(config_file.monitoring_refresh) : null;
 
+		if (!interval)
+			console.error('"monitoring_refresh" must be a number, default delay is 1 minute');
 		this.machines = config_file.machines;
 		this.refreshStatus();
 		setInterval(() => {
 			this.refreshStatus();
-		}, eval(config_file.monitoring_refresh));
+		}, interval || 1000 * 60 * 1);
 	}
 }

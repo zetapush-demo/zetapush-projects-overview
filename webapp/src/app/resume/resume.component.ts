@@ -47,30 +47,41 @@ export class ResumeComponent implements OnInit {
 		}
 	}
 
-	on_get_data(tmp: DataStruct) {
-		if (!tmp || !tmp.github || !tmp.jenkins || !tmp.jira)
+	on_get_data(tmp: DataStruct[]) {
+		if (!tmp)
 			return;
-		this.github = tmp.github.find(x => x.name === 'zetapush').issues.slice(0, 5);
-		this.jenkins = tmp.jenkins.find(x => x.name === 'zetapush').branches.filter(x => x.name === 'master' || x.name === 'develop');
-		this.jira = tmp.jira.find(x => x.name === 'PLATEFORME-V3').sprint;
+		const zetapush: DataStruct = tmp.find(x => x.name === 'zetapush');
+
+		if (zetapush.tools.github)
+			this.github = zetapush.tools.github.issues.slice(0, 5);
+		if (zetapush.tools.jenkins)
+			this.jenkins = zetapush.tools.jenkins.branches.filter(x => x.name === 'master' || x.name === 'develop');
+		if (zetapush.tools.jira)
+			this.jira = zetapush.tools.jira.sprint;
 	}
 
-	async ngOnInit() {
+	config_monitoring() {
 		const config_file = require('../../../../worker/application.json');
+		const interval = typeof config_file.monitoring_refresh === 'number' ? eval(config_file.monitoring_refresh) : null;
 
+		if (!interval)
+			console.error('"monitoring_refresh" must be a number, default delay is 1 minute');
 		this.machine_group = config_file.machines.filter(x => ['dev', 'hq', 'prod', 'celtia'].find(y => y === x.env));
 		this.refreshStatus();
 		setInterval(() => {
 			this.refreshStatus();
-		}, eval(config_file.monitoring_refresh));
+		}, interval || 1000 * 60 * 1);
+	}
 
+	async ngOnInit() {
+		this.config_monitoring();
 		const tmp: any = await this.zetapush_service.get_last_data();
 
 		if (!tmp)
 			return;
 		this.on_get_data(tmp);
 		this.zetapush_service.observer.subscribe(
-			(data: DataStruct) => this.on_get_data(data)
+			(data: DataStruct[]) => this.on_get_data(data)
 		);
 	}
 }

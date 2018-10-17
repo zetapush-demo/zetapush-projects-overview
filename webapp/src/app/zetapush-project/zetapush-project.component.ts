@@ -8,13 +8,13 @@ import { ZetapushProjectService, DataStruct } from './zetapush-project.service';
 })
 export class ZetapushProjectComponent implements OnInit {
 
-	data: DataStruct;
+	data: DataStruct[];
 
 	constructor(
 		private zetapush_service: ZetapushProjectService,
 	) { }
 
-	on_get_data(tmp: DataStruct) {
+	on_get_data(tmp: DataStruct[]) {
 		if (!tmp)
 			return;
 		this.data = tmp;
@@ -28,7 +28,7 @@ export class ZetapushProjectComponent implements OnInit {
 			return;
 		this.on_get_data(tmp);
 		this.zetapush_service.observer.subscribe(
-			(data: DataStruct) => this.on_get_data(data)
+			(data: DataStruct[]) => this.on_get_data(data)
 		);
 	}
 }
