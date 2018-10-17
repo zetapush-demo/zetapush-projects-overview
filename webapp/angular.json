@@ -52,21 +52,6 @@
 							"extractLicenses": true,
 							"vendorChunk": false,
 							"buildOptimizer": true
-						},
-						"dev": {
-							"fileReplacements": [{
-								"replace": "src/environments/environment.ts",
-								"with": "src/environments/environment.dev.ts"
-							}],
-							"optimization": false,
-							"outputHashing": "none",
-							"sourceMap": false,
-							"extractCss": false,
-							"namedChunks": false,
-							"aot": false,
-							"extractLicenses": false,
-							"vendorChunk": false,
-							"buildOptimizer": false
 						}
 					}
 				},
@@ -78,46 +63,7 @@
 					"configurations": {
 						"production": {
 							"browserTarget": "zetapush-projects-overview:build:production"
-						},
-						"dev": {
-							"hmr": true,
-							"browserTarget": "zetapush-projects-overview:build:dev"
 						}
-					}
-				},
-				"extract-i18n": {
-					"builder": "@angular-devkit/build-angular:extract-i18n",
-					"options": {
-						"browserTarget": "zetapush-projects-overview:build"
-					}
-				},
-				"test": {
-					"builder": "@angular-devkit/build-angular:karma",
-					"options": {
-						"main": "src/test.ts",
-						"polyfills": "src/polyfills.ts",
-						"tsConfig": "src/tsconfig.spec.json",
-						"karmaConfig": "src/karma.conf.js",
-						"styles": [
-							"src/styles.css"
-						],
-						"scripts": [],
-						"assets": [
-							"src/favicon.ico",
-							"src/assets"
-						]
-					}
-				},
-				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
-					"options": {
-						"tsConfig": [
-							"src/tsconfig.app.json",
-							"src/tsconfig.spec.json"
-						],
-						"exclude": [
-							"**/node_modules/**"
-						]
 					}
 				}
 			}
