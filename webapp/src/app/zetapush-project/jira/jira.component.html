@@ -1,65 +1,61 @@
 <mat-spinner id="undefined_data" *ngIf="!data"></mat-spinner>
-<mat-tab-group *ngIf="data && data.length">
-	<mat-tab *ngFor="let project of data" label="{{project.name}}">
-
-		<div class="title">
-			<div>
-				<img src="https://wac-cdn.atlassian.com/dam/jcr:37f03d61-2cfc-4862-b536-ca6d200e7cf8/Jira%20Software-icon-blue.svg?cdnVersion=jw"/>
-			</div>
-			<a href="{{project.url}}"> {{project.name}} </a>
+<div *ngIf="data">
+	<div class="title">
+		<div>
+			<img src="https://wac-cdn.atlassian.com/dam/jcr:37f03d61-2cfc-4862-b536-ca6d200e7cf8/Jira%20Software-icon-blue.svg?cdnVersion=jw"/>
 		</div>
+		<a href="{{data.url}}"> {{data.name}} </a>
+	</div>
 
-		<h2 *ngIf="!project.sprint.length" class="sprint"> There is no current sprint. </h2>
-		<mat-tab-group>
-			<mat-tab *ngFor="let sprint of project.sprint" label="{{sprint.sprint}}">
-				<mat-accordion *ngIf="sprint">
-					<h2 class="sprint"> {{sprint.sprint}} <i *ngIf="sprint.start && sprint.end"> ({{sprint.start}} au {{sprint.end}}) </i> </h2>
-					<app-sprint-progress [time]="sprint.time"></app-sprint-progress>
-					<p *ngIf="sprint.issues && !sprint.issues.length"> This sprint is empty, you should closed it. </p>
-					<mat-expansion-panel *ngFor="let issue of sprint.issues">
-						<mat-expansion-panel-header>
-							<mat-panel-title>
-								<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="img not found"/>
-								<b> {{issue.key}} </b>
-								<b> {{issue.status}} </b>
-								<i *ngIf="issue.subtasks.length"> {{issue.subtasks.length}} sous-tâches </i>
-								<h4> {{issue.summary}} </h4>
-								<span class="priority_img"></span>
-								<a *ngIf="issue.url" href="{{issue.url}}">
-									<mat-icon matTooltip="{{issue.url}}"> link </mat-icon>
-								</a>
-								<img *ngIf="issue.priority" src="{{issue.priority.iconUrl}}" alt="img not found" width="30"/>
-							</mat-panel-title>
-						</mat-expansion-panel-header>
-						<p *ngIf="issue.description"> {{issue.description}} </p>
-						<div *ngIf="issue.reporter" class="reporter">
-							<img src="{{issue.reporter.avatarUrls}}" alt="img not found" />
-							<span> Reporter: <b> {{issue.reporter.displayName}} </b> </span>
-						</div>
-						<mat-card *ngFor="let sub of issue.subtasks">
-							<mat-card-content>
-								<div *ngIf="sub.reporter" class="reporter">
-									<img src="{{sub.reporter.avatarUrls}}" alt="img not found" />
-									<span> Reporter: <b> {{sub.reporter.displayName}} </b> </span>
-								</div>
-								<img *ngIf="sub.issuetype" src="{{sub.issuetype.iconUrl}}" alt="img not found"/>
-								<b> {{sub.key}} </b>
-								<b> {{sub.status}} </b>
-								<h4> {{sub.summary}} </h4>
-								<span class="priority_img"></span>
-								<a *ngIf="sub.url" href="{{sub.url}}">
-									<mat-icon matTooltip="{{sub.url}}"> link </mat-icon>
-								</a>
-								<img *ngIf="sub.priority" src="{{sub.priority.iconUrl}}" alt="img not found" width="30"/>
-							</mat-card-content>
-							<p *ngIf="sub.description"> {{sub.description}} </p>
-						</mat-card>
+	<h2 *ngIf="!data.sprint.length" class="sprint"> There is no current sprint. </h2>
+	<mat-tab-group>
+		<mat-tab *ngFor="let sprint of data.sprint" label="{{sprint.sprint}}">
+			<mat-accordion *ngIf="sprint">
+				<h2 class="sprint"> {{sprint.sprint}} <i *ngIf="sprint.start && sprint.end"> ({{sprint.start}} au {{sprint.end}}) </i> </h2>
+				<app-sprint-progress [time]="sprint.time"></app-sprint-progress>
+				<p *ngIf="sprint.issues && !sprint.issues.length"> This sprint is empty, you should closed it. </p>
+				<mat-expansion-panel *ngFor="let issue of sprint.issues">
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+							<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="img not found"/>
+							<b> {{issue.key}} </b>
+							<b> {{issue.status}} </b>
+							<i *ngIf="issue.subtasks.length"> {{issue.subtasks.length}} sous-tâches </i>
+							<h4> {{issue.summary}} </h4>
+							<span class="priority_img"></span>
+							<a *ngIf="issue.url" href="{{issue.url}}">
+								<mat-icon matTooltip="{{issue.url}}"> link </mat-icon>
+							</a>
+							<img *ngIf="issue.priority" src="{{issue.priority.iconUrl}}" alt="img not found" width="30"/>
+						</mat-panel-title>
+					</mat-expansion-panel-header>
+					<p *ngIf="issue.description"> {{issue.description}} </p>
+					<div *ngIf="issue.reporter" class="reporter">
+						<img src="{{issue.reporter.avatarUrls}}" alt="img not found" />
+						<span> Reporter: <b> {{issue.reporter.displayName}} </b> </span>
+					</div>
+					<mat-card *ngFor="let sub of issue.subtasks">
+						<mat-card-content>
+							<div *ngIf="sub.reporter" class="reporter">
+								<img src="{{sub.reporter.avatarUrls}}" alt="img not found" />
+								<span> Reporter: <b> {{sub.reporter.displayName}} </b> </span>
+							</div>
+							<img *ngIf="sub.issuetype" src="{{sub.issuetype.iconUrl}}" alt="img not found"/>
+							<b> {{sub.key}} </b>
+							<b> {{sub.status}} </b>
+							<h4> {{sub.summary}} </h4>
+							<span class="priority_img"></span>
+							<a *ngIf="sub.url" href="{{sub.url}}">
+								<mat-icon matTooltip="{{sub.url}}"> link </mat-icon>
+							</a>
+							<img *ngIf="sub.priority" src="{{sub.priority.iconUrl}}" alt="img not found" width="30"/>
+						</mat-card-content>
+						<p *ngIf="sub.description"> {{sub.description}} </p>
+					</mat-card>
 
-					</mat-expansion-panel>
-				</mat-accordion>
+				</mat-expansion-panel>
+			</mat-accordion>
 
-			</mat-tab>
-		</mat-tab-group>
-
-	</mat-tab>
-</mat-tab-group>
+		</mat-tab>
+	</mat-tab-group>
+</div>
