@@ -1,5 +1,7 @@
-<ng-container>
-	<app-github></app-github>
-	<app-jenkins></app-jenkins>
-	<app-jira></app-jira>
-</ng-container>
+<mat-tab-group *ngIf="data">
+	<mat-tab *ngFor="let app of data" [label]="app.name">
+		<app-github></app-github>
+		<app-jenkins></app-jenkins>
+		<app-jira></app-jira>
+	</mat-tab>
+</mat-tab-group>
