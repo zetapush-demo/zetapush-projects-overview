@@ -91,6 +91,5 @@ export class JenkinsComponent implements OnInit {
 
 		if (branch_new_build)
 			this.openDialog(branch_new_build);
-		console.log(this.data);
 	}
 }
