@@ -1,7 +1,7 @@
 <mat-tab-group *ngIf="data">
 	<mat-tab *ngFor="let app of data" [label]="app.name">
-		<app-github></app-github>
-		<app-jenkins></app-jenkins>
-		<app-jira></app-jira>
+		<app-github *ngIf="app.tools.github" [data]="app.tools.github"></app-github>
+		<app-jenkins *ngIf="app.tools.jenkins"></app-jenkins>
+		<app-jira *ngIf="app.tools.jira"></app-jira>
 	</mat-tab>
 </mat-tab-group>

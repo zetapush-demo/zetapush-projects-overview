@@ -25,7 +25,6 @@ import { MonitoringComponent } from './monitoring/monitoring.component';
 import { ResumeComponent } from './resume/resume.component';
 import { ZetapushProjectComponent } from './zetapush-project/zetapush-project.component';
 import { GithubComponent } from './zetapush-project/github/github.component';
-import { RepositoryComponent } from './zetapush-project/github/repository/repository.component';
 import { GithubPopupComponent } from './zetapush-project/github/popup/github-popup.component';
 import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
 import { BuildFlowComponent } from './zetapush-project/jenkins/build-flow/build-flow.component';
@@ -64,7 +63,6 @@ import { TabsComponent } from './tabs/tabs.component';
 		ResumeComponent,
 		ZetapushProjectComponent,
 		GithubComponent,
-		RepositoryComponent,
 		GithubPopupComponent,
 		JenkinsComponent,
 		BuildFlowComponent,

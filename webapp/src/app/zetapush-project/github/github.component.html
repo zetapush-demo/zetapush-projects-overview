@@ -1,6 +1,128 @@
-<mat-spinner id="undefined_data" *ngIf="!data"></mat-spinner>
-<mat-tab-group *ngIf="data && data.length">
-	<mat-tab *ngFor="let repo of data" [label]="repo.name">
-		<app-repository [data]="repo" ></app-repository>
-	</mat-tab>
-</mat-tab-group>
+<div class="title">
+	<div>
+		<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png"/>
+	</div>
+	<a href="{{data.url}}"> {{data.name}} </a>
+	<i> {{data.tag}} </i>
+</div>
+
+<div class="mute_button">
+	<button mat-button (click)="unmute()"> Unmute </button>
+</div>
+<div class="form">
+	<mat-form-field *ngFor="let form of filter_form">
+		<mat-select (selectionChange)="filter_data_by(filter_form)" [(value)]="form.selected"
+		[placeholder]="form.placeholder">
+			<mat-option> None </mat-option>
+			<mat-option *ngFor="let option of form.available_list" [value]="option"> {{option}} </mat-option>
+		</mat-select>
+	</mat-form-field>
+</div>
+
+<mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]"
+	(page)="filter_data_by(filter_form, $event)">
+</mat-paginator>
+
+<div>
+	<mat-card fxFlex="50%">
+		<mat-card-title class="title"> Issues </mat-card-title>
+		<p style="text-align: center" *ngIf="!data.issues || !data.issues.length"> Nothing to show. </p>
+		<mat-accordion>
+			<mat-expansion-panel *ngFor="let issue of data.issues">
+
+				<mat-expansion-panel-header>
+					<mat-panel-title fxLayout="row wrap">
+						<a href="{{issue.url}}">
+							<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="img not found">
+						</a>
+						<h4 fxFlex> {{issue.name}} <i> #{{issue.id}} </i> </h4>
+						<ul fxLayout="row wrap" class="label_list" *ngIf="issue.labels">
+							<li [ngStyle]="{'background-color': label.color}" *ngFor="let label of issue.labels"> {{label.name}}</li>
+						</ul>
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+
+				<div *ngIf="issue.user" class="item_info">
+					<a href="{{issue.user.url}}">
+						<img src="{{issue.user.avatar}}" alt="img not found">
+					</a>
+					<a class="username" href="{{issue.user.url}}">
+						{{issue.user.name}}
+					</a>
+					<p> opened this issue {{issue.created}} </p>
+				</div>
+
+				<ul class="item_info" *ngIf="issue.assignees && issue.assignees.length">
+					Assignees :
+					<li *ngFor="let assignee of issue.assignees">
+						<img src="{{assignee.avatar_url}}" alt="">
+						<p class="username"> {{assignee.login}} </p>
+					</li>
+				</ul>
+				<div class="body">
+					<markdown class="markdown-body" [data]="issue.body"></markdown>
+				</div>
+
+			</mat-expansion-panel>
+		</mat-accordion>
+	</mat-card>
+
+	<mat-card fxFlex="50%">
+		<mat-card-title class="title"> Pull Request </mat-card-title>
+		<p style="text-align: center" *ngIf="!data.pull_request || !data.pull_request.length"> Nothing to show. </p>
+		<mat-accordion>
+			<mat-expansion-panel *ngFor="let pull_request of data.pull_request">
+
+				<mat-expansion-panel-header>
+					<mat-panel-title fxLayout="row wrap">
+						<a href="{{pull_request.url}}">
+							<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" alt="img not found">
+						</a>
+						<h4> {{pull_request.name}} <i> #{{pull_request.id}} </i> </h4>
+						<span style="flex: 1 1 auto;"> </span>
+						<ul fxLayout="row wrap" class="label_list" *ngIf="pull_request.labels">
+							<li [ngStyle]="{'background-color': label.color}" *ngFor="let label of pull_request.labels"> {{label.name}}</li>
+						</ul>
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+
+				<div *ngIf="pull_request.user" class="item_info">
+					<a href="{{pull_request.user.url}}">
+						<img src="{{pull_request.user.avatar}}" alt="img not found">
+					</a>
+					<a class="username" href="{{pull_request.user.url}}">
+						{{pull_request.user.name}}
+					</a>
+					<p> wants to merge into <span class="commit-ref">{{pull_request.base}} </span> from
+						<span class="commit-ref"> {{pull_request.head}} </span> <br> at {{pull_request.created}} </p>
+				</div>
+
+				<ul class="item_info" *ngIf="pull_request.assignees && pull_request.assignees.length">
+					Reviewers :
+					<li class="username" *ngFor="let reviewer of pull_request.assignees">
+						<p> {{reviewer.login}} </p>
+						<img src="{{reviewer.avatar_url}}" alt="img not found">
+					</li>
+				</ul>
+
+				<div class="jenkins_build" *ngIf="pull_request.build">
+					<div class="item_info">
+						<a href="{{pull_request.build.url}}">
+							<img src="{{pull_request.build.icon}}" alt="img not found" />
+						</a>
+						<i> {{pull_request.build.result}} </i>
+						<b> Last build </b>
+						<span style="flex: 1 1 auto;"> </span>
+						<p *ngIf="!pull_request.build.in_progress"> {{pull_request.build.time.duration}} - {{pull_request.build.time.end}} </p>
+					</div>
+					<app-build-flow [flows]="pull_request.build.flow"></app-build-flow>
+				</div>
+
+				<div class="body">
+					<markdown class="markdown-body" [data]="pull_request.body"></markdown>
+				</div>
+
+			</mat-expansion-panel>
+		</mat-accordion>
+	</mat-card>
+</div>
