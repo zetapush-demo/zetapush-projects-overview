@@ -36,6 +36,7 @@ mat-card {
 
 .monitoring mat-card {
 	margin: 4px;
+	padding-bottom: 8px;
 }
 
 .monitoring mat-card-header {
@@ -47,7 +48,6 @@ mat-card {
 
 .monitoring mat-card-content {
 	margin: 0 -24px !important;
-	padding: 8px 0 !important;
 	height: 100%;
 }
 
