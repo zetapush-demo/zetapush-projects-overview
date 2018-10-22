@@ -33,7 +33,7 @@ function filter_by_project(data, config)
 		tmp.name = config[i].name;
 		tmp.tools = {};
 		for (var key in config[i].tools)
-			if (config[i].tools[key] && config[i].tools[key].length)
+			if (data[key] && data[key].length && config[i].tools[key] && config[i].tools[key].length)
 				tmp.tools[key] = data[key].find(x => x.name === config[i].tools[key]);
 		project.push(tmp);
 	}
