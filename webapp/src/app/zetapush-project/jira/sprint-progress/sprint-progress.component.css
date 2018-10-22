@@ -8,3 +8,16 @@ mat-progress-bar {
 	margin-top: 80px;
 	margin-bottom: 40px;
 }
+
+.reporter {
+	background-color: #d1d5da;
+	display: flex;
+	align-items: center;
+	border-radius: 4px;
+	margin: 10px;
+	width: fit-content;
+}
+
+.reporter * {
+	margin: 1vw;
+}

@@ -9,12 +9,10 @@
 </div>
 <mat-progress-bar *ngIf="tmp && tmp.progress_bar" mode="buffer" [value]="tmp.progress_bar.value" [bufferValue]="tmp.progress_bar.bufferValue"> </mat-progress-bar>
 <div *ngIf="time && tmp">
-	<div *ngFor="let detail of tmp.details"> {{detail.name}}
-		<a> {{detail.spent}}
-		</a>
-		<img src="{{detail.url}}" alt="img not found">
-		<a> {{detail.estimate}}
-		</a>
-		<img src="{{detail.url}}" alt="img not found">
+	<div *ngFor="let detail of tmp.details" class="reporter">
+		<img src="{{detail.url}}" alt="img not found" width="48">
+		{{detail.name}}
+		<a> Spent : <b> {{detail.spent}} </b> </a>
+		<a> Estimate : <b> {{detail.estimate}} </b> </a>
 	</div>
 </div>
