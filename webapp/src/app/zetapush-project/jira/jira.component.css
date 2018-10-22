@@ -1,6 +1,5 @@
 mat-spinner ::ng-deep svg {
 	background-image: url('https://wac-cdn.atlassian.com/dam/jcr:37f03d61-2cfc-4862-b536-ca6d200e7cf8/Jira%20Software-icon-blue.svg?cdnVersion=jw');
-	/* background-size: contain; */
 	background-size: 75%;
 	background-repeat: no-repeat;
 	background-position: center center;
