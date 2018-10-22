@@ -67,25 +67,45 @@ function put_sub_issues(sprint)
 
 function compute_sprint_timetracking(issues, end, project_config)
 {
+	const displayName = issues.map(x => x.subtasks.map(y => y.reporter.displayName)).join().split(',').filter((a, b, c) => c.indexOf(a) === b);
+	const avatarUrls = issues.map(x => x.subtasks.map(y => y.reporter.avatarUrls)).join().split(',').filter((a, b, c) => c.indexOf(a) === b);
+	var details = [];
 	var sprint_time = {
 		estimate: 0,
 		remaining: (new Date(end).valueOf() - Date.now()) / 1000,
-		spent: 0
+		spent: 0,
 	};
 
+	for (var i = 0; i < displayName.length && i < avatarUrls.length; i++)
+		details.push({
+			name: displayName[i],
+			url: avatarUrls[i],
+			spent: 0,
+			estimate: 0
+		});
 	for (var i = 0; i < issues.length; i++) {
 		if (!issues[i].subtasks)
 			continue;
 		for (var j = 0; j < issues[i].subtasks.length; j++) {
 			if (!issues[i].subtasks[j].timetracking)
 				continue;
-			if (issues[i].subtasks[j].status !== project_config.close_state)
+			const tmp = details.find(x => x.name === issues[i].subtasks[j].reporter.displayName);
+
+			if (issues[i].subtasks[j].status !== project_config.close_state) {
+				tmp.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds || 0;
 				sprint_time.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds || 0;
+			}
+			tmp.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds || 0;
 			sprint_time.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds || 0;
 		}
 	}
+	details.forEach(x => {
+		x.spent = Math.round(x.spent / 3600);
+		x.estimate = Math.round(x.estimate / 3600);
+	});
 	for (var key in sprint_time)
 		sprint_time[key] = Math.round(sprint_time[key] / 3600);
+	sprint_time.details = details;
 	return sprint_time;
 }
 

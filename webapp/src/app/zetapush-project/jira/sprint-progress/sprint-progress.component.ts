@@ -42,6 +42,20 @@ export class SprintProgressComponent implements OnInit {
 		};
 	}
 
+	format_time_details(details) {
+		const tmp = [];
+
+		details.forEach(x => {
+			tmp.push({
+				name: x.name,
+				url: x.url,
+				spent: this.format_hour(x.spent),
+				estimate: this.format_hour(x.estimate)
+			});
+		});
+		return tmp;
+	}
+
 	ngOnInit() {
 		if (this.time) {
 			this.tmp.progress_bar = this.compute_progress_bar_data(this.time);
@@ -50,6 +64,7 @@ export class SprintProgressComponent implements OnInit {
 			this.tmp.spent = this.format_hour(this.time.spent);
 			this.tmp.remaining = this.format_hour(this.time.remaining);
 			this.tmp.estimate = this.format_hour(this.time.estimate);
+			this.tmp.details = this.format_time_details(this.time.details);
 		}
 	}
 }
