@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 module.exports.get_api_data = get_api_data;
 
 async function get_api_data()
