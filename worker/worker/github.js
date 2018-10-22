@@ -5,13 +5,12 @@ const api_url = 'https://api.github.com/repos';
 
 function http_error_handler(err)
 {
-	console.log('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
+	console.error('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
 	if (err && err.response && err.response.status != 200) {
 		console.error(err.response.status, err.response.statusText);
 		console.error(`Something bad in application.json, or bad github credentials`);
 	} else
-		console.log(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
-	process.exit(1);
+		console.error(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
 }
 
 async function get_valid_repo_list(repos, config)
@@ -21,19 +20,20 @@ async function get_valid_repo_list(repos, config)
 	for (var i = 0; i < repos.length; i++) {
 		for (var j = 0; j < repos[i].repos.length; j++) {
 			const tmp = await axios.get(`${api_url}/${repos[i].owner}/${repos[i].repos[j]}`, config).catch(err => {
-				console.log('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
+				console.error('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
 				if (err && err.response && err.response.status != 200) {
 					console.error(err.response.status, err.response.statusText);
 					console.error(`Something bad in application.json, this github account/organization/repository doesn't exist, or bad credentials =>`);
 					console.error(`github: {\n\trepos: {`)
 					console.error(`\t\towner: ${JSON.stringify(repos[i].owner)},`);
-					console.error(`\t\trepos: ${JSON.stringify(repos[i].repos)}`);
+					console.error(`\t\trepos: ${JSON.stringify(repos[i].repos[j])}`);
 					console.error(`\t}\n}`);
 				} else
-					console.log(err.errno, require('path').basename(__filename));
-				process.exit(1);
+					console.error(err.errno, require('path').basename(__filename));
 			});
 
+			if (!tmp || !tmp.data)
+				continue;
 			repo_list.push({
 				owner: repos[i].owner,
 				name: repos[i].repos[j],

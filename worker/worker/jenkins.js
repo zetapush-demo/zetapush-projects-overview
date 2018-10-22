@@ -8,12 +8,11 @@ const api_url = 'blue/rest/organizations/jenkins/pipelines/ZetaPush%20Github/pip
 
 function http_error_handler(err)
 {
-	console.log('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
+	console.error('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
 	if (err && err.response && err.response.status != 200)
-		console.log(err.response.status, err.response.statusText);
+		console.error(err.response.status, err.response.statusText);
 	else
-		console.log(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
-	process.exit(1);
+		console.error(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
 }
 
 async function get_repo_urls(jenkins_url)

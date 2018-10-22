@@ -5,14 +5,13 @@ const api = 'https://zetapush.atlassian.net/rest/agile/1.0';
 
 function http_error_handler(err)
 {
-	console.log('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
+	console.error('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
 	if (err && err.response && err.response.status != 200) {
 		console.error(err.response.status, err.response.statusText);
 		console.error('Maybe bad credentials => application.json =>');
 		console.error('jira: {\n\t email || password\n}');
 	} else
-		console.log(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
-		process.exit(1);
+		console.error(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
 }
 
 async function get_board_list(project_list, config)
@@ -35,7 +34,6 @@ async function get_board_list(project_list, config)
 				console.error(`\t\t\t key: "${project_list[i].key}"`);
 				console.error(`\t\t\t close_state: "${project_list[i].close_state}"`);
 				console.error(`\t\t}]\n\t}\n}`);
-				process.exit(1);
 			}
 		}
 	return boards_id;
@@ -133,7 +131,6 @@ module.exports = async function()
 	if (boards_id.length === 0) {
 		console.error('No valid projects were found =>');
 		console.error('jira: {\n\tconfig.sprint: {name || key}\n} => application.json');
-		process.exit(1);
 	}
 	for (var i = 0; i < boards_id.length; i++) {
 		const project = {
