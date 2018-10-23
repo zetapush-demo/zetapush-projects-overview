@@ -45,6 +45,7 @@ export class MonitoringComponent implements OnInit {
 		const xhr = new XMLHttpRequest();
 
 		machine['color'] = 'orange';
+		machine['status'] = null;
 		xhr.onreadystatechange = this.xhr_callback(xhr, machine);
 		xhr.open('GET', machine.url, true);
 		xhr.send(null);
