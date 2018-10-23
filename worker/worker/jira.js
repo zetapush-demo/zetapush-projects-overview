@@ -94,9 +94,9 @@ function compute_sprint_timetracking(issues, end, project_config)
 			if (issues[i].subtasks[j].status !== project_config.close_state) {
 				tmp.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds || 0;
 				sprint_time.estimate += issues[i].subtasks[j].timetracking.originalEstimateSeconds || 0;
-				tmp.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds || 0;
 			}
 			sprint_time.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds || 0;
+			tmp.spent += issues[i].subtasks[j].timetracking.timeSpentSeconds || 0;
 		}
 	}
 	details.forEach(x => {
