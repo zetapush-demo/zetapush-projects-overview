@@ -61,7 +61,7 @@ export default class Api {
 			await this.simple.createUser(user_info);
 		}
 		catch(err) {
-			console.log('err: ', err);
+			console.error('err: ', err);
 		}
 	}
 

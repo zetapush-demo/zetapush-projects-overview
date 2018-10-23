@@ -58,14 +58,14 @@ exports.extract_data = function extract_data(src, keys)
 exports.get_issues_list = async function get_issues_list(api_url, board_id, project_config, config)
 {
 	const http_error_handler = (err) => {
-		console.log('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
+		console.error('=>\t', err.config.method.toUpperCase(), '\t', err.config.url);
 		if (err && err.response && err.response.status != 200) {
 			console.error(err.response.status, err.response.statusText);
 			console.error(`Maybe the authenticated account is not allowed to see\n\t => ${project_config.name}`);
 			console.error('Maybe bad credentials => application.json =>');
 			console.error('jira: {\n\t email || password\n}');
 		} else
-			console.log(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
+			console.error(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
 			process.exit(1);
 	};
 	var res = await axios.get(`${api_url}&maxResults=1`, config).catch(http_error_handler);
