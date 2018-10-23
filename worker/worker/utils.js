@@ -4,10 +4,10 @@ var exports = module.exports = {};
 
 function check_bracket(str)
 {
-	var tmp1 = str.indexOf('[');
-	var tmp2 = str.indexOf(']');
+	const tmp1 = str.indexOf('[');
+	const tmp2 = str.indexOf(']');
 
-	return tmp1 != -1 && tmp2 != -1 && tmp1 < tmp2;
+	return tmp1 !== -1 && tmp2 !== -1 && tmp1 < tmp2;
 }
 
 function filter_data(issues, board_id)
@@ -92,17 +92,17 @@ exports.obj_tab_filter = function obj_tab_filter(obj, accept)
 
 exports.parse_time = function parse_time(time)
 {
-	var tmp = new Date(time);
+	const tmp = new Date(time);
 	var d = tmp.getDate();
 	var m = tmp.getMonth() + 1; // January is 0!
-	var y = tmp.getFullYear();
-	var time = tmp.toString().split(' ')[4];
+	const y = tmp.getFullYear();
+	const hours_minutes = tmp.toString().split(' ')[4];
 
 	if (d < 10)
 		d = '0' + d;
 	if (m < 10)
 		m = '0' + m;
-	return `${d}-${m}-${y} ${time}`;
+	return `${d}-${m}-${y} ${hours_minutes}`;
 }
 
 exports.get_good_color = function get_good_color(objtab)

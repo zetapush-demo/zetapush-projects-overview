@@ -109,7 +109,7 @@ function get_tree_max_lenght_until(tree, field, value)
 		if ((!tree[i].child || tree[i].child.length === 0) && tree[i][field] !== value)
 			return depth;
 		if (tree[i].child)
-				depth += get_tree_max_lenght_until(tree[i].child, field, value) - 1;
+			depth += get_tree_max_lenght_until(tree[i].child, field, value) - 1;
 		else
 			depth++;
 	}
@@ -189,5 +189,5 @@ module.exports = async function()
 			branches: await get_branch_array(jenkins.url, `${repo_urls[i]}branches`, res.data.name)
 		});
 	}
-	return data.reverse();
+	return data;
 }
