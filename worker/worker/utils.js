@@ -66,7 +66,6 @@ exports.get_issues_list = async function get_issues_list(api_url, board_id, proj
 			console.error('jira: {\n\t email || password\n}');
 		} else
 			console.error(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
-			process.exit(1);
 	};
 	var res = await axios.get(`${api_url}&maxResults=1`, config).catch(http_error_handler);
 	const max = res.data.total;
