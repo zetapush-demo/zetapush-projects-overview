@@ -21,3 +21,13 @@ mat-progress-bar {
 .reporter * {
 	margin: 1vw;
 }
+
+.chart_host {
+	display: flex;
+}
+
+ngx-chartjs {
+	width: 600px !important;
+	height: 300px !important;
+	display: block;
+}

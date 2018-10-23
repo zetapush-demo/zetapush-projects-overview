@@ -15,11 +15,7 @@
 		<p> Spent : <b> {{detail.spent}} </b> </p>
 		<p> Estimate : <b> {{detail.estimate}} </b> </p>
 	</div>
-	<ngx-chartjs *ngFor="let pie of tmp.pies"
-		[data]="pie.pie"
-		type="pie"
-		width="50px"
-		height="50px"
-		[options]="pie.option"
-	> </ngx-chartjs>
+	<div class="chart_host">
+		<ngx-chartjs *ngFor="let pie of tmp.pies" [data]="pie.pie" type="pie" [options]="pie.option"></ngx-chartjs>
+	</div>
 </div>
