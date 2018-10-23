@@ -18,6 +18,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ChartjsModule } from '@ctrl/ngx-chartjs';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -55,7 +56,8 @@ import { TabsComponent } from './tabs/tabs.component';
 		MatGridListModule,
 		MatTableModule,
 		MatTooltipModule,
-		MatPaginatorModule
+		MatPaginatorModule,
+		ChartjsModule
 	],
 	declarations: [
 		AppComponent,

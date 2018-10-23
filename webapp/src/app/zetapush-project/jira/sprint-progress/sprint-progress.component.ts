@@ -43,7 +43,7 @@ export class SprintProgressComponent implements OnInit {
 	}
 
 	format_time_details(details) {
-		const tmp = [];
+		var tmp = [];
 
 		details.forEach(x => {
 			tmp.push({
@@ -56,15 +56,55 @@ export class SprintProgressComponent implements OnInit {
 		return tmp;
 	}
 
+	init_pie(details) {
+		const field = ['spent', 'estimate'];
+		var pies = [];
+
+		function build_pie(field: string) {
+			return {
+				labels: details.map(x => x.name),
+				datasets: [{
+					label: `${field} time`,
+					data: details.map(x => x[field]),
+					backgroundColor: [
+						'rgba(255, 99, 132, 0.2)',
+						'rgba(255, 159, 64, 0.2)',
+						'rgba(255, 205, 86, 0.2)',
+						'rgba(75, 192, 192, 0.2)',
+						'rgba(54, 162, 235, 0.2)',
+						'rgba(153, 102, 255, 0.2)',
+						'rgba(201, 203, 207, 0.2)',
+					],
+				}],
+			};
+		};
+
+		for (var i = 0; i < field.length; i++)
+			pies.push({
+				pie: build_pie(field[i]),
+				option: {
+					title: {
+						display: true,
+						text: `${field[i]} time`
+					}
+				}
+			});
+		return pies;
+	}
+
 	ngOnInit() {
+		var tmp: any = {};
+
 		if (this.time) {
-			this.tmp.progress_bar = this.compute_progress_bar_data(this.time);
-			this.tmp.early = this.compute_early_time(this.time);
-			this.tmp.late = this.compute_late_time(this.time);
-			this.tmp.spent = this.format_hour(this.time.spent);
-			this.tmp.remaining = this.format_hour(this.time.remaining);
-			this.tmp.estimate = this.format_hour(this.time.estimate);
-			this.tmp.details = this.format_time_details(this.time.details);
+			tmp.progress_bar = this.compute_progress_bar_data(this.time);
+			tmp.early = this.compute_early_time(this.time);
+			tmp.late = this.compute_late_time(this.time);
+			tmp.spent = this.format_hour(this.time.spent);
+			tmp.remaining = this.format_hour(this.time.remaining);
+			tmp.estimate = this.format_hour(this.time.estimate);
+			tmp.details = this.format_time_details(this.time.details);
+			tmp.pies = this.init_pie(this.time.details);
+			this.tmp = tmp;
 		}
 	}
 }
