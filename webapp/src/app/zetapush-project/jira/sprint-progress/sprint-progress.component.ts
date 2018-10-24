@@ -79,7 +79,9 @@ export class SprintProgressComponent implements OnInit {
 			};
 		};
 
-		for (var i = 0; i < field.length; i++)
+		for (var i = 0; i < field.length; i++) {
+			if (details.every(x => x[field[i]] === 0))
+				continue;
 			pies.push({
 				pie: build_pie(field[i]),
 				option: {
@@ -89,6 +91,7 @@ export class SprintProgressComponent implements OnInit {
 					}
 				}
 			});
+		}
 		return pies;
 	}
 
