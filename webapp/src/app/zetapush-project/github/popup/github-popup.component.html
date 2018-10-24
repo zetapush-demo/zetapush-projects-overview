@@ -3,7 +3,6 @@
 
 	<div mat-dialog-content>
 		<h2 class="title"> {{data.repo_name}} </h2>
-		<button mat-button (click)="mute()"> Mute </button>
 		<h2> {{data.name}} <i> #{{data.id}} </i> </h2>
 		<div class="item_info">
 			<p> Created by </p>
@@ -16,6 +15,6 @@
 		</div>
 	</div>
 	<div mat-dialog-actions>
-		<button mat-button (click)="closeDialog()" cdkFocusInitial> OK </button>
+		<button mat-button (click)="dialogRef.close()" cdkFocusInitial> OK </button>
 	</div>
 </div>

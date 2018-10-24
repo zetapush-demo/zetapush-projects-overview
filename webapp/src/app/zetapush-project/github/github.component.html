@@ -7,7 +7,9 @@
 </div>
 
 <div class="mute_button">
-	<button mat-button (click)="unmute()"> Unmute </button>
+	<button mat-icon-button (click)="openDialog()">
+		<mat-icon [matBadgeHidden]="popup_buffer.length <= 0" [matBadge]="popup_buffer.length"> notifications </mat-icon>
+	</button>
 </div>
 <div class="form">
 	<mat-form-field *ngFor="let form of filter_form">

@@ -13,6 +13,7 @@ export class GithubComponent implements OnInit {
 
 	@Input() data: Github;
 	data_save: Github;
+	popup_buffer = [];
 
 	is_dialog_open = false;
 
@@ -40,37 +41,28 @@ export class GithubComponent implements OnInit {
 		}
 	}
 
-	openDialog(popup_data, repo_name: string, message: string) {
-		const ignore: string[] = JSON.parse(localStorage.getItem('github_ignore')) || [];
-		var dialog_ref;
-
-		popup_data.message = message;
-		popup_data.repo_name = repo_name;
-		if (!this.is_dialog_open && !ignore.includes(repo_name)) {
-			dialog_ref = this.dialog.open(GithubPopupComponent, {
+	openDialog() {
+		for (var i = 0; i < this.popup_buffer.length; i++) {
+			this.popup_buffer[i].message = this.popup_buffer[i].base ? 'New Pull request !!' : 'New Issue !!';
+			this.popup_buffer[i].repo_name = this.data.name;
+			this.dialog.open(GithubPopupComponent, {
 				width: '500px',
-				data: popup_data
+				data: this.popup_buffer[i]
 			});
-			this.is_dialog_open = true;
-			dialog_ref.afterClosed().subscribe(() => this.is_dialog_open = false);
 		}
+		localStorage.setItem(`github_${this.data.name}`, JSON.stringify(this.popup_buffer.map(x => x.name)));
+		this.popup_buffer = [];
 	}
 
 	popup_on_new_data(delay: number) {
-		const now = new Date().valueOf();
-		const gap = now - delay;
+		const gap = new Date().valueOf() - delay;
+		const all_data = this.data.issues.concat(this.data.pull_request);
+		const last_timestamp = Math.max(...all_data.map(x => x.timestamp));
+		const popup_data: any = all_data.find(x => x.timestamp === last_timestamp && x.timestamp > gap);
+		const ignore_list: string[] = JSON.parse(localStorage.getItem(`github_${this.data.name}`)) || [];
 
-		function get_last_data(tab: any[]) {
-			if (!tab || !tab.length)
-				return null;
-			const last_timestamp = Math.max(...tab.map(x => x.timestamp));
-
-			return tab.find(x => x.timestamp === last_timestamp && x.timestamp > gap);
-		}
-		const popup_data = get_last_data(this.data.issues.concat(this.data.pull_request));
-
-		if (popup_data)
-			return this.openDialog(popup_data, this.data.name, popup_data.base ? 'New Pull request !!' : 'New Issue !!');
+		if (popup_data && !ignore_list.includes(popup_data.name))
+			this.popup_buffer.push(popup_data);
 	}
 
 	paginator_branches(pageEvent: PageEvent) {

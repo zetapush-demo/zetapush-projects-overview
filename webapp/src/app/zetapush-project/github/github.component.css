@@ -12,6 +12,19 @@ mat-panel-title h4 i {
 	color: #a3aab1;
 }
 
+button mat-icon ::ng-deep .mat-badge-content {
+	animation: blink 1s infinite ease-in-out;
+}
+
+@keyframes blink {
+	0%, 100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2)
+	}
+}
+
 .form {
 	text-align: center;
 }

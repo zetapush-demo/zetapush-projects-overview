@@ -18,6 +18,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatBadgeModule } from '@angular/material/badge';
 import { ChartjsModule } from '@ctrl/ngx-chartjs';
 
 import { AppComponent } from './app.component';
@@ -57,6 +58,7 @@ import { TabsComponent } from './tabs/tabs.component';
 		MatTableModule,
 		MatTooltipModule,
 		MatPaginatorModule,
+		MatBadgeModule,
 		ChartjsModule
 	],
 	declarations: [
