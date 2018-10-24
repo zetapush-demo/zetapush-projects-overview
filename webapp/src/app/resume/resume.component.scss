@@ -34,6 +34,23 @@ mat-card {
 	border-radius: 4px;
 }
 
+mat-card ::ng-deep {
+	ngx-chartjs {
+		width: 50%;
+		height: 100%;
+		display: block;
+	}
+	.chart_host {
+		flex-direction: row;
+	}
+}
+
+mat-card ::ng-deep ngx-chartjs ::host {
+	width: 100%;
+	height: 200px;
+	display: block;
+}
+
 .monitoring mat-card {
 	margin: 4px;
 	padding-bottom: 8px;
