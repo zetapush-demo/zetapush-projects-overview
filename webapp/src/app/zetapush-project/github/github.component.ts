@@ -63,6 +63,8 @@ export class GithubComponent implements OnInit {
 
 		if (popup_data && !ignore_list.includes(popup_data.name))
 			this.popup_buffer.push(popup_data);
+		if (!popup_data)
+			localStorage.removeItem(`github_${this.data.name}`);
 	}
 
 	paginator_branches(pageEvent: PageEvent) {
