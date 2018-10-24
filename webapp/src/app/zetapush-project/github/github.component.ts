@@ -31,16 +31,6 @@ export class GithubComponent implements OnInit {
 		private dialog: MatDialog
 	) { }
 
-	unmute() {
-		const ignore: string[] = JSON.parse(localStorage.getItem('github_ignore')) || [];
-		const search_item: number = ignore.indexOf(this.data.name);
-
-		if (search_item !== -1) {
-			ignore.splice(search_item, 1);
-			localStorage.setItem('github_ignore', JSON.stringify(ignore));
-		}
-	}
-
 	openDialog() {
 		for (var i = 0; i < this.popup_buffer.length; i++) {
 			this.popup_buffer[i].message = this.popup_buffer[i].base ? 'New Pull request !!' : 'New Issue !!';
@@ -50,7 +40,7 @@ export class GithubComponent implements OnInit {
 				data: this.popup_buffer[i]
 			});
 		}
-		localStorage.setItem(`github_${this.data.name}`, JSON.stringify(this.popup_buffer.map(x => x.name)));
+		localStorage.setItem(`github_${this.data.name}`, JSON.stringify(this.popup_buffer.map(x => x.id)));
 		this.popup_buffer = [];
 	}
 
@@ -61,7 +51,7 @@ export class GithubComponent implements OnInit {
 		const popup_data: any = all_data.find(x => x.timestamp === last_timestamp && x.timestamp > gap);
 		const ignore_list: string[] = JSON.parse(localStorage.getItem(`github_${this.data.name}`)) || [];
 
-		if (popup_data && !ignore_list.includes(popup_data.name))
+		if (popup_data && !ignore_list.includes(popup_data.id))
 			this.popup_buffer.push(popup_data);
 		if (!popup_data)
 			localStorage.removeItem(`github_${this.data.name}`);
