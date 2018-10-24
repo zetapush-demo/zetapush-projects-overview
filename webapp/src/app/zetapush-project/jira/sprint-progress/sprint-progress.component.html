@@ -8,14 +8,6 @@
 	<p *ngIf="tmp.early"> Early of : <b> {{tmp.early}} </b> </p>
 </div>
 <mat-progress-bar *ngIf="tmp && tmp.progress_bar" mode="buffer" [value]="tmp.progress_bar.value" [bufferValue]="tmp.progress_bar.bufferValue"> </mat-progress-bar>
-<div *ngIf="time && tmp">
-	<div *ngFor="let detail of tmp.details" class="reporter">
-		<img src="{{detail.url}}" alt="img not found" width="48">
-		{{detail.name}}
-		<p> Spent : <b> {{detail.spent}} </b> </p>
-		<p> Estimate : <b> {{detail.estimate}} </b> </p>
-	</div>
-	<div class="chart_host">
-		<ngx-chartjs *ngFor="let pie of tmp.pies" [data]="pie.pie" type="pie" [options]="pie.option"></ngx-chartjs>
-	</div>
+<div *ngIf="time && tmp" class="chart_host">
+	<ngx-chartjs *ngFor="let pie of tmp.pies" [data]="pie.pie" type="pie" [options]="pie.option"></ngx-chartjs>
 </div>
