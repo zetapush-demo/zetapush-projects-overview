@@ -2,6 +2,7 @@
 
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import './theme.scss';
+@import './variables.scss';
 
 html {
 	font-family: sans-serif;
@@ -73,4 +74,22 @@ mat-panel-title * {
 
 mat-expansion-panel-header {
 	height: auto !important;
+}
+
+.mute_button {
+	text-align: center;
+}
+
+.mat-badge-content {
+	animation: blink 1s infinite ease-in-out;
+	background: $warn !important;
+}
+
+@keyframes blink {
+	0%, 100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2)
+	}
 }

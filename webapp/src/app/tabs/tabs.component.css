@@ -10,3 +10,8 @@ mat-tab-group ::ng-deep .mat-tab-body-wrapper {
 .link {
 	margin-right: 10px;
 }
+
+.tabs > ::ng-deep mat-tab-header .mat-tab-labels {
+	margin: 0 auto;
+	max-width: 800px;
+}
