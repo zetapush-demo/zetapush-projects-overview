@@ -68,7 +68,6 @@ function put_sub_issues(sprint)
 function compute_sprint_timetracking(issues, end, project_config)
 {
 	const displayName = issues.map(x => x.subtasks.map(y => y.reporter.displayName)).join().split(',').filter((a, b, c) => c.indexOf(a) === b);
-	const avatarUrls = issues.map(x => x.subtasks.map(y => y.reporter.avatarUrls)).join().split(',').filter((a, b, c) => c.indexOf(a) === b);
 	var details = [];
 	var sprint_time = {
 		estimate: 0,
@@ -76,10 +75,9 @@ function compute_sprint_timetracking(issues, end, project_config)
 		spent: 0,
 	};
 
-	for (var i = 0; i < displayName.length && i < avatarUrls.length; i++)
+	for (var i = 0; i < displayName.length; i++)
 		details.push({
 			name: displayName[i],
-			url: avatarUrls[i],
 			spent: 0,
 			estimate: 0
 		});
