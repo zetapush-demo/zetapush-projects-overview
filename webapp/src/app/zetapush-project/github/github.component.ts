@@ -58,14 +58,18 @@ export class GithubComponent implements OnInit {
 	}
 
 	paginator_branches(pageEvent: PageEvent) {
-		this.data.issues = this.data.issues.filter((branch, index) => {
-			if (index > (pageEvent.pageIndex * pageEvent.pageSize - 1) && index < (pageEvent.pageIndex * pageEvent.pageSize + pageEvent.pageSize))
-				return branch;
-		});
-		this.data.pull_request = this.data.pull_request.filter((branch, index) => {
-			if (index > (pageEvent.pageIndex * pageEvent.pageSize - 1) && index < (pageEvent.pageIndex * pageEvent.pageSize + pageEvent.pageSize))
-				return branch;
-		});
+		const real_index = pageEvent.pageIndex * pageEvent.pageSize;
+
+		if (this.data.issues.length > pageEvent.pageSize)
+			this.data.issues = this.data.issues.filter((branch, index) => {
+				if (index > (real_index - 1) && index < (real_index + pageEvent.pageSize))
+					return branch;
+			});
+		if (this.data.pull_request.length > pageEvent.pageSize)
+			this.data.pull_request = this.data.pull_request.filter((branch, index) => {
+				if (index > (real_index - 1) && index < (real_index + pageEvent.pageSize))
+					return branch;
+			});
 	}
 
 	filter_data_by(formvalue: FilterForm[], pageEvent?: PageEvent) {

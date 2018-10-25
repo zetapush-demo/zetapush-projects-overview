@@ -36,10 +36,11 @@ export class JenkinsComponent implements OnInit {
 
 	paginator_branches(pageEvent: PageEvent) {
 		const data = this.data;
+		const real_index = pageEvent.pageIndex * pageEvent.pageSize;
 
 		data.branches = JSON.parse(JSON.stringify(this.branches_save));
 		data.branches = data.branches.filter((branch, index) => {
-			if (index > (pageEvent.pageIndex * pageEvent.pageSize - 1) && index < (pageEvent.pageIndex * pageEvent.pageSize + pageEvent.pageSize))
+			if (index > (real_index - 1) && index < (real_index + pageEvent.pageSize))
 				return branch;
 		});
 	}
