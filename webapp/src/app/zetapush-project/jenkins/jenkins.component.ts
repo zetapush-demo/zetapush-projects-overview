@@ -3,7 +3,6 @@ import { MatDialog, PageEvent } from '@angular/material';
 
 import { Jenkins, JenkinsBranch } from '../zetapush-project.service';
 import { JenkinsPopupComponent } from './popup/jenkins-popup.component';
-import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-jenkins',
@@ -14,8 +13,7 @@ export class JenkinsComponent implements OnInit {
 
 	@Input() data: Jenkins;
 	branches_save: JenkinsBranch[];
-
-	is_dialog_open = false;
+	popup_buffer = [];
 
 	length: number;
 	pageSize: number;
@@ -24,52 +22,42 @@ export class JenkinsComponent implements OnInit {
 		private dialog: MatDialog
 	) { }
 
-	unmute(project_name) {
-		const ignore: string[] = JSON.parse(localStorage.getItem('jenkins_ignore')) || [];
-		const search_item: number = ignore.indexOf(project_name);
-
-		if (search_item !== -1) {
-			ignore.splice(search_item, 1);
-			localStorage.setItem('jenkins_ignore', JSON.stringify(ignore));
-		}
-	}
-
 	paginator_branches(pageEvent: PageEvent) {
-		const data = this.data;
 		const real_index = pageEvent.pageIndex * pageEvent.pageSize;
 
-		data.branches = JSON.parse(JSON.stringify(this.branches_save));
-		data.branches = data.branches.filter((branch, index) => {
+		this.data.branches = JSON.parse(JSON.stringify(this.branches_save));
+		this.data.branches = this.data.branches.filter((branch, index) => {
 			if (index > (real_index - 1) && index < (real_index + pageEvent.pageSize))
 				return branch;
 		});
 	}
 
-	openDialog(branch_new_build) {
-		const ignore: string[] = JSON.parse(localStorage.getItem('jenkins_ignore')) || [];
-		var dialog_ref;
-
-		if (!this.is_dialog_open && !ignore.includes(branch_new_build.project)) {
-			dialog_ref = this.dialog.open(JenkinsPopupComponent, {
-				width: '600px',
-				data: branch_new_build
+	openDialog() {
+		for (var i = 0; i < this.popup_buffer.length; i++) {
+			this.dialog.open(JenkinsPopupComponent, {
+				width: '500px',
+				data: this.popup_buffer[i]
 			});
-			this.is_dialog_open = true;
-			dialog_ref.afterClosed().subscribe(() => this.is_dialog_open = false);
 		}
+		if (this.popup_buffer.length)
+			localStorage.setItem(`jenkins_${this.data.name}`, JSON.stringify(this.popup_buffer.map(x => x.branch.name)));
+		this.popup_buffer = [];
 	}
 
-	get_new_data(tab: Jenkins) {
-		if (!tab)
-			return null;
-		for (var i = 0; i < tab.branches.length; i++) {
-			if (tab.branches[i].in_progress)
-				return {
-					project: tab.name,
-					branch: tab.branches[i]
-				};
-		}
-		return null;
+	popup_on_new_build() {
+		const ignore_list: string[] = JSON.parse(localStorage.getItem(`jenkins_${this.data.name}`)) || [];
+		const popup_data: any[] = this.data.branches.filter((x, y) => y < 2 || x.in_progress).map(x => {
+			return {
+				project: this.data.name,
+				branch: x
+			};
+		}).filter(x => !ignore_list.includes(x.branch.name));
+
+		if (popup_data && popup_data.length)
+			this.popup_buffer = this.popup_buffer.concat(popup_data);
+		if (!popup_data || !popup_data.length)
+			localStorage.removeItem(`jenkins_${this.data.name}`);
+		console.log(this.popup_buffer);
 	}
 
 	init_paginator(tmp: Jenkins) {
@@ -85,12 +73,8 @@ export class JenkinsComponent implements OnInit {
 	ngOnInit() {
 		if (!this.data)
 			return;
-		this.data = this.data;
 		this.branches_save = JSON.parse(JSON.stringify(this.data.branches));
+		this.popup_on_new_build();
 		this.init_paginator(this.data);
-		const branch_new_build = this.get_new_data(this.data);
-
-		if (branch_new_build)
-			this.openDialog(branch_new_build);
 	}
 }

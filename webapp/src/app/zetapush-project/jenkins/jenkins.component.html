@@ -9,7 +9,9 @@
 
 	<mat-accordion>
 		<div class="mute_button">
-			<button mat-button (click)="unmute(data.name)"> Unmute </button>
+			<button mat-icon-button (click)="openDialog()">
+				<mat-icon [matBadgeHidden]="popup_buffer.length <= 0" [matBadge]="popup_buffer.length"> notifications </mat-icon>
+			</button>
 		</div>
 		<mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]"
 			(page)="paginator_branches($event)">

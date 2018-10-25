@@ -38,7 +38,8 @@ export class GithubComponent implements OnInit {
 				data: this.popup_buffer[i]
 			});
 		}
-		localStorage.setItem(`github_${this.data.name}`, JSON.stringify(this.popup_buffer.map(x => x.id)));
+		if (this.popup_buffer.length)
+			localStorage.setItem(`github_${this.data.name}`, JSON.stringify(this.popup_buffer.map(x => x.id)));
 		this.popup_buffer = [];
 	}
 
