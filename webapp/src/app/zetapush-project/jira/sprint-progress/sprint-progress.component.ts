@@ -32,7 +32,7 @@ export class SprintProgressComponent implements OnInit {
 		if (time.remaining > 0 && time.estimate - time.spent > time.remaining)
 			return this.format_hour(time.spent - time.remaining);
 		else if (time.remaining < 0)
-			return this.format_hour(-time.remaining + time.estimate - time.spent);
+			return `${Math.round(-time.remaining / 24)}d ${-time.remaining % 24}h`;
 	}
 
 	compute_progress_bar_data(time) {
