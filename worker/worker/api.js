@@ -19,7 +19,11 @@ async function get_api_data()
 	return filter_by_project(data, config);
 };
 
-// (async () => console.log(await get_api_data()))();
+// (async () => {
+// 	const data = await get_api_data();
+
+// 	console.log(data);
+// })();
 
 function filter_by_project(data, config)
 {
