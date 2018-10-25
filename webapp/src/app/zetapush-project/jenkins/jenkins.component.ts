@@ -46,7 +46,7 @@ export class JenkinsComponent implements OnInit {
 
 	popup_on_new_build() {
 		const ignore_list: string[] = JSON.parse(localStorage.getItem(`jenkins_${this.data.name}`)) || [];
-		const popup_data: any[] = this.data.branches.filter((x, y) => y < 2 || x.in_progress).map(x => {
+		const popup_data: any[] = this.data.branches.filter(x => x.in_progress).map(x => {
 			return {
 				project: this.data.name,
 				branch: x
@@ -55,9 +55,8 @@ export class JenkinsComponent implements OnInit {
 
 		if (popup_data && popup_data.length)
 			this.popup_buffer = this.popup_buffer.concat(popup_data);
-		if (!popup_data || !popup_data.length)
+		else
 			localStorage.removeItem(`jenkins_${this.data.name}`);
-		console.log(this.popup_buffer);
 	}
 
 	init_paginator(tmp: Jenkins) {
