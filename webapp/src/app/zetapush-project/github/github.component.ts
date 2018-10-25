@@ -15,8 +15,6 @@ export class GithubComponent implements OnInit {
 	data_save: Github;
 	popup_buffer = [];
 
-	is_dialog_open = false;
-
 	length: number;
 	pageSize: number;
 
