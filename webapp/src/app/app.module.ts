@@ -32,6 +32,7 @@ import { JenkinsComponent } from './zetapush-project/jenkins/jenkins.component';
 import { BuildFlowComponent } from './zetapush-project/jenkins/build-flow/build-flow.component';
 import { JenkinsPopupComponent } from './zetapush-project/jenkins/popup/jenkins-popup.component';
 import { JiraComponent } from './zetapush-project/jira/jira.component';
+import { TaskListComponent } from './zetapush-project/jira/task-list/task-list.component';
 import { SprintProgressComponent } from './zetapush-project/jira/sprint-progress/sprint-progress.component';
 import { TabsComponent } from './tabs/tabs.component';
 
@@ -72,6 +73,7 @@ import { TabsComponent } from './tabs/tabs.component';
 		BuildFlowComponent,
 		JenkinsPopupComponent,
 		JiraComponent,
+		TaskListComponent,
 		SprintProgressComponent,
 		TabsComponent
 	],

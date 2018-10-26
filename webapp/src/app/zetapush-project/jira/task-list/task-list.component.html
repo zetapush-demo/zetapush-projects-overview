@@ -1,0 +1,18 @@
+<mat-card *ngFor="let task of subtasks">
+	<mat-card-content>
+		<div *ngIf="task.reporter" class="reporter">
+			<img src="{{task.reporter.avatarUrls}}" alt="img not found" />
+			<span> Reporter: <b> {{task.reporter.displayName}} </b> </span>
+		</div>
+		<img *ngIf="task.issuetype" src="{{task.issuetype.iconUrl}}" alt="img not found"/>
+		<b> {{task.key}} </b>
+		<b> {{task.status}} </b>
+		<h4> {{task.summary}} </h4>
+		<span style="flex: 1 1 auto;"></span>
+		<a *ngIf="task.url" href="{{task.url}}">
+			<mat-icon matTooltip="{{task.url}}"> link </mat-icon>
+		</a>
+		<img *ngIf="task.priority" src="{{task.priority.iconUrl}}" alt="img not found" width="30"/>
+	</mat-card-content>
+	<p *ngIf="task.description"> {{task.description}} </p>
+</mat-card>
