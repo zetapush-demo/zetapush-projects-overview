@@ -51,11 +51,12 @@ export class JenkinsComponent implements OnInit {
 				project: this.data.name,
 				branch: x
 			};
-		}).filter(x => !ignore_list.includes(x.branch.name));
+		});
+		const filter_data = popup_data.filter(x => !ignore_list.includes(x.branch.name));
 
-		if (popup_data && popup_data.length)
+		if (filter_data && filter_data.length)
 			this.popup_buffer = this.popup_buffer.concat(popup_data);
-		else
+		if (!popup_data && !popup_data.length)
 			localStorage.removeItem(`jenkins_${this.data.name}`);
 	}
 
