@@ -5,7 +5,6 @@
 cd webapp
 ng build --prod # build webapp angular
 cd ../worker/front
-rm -v * # remove old symbolic link
-ln -v -s ../../webapp/dist/zetapush-projects-overview/* ./ # create new symbolic link
+ln -vfs ../../webapp/dist/zetapush-projects-overview/* ./ # create new symbolic link (and remove existing symbolic link)
 cd ..
 npm run deploy
