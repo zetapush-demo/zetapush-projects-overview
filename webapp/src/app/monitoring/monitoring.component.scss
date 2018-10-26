@@ -12,6 +12,12 @@ button.refresh_all {
 	margin-right: 20px;
 }
 
+.timestamp {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
 mat-card {
 	margin: 8px;
 	min-height: 300px;
@@ -36,6 +42,7 @@ mat-table mat-cell, mat-header-cell {
 	justify-content: center;
 	text-align: center;
 	padding: 0 !important;
+	position: relative;
 }
 
 mat-table mat-header-cell {

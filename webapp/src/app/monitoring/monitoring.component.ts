@@ -8,9 +8,10 @@ export interface MachineGroup {
 export interface Machine {
 	name: string;
 	url: string;
-	version?: string;
-	color?: string;
-	status?: number;
+	version: string;
+	color: string;
+	status: number;
+	timestamp: number;
 }
 
 @Component({
@@ -29,14 +30,15 @@ export class MonitoringComponent implements OnInit {
 		return () => {
 			if (xhr.readyState == 4) {
 				if (xhr.status !== 200)
-					machine['color'] = '#f15b3e';
+					machine.color = '#f15b3e';
 				else
-					machine['color'] = '#86c65b';
+					machine.color = '#86c65b';
 				if (xhr.responseText.startsWith('<'))
-					machine['version'] = xhr.responseText.split('>')[2].split('<')[0];
+					machine.version = xhr.responseText.split('>')[2].split('<')[0];
 				else
-					machine['version'] = xhr.responseText;
-				machine['status'] = xhr.status;
+					machine.version = xhr.responseText;
+				machine.status = xhr.status;
+				machine.timestamp = Date.now() - machine.timestamp;
 			}
 		};
 	}
@@ -44,8 +46,9 @@ export class MonitoringComponent implements OnInit {
 	send_request(machine: Machine) {
 		const xhr = new XMLHttpRequest();
 
-		machine['color'] = 'orange';
-		machine['status'] = null;
+		machine.color = 'orange';
+		machine.status = null;
+		machine.timestamp = Date.now();
 		xhr.onreadystatechange = this.xhr_callback(xhr, machine);
 		xhr.open('GET', machine.url, true);
 		xhr.send(null);

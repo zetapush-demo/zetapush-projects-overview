@@ -26,7 +26,8 @@
 				<ng-container cdkColumnDef="status">
 					<mat-header-cell *cdkHeaderCellDef> Status </mat-header-cell>
 					<mat-cell *cdkCellDef="let element" [ngStyle]="{'background-color': element.color}">
-						{{element.status}}
+						<h3> {{element.status}} </h3>
+						<i class="timestamp" *ngIf="element.timestamp < 100000000"> {{element.timestamp}}ms </i>
 					</mat-cell>
 				</ng-container>
 
