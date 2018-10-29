@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { parse_time, get_config, get_issues_list } = require('../utils');
+const { parse_time, get_config, get_issues_list } = require('./utils');
 
 const api = 'https://zetapush.atlassian.net/rest/agile/1.0';
 
@@ -14,10 +14,10 @@ function http_error_handler(err)
 		console.error(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
 }
 
-async function get_board_list(project_list, config)
+async function get_board_list(project_list, http)
 {
 	var boards_id = [];
-	var res = await axios.get(`${api}/board/`, config).catch(http_error_handler);
+	var res = await axios.get(`${api}/board/`, http).catch(http_error_handler);
 
 	if (!res || !res.data || !res.data.values.length)
 		return [];
@@ -107,9 +107,9 @@ function compute_sprint_timetracking(issues, end, project_config)
 	return sprint_time;
 }
 
-async function get_current_sprint(project_config, board_id, config)
+async function get_current_sprint(project_config, board_id, http)
 {
-	var res = await axios.get(`${api}/board/${board_id}/sprint?state=active`, config).catch(http_error_handler);
+	var res = await axios.get(`${api}/board/${board_id}/sprint?state=active`, http).catch(http_error_handler);
 	var api_url;
 	var data = [];
 
@@ -122,7 +122,7 @@ async function get_current_sprint(project_config, board_id, config)
 			sprint: res[i].name,
 			start: res[i].startDate,
 			end: res[i].endDate,
-			issues: await get_issues_list(api_url, board_id, project_config, config)
+			issues: await get_issues_list(api_url, board_id, project_config, http)
 		};
 		put_sub_issues(sprint);
 		sprint.time = compute_sprint_timetracking(sprint.issues, sprint.end, project_config);
@@ -139,25 +139,34 @@ async function get_current_sprint(project_config, board_id, config)
 	return data;
 }
 
+async function get_tracker(project_config, http)
+{
+	const api_url = `https://zetapush.atlassian.net/rest/api/2/search?jql=project=${project_config.key}`;
+	const issues = await get_issues_list(api_url, null, project_config, http);
+
+	return issues.filter(issue => issue.status !== project_config.close_state);
+}
+
 module.exports = async function()
 {
 	var data = [];
-	const config = get_config('jira');
-	const boards_id = await get_board_list(config.sprint, config.http);
+	const { project, http } = get_config('jira');
+	const boards_id = await get_board_list(project.map(x => x.sprint).filter(x => Object.keys(x).length), http);
 
-	console.assert(boards_id.length === config.sprint.length);
-	if (boards_id.length === 0) {
-		console.error('No valid projects were found =>');
-		console.error('jira: {\n\tconfig.sprint: {name || key}\n} => application.json');
-	}
-	for (var i = 0; i < boards_id.length; i++) {
-		const project = {
-			name: config.sprint[i].name,
-			url: `https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${boards_id[i]}`,
-			sprint: await get_current_sprint(config.sprint[i], boards_id[i], config.http)
+	for (var i = 0; i < project.length; i++) {
+		var tmp = {};
+
+		if (project[i].sprint && Object.keys(project[i].sprint).length) {
+			tmp.name = project[i].sprint.name;
+			tmp.url = `https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${boards_id[i]}`;
+			tmp.sprint = await get_current_sprint(project[i].sprint, boards_id[i], http);
 		}
-
-		data.push(project);
+		if (project[i].tracker && Object.keys(project[i].tracker).length) {
+			tmp.name = project[i].tracker.name;
+			tmp.url = `https://zetapush.atlassian.net/projects/${project[i].tracker.key}/issues`;
+			tmp.tracker = await get_tracker(project[i].tracker, http);
+		}
+		data.push(tmp);
 	}
 	return data;
 }

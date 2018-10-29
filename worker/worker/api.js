@@ -7,8 +7,7 @@ async function get_api_data()
 	const tab = [
 		{ name: 'github', func: require('./github')() },
 		{ name: 'jenkins', func: require('./jenkins')() },
-		{ name: 'sprint', func: require('./jira/sprint')() },
-		{ name: 'tracker', func: require('./jira/tracker')() }
+		{ name: 'jira', func: require('./jira')() },
 	];
 
 	await Promise.all(tab.map(x => x.func))
