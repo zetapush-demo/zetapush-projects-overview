@@ -7,7 +7,8 @@ async function get_api_data()
 	const tab = [
 		{ name: 'github', func: require('./github')() },
 		{ name: 'jenkins', func: require('./jenkins')() },
-		{ name: 'jira', func: require('./jira')() }
+		{ name: 'sprint', func: require('./jira/sprint')() },
+		{ name: 'tracker', func: require('./jira/tracker')() }
 	];
 
 	await Promise.all(tab.map(x => x.func))
@@ -38,7 +39,7 @@ function filter_by_project(data, config)
 		tmp.tools = {};
 		for (var key in config[i].tools)
 			if (data[key] && data[key].length && config[i].tools[key] && config[i].tools[key].length)
-				tmp.tools[key] = data[key].find(x => x.name === config[i].tools[key]);
+				tmp.tools[key] = data[key].find(x => x.name === config[i].tools[key]); // x.name => name is the common key between all api
 		project.push(tmp);
 	}
 	return project;

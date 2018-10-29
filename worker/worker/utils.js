@@ -15,7 +15,7 @@ function filter_data(issues, board_id)
 	for (var i = 0; i < issues.length; i++) {
 		issues[i] = {
 			key:		issues[i].key,
-			url:		`https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${board_id}&modal=detail&selectedIssue=${issues[i].key}`,
+			url:		board_id && `https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${board_id}&modal=detail&selectedIssue=${issues[i].key}`,
 			parent:		issues[i].fields.parent && issues[i].fields.parent.key,
 			priority:	exports.extract_data(issues[i].fields.priority, ['id', 'iconUrl']),
 			issuetype:	exports.extract_data(issues[i].fields.issuetype, ['name', 'iconUrl']),
@@ -68,9 +68,11 @@ exports.get_issues_list = async function get_issues_list(api_url, board_id, proj
 			console.error(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
 	};
 	var res = await axios.get(`${api_url}&maxResults=1`, config).catch(http_error_handler);
-	const max = res.data.total;
+	var max = 0;
 	var issues = [];
 
+	if (res && res.data)
+		max = res.data.total;
 	for (var i = 0; i < max; i += 100) {
 		res = await axios.get(`${api_url}&startAt=${i}&maxResults=100`, config).catch(http_error_handler);
 		issues = issues.concat(filter_data(res.data.issues, board_id));

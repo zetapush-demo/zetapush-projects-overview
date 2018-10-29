@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { parse_time, get_config, get_issues_list } = require('./utils');
+const { parse_time, get_config, get_issues_list } = require('../utils');
 
 const api = 'https://zetapush.atlassian.net/rest/agile/1.0';
 
