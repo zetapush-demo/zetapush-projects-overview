@@ -56,7 +56,7 @@ export class JenkinsComponent implements OnInit {
 
 		if (filter_data && filter_data.length)
 			this.popup_buffer = this.popup_buffer.concat(popup_data);
-		if (!popup_data && !popup_data.length)
+		if (!popup_data || !popup_data.length)
 			localStorage.removeItem(`jenkins_${this.data.name}`);
 	}
 
