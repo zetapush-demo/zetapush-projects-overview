@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
 	styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent {
-	@Input() subtasks;
+	@Input() tasks;
 }

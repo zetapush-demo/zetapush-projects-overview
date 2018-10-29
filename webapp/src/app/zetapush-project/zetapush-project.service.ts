@@ -30,7 +30,8 @@ export interface Jenkins {
 
 export interface Jira {
 	name: string;
-	sprint: JiraSprint[];
+	sprint?: JiraSprint[];
+	tracker?: JiraIssue[];
 	url: string;
 }
 

@@ -1,4 +1,4 @@
-<mat-card *ngFor="let task of subtasks">
+<mat-card *ngFor="let task of tasks">
 	<mat-card-content>
 		<div *ngIf="task.reporter" class="reporter">
 			<img src="{{task.reporter.avatarUrls}}" alt="img not found" />
