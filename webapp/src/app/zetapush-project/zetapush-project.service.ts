@@ -157,7 +157,7 @@ export class ZetapushProjectService {
 		await this.client.createService({
 			Type: Messaging,
 			listener: {
-				reply: ({ data }) => this.observer.next(data.data)
+				reply: ({ data }) => this.observer.next(data.data.data)
 			}
 		});
 	}

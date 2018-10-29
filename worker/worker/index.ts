@@ -20,7 +20,9 @@ export default class Api {
 			});
 		await this.sendMessage();
 		setInterval(async () => {
+			console.log('sendMessage IN', new Date().toLocaleString());
 			await this.sendMessage();
+			console.log('sendMessage OUT', new Date().toLocaleString());
 		}, 1000 * 60 * 15); // 15 minutes
 	}
 
@@ -42,18 +44,14 @@ export default class Api {
 			group: GROUP_ID
 		});
 		const users = group.users || [];
-
-		console.log('Start sending: ', new Date().toLocaleString());
-
-		const message = await get_api_data();
+		const data = await get_api_data();
 
 		this.messaging.send({
 			target: users,
-			data: message
+			data: { data }
 		});
-		console.log('Done: ', new Date().toLocaleString());
-		console.log(message);
-		this.last_data = message;
+		console.log(data);
+		this.last_data = data;
 	}
 
 	async createUser(user_info: BasicAuthenticatedUser) {

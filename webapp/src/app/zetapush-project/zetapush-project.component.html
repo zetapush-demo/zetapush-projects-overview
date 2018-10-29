@@ -1,4 +1,4 @@
-<mat-tab-group mat-stretch-tabs *ngIf="data">
+<mat-tab-group mat-stretch-tabs *ngIf="data && data.length">
 	<mat-tab *ngFor="let app of data" [label]="app.name">
 		<app-github *ngIf="app.tools.github" [data]="app.tools.github"></app-github>
 		<app-jenkins *ngIf="app.tools.jenkins" [data]="app.tools.jenkins"></app-jenkins>
