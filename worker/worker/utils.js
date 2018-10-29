@@ -15,7 +15,7 @@ function filter_data(issues, board_id)
 	for (var i = 0; i < issues.length; i++) {
 		issues[i] = {
 			key:		issues[i].key,
-			url:		board_id && `https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${board_id}&modal=detail&selectedIssue=${issues[i].key}`,
+			url:		board_id ? `https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${board_id}&modal=detail&selectedIssue=${issues[i].key}` : `https://zetapush.atlassian.net/projects/${issues[i].key.split('-')[0]}/issues/${issues[i].key}`,
 			parent:		issues[i].fields.parent && issues[i].fields.parent.key,
 			priority:	exports.extract_data(issues[i].fields.priority, ['id', 'iconUrl']),
 			issuetype:	exports.extract_data(issues[i].fields.issuetype, ['name', 'iconUrl']),
