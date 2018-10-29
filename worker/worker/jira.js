@@ -166,7 +166,8 @@ module.exports = async function()
 			tmp.url = `https://zetapush.atlassian.net/projects/${project[i].tracker.key}/issues`;
 			tmp.tracker = await get_tracker(project[i].tracker, http);
 		}
-		data.push(tmp);
+		if (tmp && Object.keys(tmp).length)
+			data.push(tmp);
 	}
 	return data;
 }
