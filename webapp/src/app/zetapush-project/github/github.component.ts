@@ -43,6 +43,19 @@ export class GithubComponent implements OnInit {
 		this.popup_buffer = [];
 	}
 
+	trigger_notif(popup_data) {
+		const title = `New ${popup_data.base ? 'Pull request' : 'Issue'} on ${this.data.name} !!`;
+		const body = popup_data.name;
+
+		if (Notification.permission === 'granted')
+			new Notification(title, { body });
+		else
+			Notification.requestPermission().then((status) => {
+				if (status === 'granted')
+					new Notification(title, { body });
+			});
+	}
+
 	popup_on_new_data(delay: number) {
 		const gap = new Date().valueOf() - delay;
 		const all_data = this.data.issues.concat(this.data.pull_request);
@@ -50,8 +63,10 @@ export class GithubComponent implements OnInit {
 		const popup_data: any = all_data.find(x => x.timestamp === last_timestamp && x.timestamp > gap);
 		const ignore_list: string[] = JSON.parse(localStorage.getItem(`github_${this.data.name}`)) || [];
 
-		if (popup_data && !ignore_list.includes(popup_data.id))
+		if (popup_data && !ignore_list.includes(popup_data.id)) {
 			this.popup_buffer.push(popup_data);
+			this.trigger_notif(popup_data);
+		}
 		if (!popup_data)
 			localStorage.removeItem(`github_${this.data.name}`);
 	}
