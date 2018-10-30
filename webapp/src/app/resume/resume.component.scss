@@ -53,20 +53,19 @@ mat-card ::ng-deep ngx-chartjs ::host {
 
 .monitoring mat-card {
 	margin: 4px;
-	padding-bottom: 8px;
 }
 
 .monitoring mat-card-header {
-	margin: -24px -24px 0px -24px !important;
+	margin: -16px -16px 0px -16px !important;
 	color: white;
 	padding: 8px 0 !important;
 	background: $primary !important;
 }
 
 .monitoring mat-card-content {
-	margin: 0 -24px !important;
+	margin: 0 -16px !important;
 	height: 100%;
-	min-height: 20px;
+	min-height: 16px;
 }
 
 .monitoring mat-card-content h1 {
