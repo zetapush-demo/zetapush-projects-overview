@@ -2,14 +2,14 @@
 	<h1 class="title" mat-dialog-title > New build !! </h1>
 	<h2>
 		<p> {{data.project}} </p>
-		<a href="{{data.branch.url}}"> {{data.branch.name}}	</a>
+		<a href="{{data.url}}"> {{data.name}}	</a>
 	</h2>
 	<div mat-dialog-content>
-		<p> {{data.branch.time.start}}</p>
-		<a href="{{data.branch.url}}">
-			<img src="{{data.branch.icon}}" alt="img not found" />
+		<p> {{data.time.start}}</p>
+		<a href="{{data.url}}">
+			<img src="{{data.icon}}" alt="img not found" />
 		</a>
-		<app-build-flow [flows]="data.branch.flow"></app-build-flow>
+		<app-build-flow [flows]="data.flow"></app-build-flow>
 	</div>
 
 	<div mat-dialog-actions>

@@ -13,7 +13,7 @@ export class JenkinsComponent implements OnInit {
 
 	@Input() data: Jenkins;
 	branches_save: JenkinsBranch[];
-	popup_buffer = [];
+	popup_buffer: JenkinsBranch[] = [];
 
 	length: number;
 	pageSize: number;
@@ -34,29 +34,42 @@ export class JenkinsComponent implements OnInit {
 
 	openDialog() {
 		for (var i = 0; i < this.popup_buffer.length; i++) {
+			this.popup_buffer[i]['project'] = this.data.name;
 			this.dialog.open(JenkinsPopupComponent, {
 				width: '500px',
 				data: this.popup_buffer[i]
 			});
 		}
 		if (this.popup_buffer.length)
-			localStorage.setItem(`jenkins_${this.data.name}`, JSON.stringify(this.popup_buffer.map(x => x.branch.name)));
+			localStorage.setItem(`jenkins_${this.data.name}`, JSON.stringify(this.popup_buffer.map(x => x.name)));
 		this.popup_buffer = [];
+	}
+
+	trigger_notif(popup_data: JenkinsBranch[]) {
+		const title = `New build on ${this.data.name} !!`;
+
+		if (Notification.permission === 'granted')
+			for (var i = 0; i < popup_data.length; i++)
+				new Notification(title, { body: popup_data[i].name });
+		else
+			Notification.requestPermission().then((status) => {
+				if (status !== 'granted')
+					return;
+				for (var i = 0; i < popup_data.length; i++)
+					new Notification(title, { body: popup_data[i].name });
+			});
 	}
 
 	popup_on_new_build() {
 		const ignore_list: string[] = JSON.parse(localStorage.getItem(`jenkins_${this.data.name}`)) || [];
-		const popup_data: any[] = this.data.branches.filter(x => x.in_progress).map(x => {
-			return {
-				project: this.data.name,
-				branch: x
-			};
-		});
-		const filter_data = popup_data.filter(x => !ignore_list.includes(x.branch.name));
+		const in_progress_data: JenkinsBranch[] = this.data.branches.filter(x => x.in_progress);
+		const filter_data: JenkinsBranch[] = in_progress_data.filter(x => !ignore_list.includes(x.name));
 
-		if (filter_data && filter_data.length)
-			this.popup_buffer = this.popup_buffer.concat(popup_data);
-		if (!popup_data || !popup_data.length)
+		if (filter_data && filter_data.length) {
+			this.popup_buffer = this.popup_buffer.concat(in_progress_data);
+			this.trigger_notif(in_progress_data);
+		}
+		if (!in_progress_data || !in_progress_data.length)
 			localStorage.removeItem(`jenkins_${this.data.name}`);
 	}
 
