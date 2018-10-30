@@ -1,15 +1,3 @@
-mat-spinner ::ng-deep svg {
-	background-image: url('https://wac-cdn.atlassian.com/dam/jcr:37f03d61-2cfc-4862-b536-ca6d200e7cf8/Jira%20Software-icon-blue.svg?cdnVersion=jw');
-	background-size: 75%;
-	background-repeat: no-repeat;
-	background-position: center center;
-}
-
-mat-spinner {
-	position: absolute;
-	top: 65%;
-}
-
 .reporter {
 	background-color: #d1d5da;
 	color: #586069;

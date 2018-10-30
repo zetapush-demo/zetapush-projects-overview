@@ -1,15 +1,3 @@
-mat-spinner ::ng-deep svg {
-	background-image: url('https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/jenkins-redbg.png');
-	background-size: 75%;
-	background-repeat: no-repeat;
-	background-position: center center;
-}
-
-mat-spinner {
-	position: absolute;
-	top: 40%;
-}
-
 mat-panel-title h4, i {
 	margin-left: 8px;
 }

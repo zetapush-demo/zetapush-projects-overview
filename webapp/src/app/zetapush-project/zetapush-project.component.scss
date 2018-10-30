@@ -1,5 +1,17 @@
 @import '~src/variables.scss';
 
+mat-spinner ::ng-deep svg {
+	background-image: url('https://zetapush.com/assets/img/zt_logo.png');
+	background-size: 75%;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+mat-spinner {
+	position: absolute;
+	top: 40%;
+	left: calc(50% - 50px);
+}
 :host {
 	display: block;
 	height: calc(100% - #{$header_height});
