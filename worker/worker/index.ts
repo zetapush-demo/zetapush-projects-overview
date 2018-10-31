@@ -20,9 +20,7 @@ export default class Api {
 			});
 		await this.sendMessage();
 		setInterval(async () => {
-			console.log('sendMessage IN', new Date().toLocaleString());
 			await this.sendMessage();
-			console.log('sendMessage OUT', new Date().toLocaleString());
 		}, 1000 * 60 * 15); // 15 minutes
 	}
 
