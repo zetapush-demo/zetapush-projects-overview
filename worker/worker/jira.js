@@ -14,7 +14,51 @@ function http_error_handler(err)
 		console.error(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
 }
 
-async function check_board_list(project, http)
+function config_error(project, field) {
+	console.error(`Something bad in application.json, or this project can't have ${field} =>`);
+	console.error(`jira: { \n\t project: {`);
+	console.error(`\t\t ${field}: [{\n\t\t\t name: "${project.name}"`);
+	console.error(`\t\t\t key: "${project.key}"`);
+	console.error(`\t\t\t close_state: "${project.close_state}"`);
+	console.error(`\t\t}]\n\t}\n}`);
+}
+
+function filter_badly_config_project(project)
+{
+	const valid_keys = ['name', 'key', 'close_state'];
+
+	function arraysEqual(arr1, arr2) {
+		if (arr1.length !== arr2.length)
+			return false;
+		for (var i = arr1.length; i--; )
+			if (arr1[i] !== arr2[i])
+				return false;
+		return true;
+	}
+
+	if (!project)
+		return project;
+	project.forEach(x => {
+		for (var key in x) {
+			if (!x[key] || !Object.keys(x[key]).length)
+				continue;
+			if (!arraysEqual(valid_keys, Object.keys(x[key]))) {
+				config_error(x[key], key);
+				delete x[key];
+			} else
+				for (var subkey in x[key]) {
+					if (typeof x[key][subkey] !== 'string' || !x[key][subkey].length) {
+						config_error(x[key], key);
+						delete x[key];
+						break;
+					}
+				}
+		}
+	});
+	return project;
+}
+
+async function fill_sprint_board(project, http)
 {
 	var res = await axios.get(`${api}/board/`, http).catch(http_error_handler);
 
@@ -29,14 +73,8 @@ async function check_board_list(project, http)
 				project[i].sprint.id = res[j].id;
 				break;
 			}
-			if (j === res.length - 1) {
-				console.error(`Something bad in application.json, or this project can't have sprint =>`)
-				console.error(`jira: { \n\t sprint: {`);
-				console.error(`\t\t project: [{\n\t\t\t name: "${project[i].sprint.name}"`);
-				console.error(`\t\t\t key: "${project[i].sprint.key}"`);
-				console.error(`\t\t\t close_state: "${project[i].sprint.close_state}"`);
-				console.error(`\t\t}]\n\t}\n}`);
-			}
+			if (j === res.length - 1)
+				config_error(project[i].sprint);
 		}
 	}
 }
@@ -152,9 +190,10 @@ async function get_tracker(project_config, http)
 module.exports = async function()
 {
 	var data = [];
-	const { project, http } = get_config('jira');
+	var { project, http } = get_config('jira');
 
-	await check_board_list(project, http);
+	project = filter_badly_config_project(project);
+	await fill_sprint_board(project, http);
 	for (var i = 0; i < project.length; i++) {
 		var tmp = {};
 

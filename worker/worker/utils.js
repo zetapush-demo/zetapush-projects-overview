@@ -62,8 +62,11 @@ exports.get_issues_list = async function get_issues_list(api_url, board_id, proj
 		if (err && err.response && err.response.status != 200) {
 			console.error(err.response.status, err.response.statusText);
 			console.error(`Maybe the authenticated account is not allowed to see\n\t => ${project_config.name}`);
-			console.error('Maybe bad credentials => application.json =>');
-			console.error('jira: {\n\t email || password\n}');
+			console.error(`jira: { \n\t project: {`);
+			console.error(`\t\t ${board_id ? 'sprint' : 'tracker'}: [{\n\t\t\t name: "${project_config.name}"`);
+			console.error(`\t\t\t key: "${project_config.key}"`);
+			console.error(`\t\t\t close_state: "${project_config.close_state}"`);
+			console.error(`\t\t}]\n\t}\n}`);
 		} else
 			console.error(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
 	};
