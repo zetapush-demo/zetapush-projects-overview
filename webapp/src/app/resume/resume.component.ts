@@ -52,12 +52,12 @@ export class ResumeComponent implements OnInit {
 			return;
 		const zetapush: DataStruct = tmp.find(x => x.name === 'zetapush');
 
-		if (zetapush.tools.github)
+		if (zetapush.tools.github && zetapush.tools.github.issues)
 			this.github = zetapush.tools.github.issues.slice(0, 5);
-		if (zetapush.tools.jenkins)
+		if (zetapush.tools.jenkins && zetapush.tools.jenkins.branches)
 			this.jenkins = zetapush.tools.jenkins.branches.filter(x => x.name === 'master' || x.name === 'develop');
-		if (zetapush.tools.jira)
-			this.jira = zetapush.tools.jira.sprint;
+		if (zetapush.tools.jira && zetapush.tools.jira.sprint)
+			this.jira = zetapush.tools.jira.sprint.sprint;
 	}
 
 	config_monitoring() {

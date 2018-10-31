@@ -14,29 +14,31 @@ function http_error_handler(err)
 		console.error(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
 }
 
-async function get_board_list(project_list, http)
+async function check_board_list(project, http)
 {
-	var boards_id = [];
 	var res = await axios.get(`${api}/board/`, http).catch(http_error_handler);
 
 	if (!res || !res.data || !res.data.values.length)
-		return [];
+		return;
 	res = res.data.values;
-	for (var i = 0; i < project_list.length; i++)
+	for (var i = 0; i < project.length; i++) {
+		if (!project[i].sprint || !Object.keys(project[i].sprint).length)
+			continue;
 		for (var j = 0; j < res.length; j++) {
-			if (res[j].location.name === `${project_list[i].name} (${project_list[i].key})`) {
-				boards_id.push(res[j].id);
+			if (res[j].location.name === `${project[i].sprint.name} (${project[i].sprint.key})`) {
+				project[i].sprint.id = res[j].id;
 				break;
 			}
 			if (j === res.length - 1) {
-				console.error(`Something bad in application.json, or this project can't have sprint =>\njira: { \n\t sprint: {`);
-				console.error(`\t\t project_list: [{\n\t\t\t name: "${project_list[i].name}"`);
-				console.error(`\t\t\t key: "${project_list[i].key}"`);
-				console.error(`\t\t\t close_state: "${project_list[i].close_state}"`);
+				console.error(`Something bad in application.json, or this project can't have sprint =>`)
+				console.error(`jira: { \n\t sprint: {`);
+				console.error(`\t\t project: [{\n\t\t\t name: "${project[i].sprint.name}"`);
+				console.error(`\t\t\t key: "${project[i].sprint.key}"`);
+				console.error(`\t\t\t close_state: "${project[i].sprint.close_state}"`);
 				console.error(`\t\t}]\n\t}\n}`);
 			}
 		}
-	return boards_id;
+	}
 }
 
 function push_orphan_issues(sprint, subtasks_list)
@@ -151,21 +153,35 @@ module.exports = async function()
 {
 	var data = [];
 	const { project, http } = get_config('jira');
-	const boards_id = await get_board_list(project.map(x => x.sprint).filter(x => Object.keys(x).length), http);
 
+	await check_board_list(project, http);
 	for (var i = 0; i < project.length; i++) {
 		var tmp = {};
 
-		if (project[i].sprint && Object.keys(project[i].sprint).length) {
-			tmp.name = project[i].sprint.name;
-			tmp.url = `https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${boards_id[i]}`;
-			tmp.sprint = await get_current_sprint(project[i].sprint, boards_id[i], http);
+		if (project[i].sprint && Object.keys(project[i].sprint).length && project[i].sprint.id) {
+			tmp.sprint = {
+				name: project[i].sprint.name,
+				url: `https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${project[i].sprint.id}`,
+				sprint: await get_current_sprint(project[i].sprint, project[i].sprint.id, http)
+			};
 		}
 		if (project[i].tracker && Object.keys(project[i].tracker).length) {
-			tmp.name = project[i].tracker.name;
-			tmp.url = `https://zetapush.atlassian.net/projects/${project[i].tracker.key}/issues`;
-			tmp.tracker = await get_tracker(project[i].tracker, http);
+			tmp.tracker = {
+				name: project[i].tracker.name,
+				url: `https://zetapush.atlassian.net/projects/${project[i].tracker.key}/issues`,
+				tracker: await get_tracker(project[i].tracker, http)
+			};
 		}
+
+		/*
+		 * If we are choice, we choose classic project name instead of tracker project name :
+		 * 'Leocare' instead of 'Leocare Tracker'
+		 */
+
+		if (tmp.sprint && tmp.sprint.name)
+			tmp.name = tmp.sprint && tmp.sprint.name;
+		else if (tmp.tracker && tmp.tracker.name)
+			tmp.name = tmp.tracker && tmp.tracker.name;
 		if (tmp && Object.keys(tmp).length)
 			data.push(tmp);
 	}

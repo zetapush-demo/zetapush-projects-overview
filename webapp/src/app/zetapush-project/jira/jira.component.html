@@ -1,42 +1,54 @@
 <div *ngIf="data">
-	<div class="title">
-		<div>
-			<img src="https://wac-cdn.atlassian.com/dam/jcr:37f03d61-2cfc-4862-b536-ca6d200e7cf8/Jira%20Software-icon-blue.svg?cdnVersion=jw"/>
+
+	<div *ngIf="data.sprint">
+		<div class="title">
+			<div>
+				<img src="https://wac-cdn.atlassian.com/dam/jcr:37f03d61-2cfc-4862-b536-ca6d200e7cf8/Jira%20Software-icon-blue.svg"/>
+			</div>
+			<a href="{{data.sprint.url}}"> {{data.sprint.name}} </a>
 		</div>
-		<a href="{{data.url}}"> {{data.name}} </a>
+
+		<h2 *ngIf="data.sprint.sprint && !data.sprint.sprint.length" class="sprint"> There is no current sprint. </h2>
+		<mat-tab-group *ngIf="data.sprint.sprint">
+			<mat-tab *ngFor="let sprint of data.sprint.sprint" label="{{sprint.sprint}}">
+				<mat-accordion *ngIf="sprint">
+					<h2 class="sprint"> {{sprint.sprint}} <i *ngIf="sprint.start && sprint.end"> ({{sprint.start}} au {{sprint.end}}) </i> </h2>
+					<app-sprint-progress [time]="sprint.time"></app-sprint-progress>
+					<p *ngIf="sprint.issues && !sprint.issues.length"> This sprint is empty, you should closed it. </p>
+					<mat-expansion-panel *ngFor="let issue of sprint.issues">
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="img not found"/>
+								<b> {{issue.key}} </b>
+								<b> {{issue.status}} </b>
+								<i *ngIf="issue.subtasks.length"> {{issue.subtasks.length}} sous-tâches </i>
+								<h4> {{issue.summary}} </h4>
+								<span style="flex: 1 1 auto;"></span>
+								<a *ngIf="issue.url" href="{{issue.url}}">
+									<mat-icon matTooltip="{{issue.url}}"> link </mat-icon>
+								</a>
+								<img *ngIf="issue.priority" src="{{issue.priority.iconUrl}}" alt="img not found" width="30"/>
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						<p *ngIf="issue.description"> {{issue.description}} </p>
+						<div *ngIf="issue.reporter" class="reporter">
+							<img src="{{issue.reporter.avatarUrls}}" alt="img not found" />
+							<span> Reporter: <b> {{issue.reporter.displayName}} </b> </span>
+						</div>
+						<app-task-list [tasks]="issue.subtasks"></app-task-list>
+					</mat-expansion-panel>
+				</mat-accordion>
+			</mat-tab>
+		</mat-tab-group>
 	</div>
 
-	<h2 *ngIf="data.sprint && !data.sprint.length" class="sprint"> There is no current sprint. </h2>
-	<mat-tab-group *ngIf="data.sprint">
-		<mat-tab *ngFor="let sprint of data.sprint" label="{{sprint.sprint}}">
-			<mat-accordion *ngIf="sprint">
-				<h2 class="sprint"> {{sprint.sprint}} <i *ngIf="sprint.start && sprint.end"> ({{sprint.start}} au {{sprint.end}}) </i> </h2>
-				<app-sprint-progress [time]="sprint.time"></app-sprint-progress>
-				<p *ngIf="sprint.issues && !sprint.issues.length"> This sprint is empty, you should closed it. </p>
-				<mat-expansion-panel *ngFor="let issue of sprint.issues">
-					<mat-expansion-panel-header>
-						<mat-panel-title>
-							<img *ngIf="issue.issuetype" src="{{issue.issuetype.iconUrl}}" alt="img not found"/>
-							<b> {{issue.key}} </b>
-							<b> {{issue.status}} </b>
-							<i *ngIf="issue.subtasks.length"> {{issue.subtasks.length}} sous-tâches </i>
-							<h4> {{issue.summary}} </h4>
-							<span style="flex: 1 1 auto;"></span>
-							<a *ngIf="issue.url" href="{{issue.url}}">
-								<mat-icon matTooltip="{{issue.url}}"> link </mat-icon>
-							</a>
-							<img *ngIf="issue.priority" src="{{issue.priority.iconUrl}}" alt="img not found" width="30"/>
-						</mat-panel-title>
-					</mat-expansion-panel-header>
-					<p *ngIf="issue.description"> {{issue.description}} </p>
-					<div *ngIf="issue.reporter" class="reporter">
-						<img src="{{issue.reporter.avatarUrls}}" alt="img not found" />
-						<span> Reporter: <b> {{issue.reporter.displayName}} </b> </span>
-					</div>
-					<app-task-list [tasks]="issue.subtasks" ></app-task-list>
-				</mat-expansion-panel>
-			</mat-accordion>
-		</mat-tab>
-	</mat-tab-group>
-	<app-task-list *ngIf="data.tracker" [tasks]="data.tracker"></app-task-list>
+	<div *ngIf="data.tracker">
+		<div class="title">
+			<div>
+				<img src="https://wac-cdn.atlassian.com/dam/jcr:37f03d61-2cfc-4862-b536-ca6d200e7cf8/Jira%20Software-icon-blue.svg"/>
+			</div>
+			<a href="{{data.tracker.url}}"> {{data.tracker.name}} </a>
+		</div>
+		<app-task-list *ngIf="data.tracker.tracker" [tasks]="data.tracker.tracker"></app-task-list>
+	</div>
 </div>

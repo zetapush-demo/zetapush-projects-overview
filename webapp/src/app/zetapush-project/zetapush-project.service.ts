@@ -30,9 +30,16 @@ export interface Jenkins {
 
 export interface Jira {
 	name: string;
-	sprint?: JiraSprint[];
-	tracker?: JiraIssue[];
-	url: string;
+	sprint?: {
+		name: string;
+		url: string
+		sprint: JiraSprint[];
+	};
+	tracker?: {
+		name: string;
+		url: string
+		tracker: JiraIssue[];
+	};
 }
 
 export interface GithubIssue {
