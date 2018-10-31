@@ -1,4 +1,4 @@
-<mat-spinner id="undefined_data" *ngIf="!data || !data.length"></mat-spinner>
+<mat-spinner *ngIf="!data || !data.length"></mat-spinner>
 <mat-tab-group mat-stretch-tabs *ngIf="data && data.length">
 	<mat-tab *ngFor="let app of data" [label]="app.name">
 		<app-github *ngIf="app.tools.github" [data]="app.tools.github"></app-github>

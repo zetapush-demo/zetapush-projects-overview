@@ -6,6 +6,7 @@
 		</mat-card-content>
 	</mat-card>
 </div>
+<mat-spinner *ngIf="!github && !jenkins && !jira"></mat-spinner>
 <div>
 	<div fxFlex="33%" *ngIf="github">
 		<mat-card *ngFor="let issue of github">

@@ -1,5 +1,18 @@
 @import '~src/variables.scss';
 
+mat-spinner ::ng-deep svg {
+	background-image: url('https://zetapush.com/assets/img/zt_logo.png');
+	background-size: 75%;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+mat-spinner {
+	position: absolute;
+	top: 40%;
+	left: calc(50% - 50px);
+}
+
 mat-progress-bar {
 	height: 20px;
 	margin-top: 80px;

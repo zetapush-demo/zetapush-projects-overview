@@ -12,6 +12,7 @@ mat-spinner {
 	top: 40%;
 	left: calc(50% - 50px);
 }
+
 :host {
 	display: block;
 	height: calc(100% - #{$header_height});
