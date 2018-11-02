@@ -150,7 +150,7 @@ export class ZetapushProjectService {
 	}
 
 	async get_last_data() {
-		return await this.api.get_last_data().catch(err => console.log(err));
+		return await this.api.get_last_data().catch(err => console.error(err));
 	}
 
 	async listen() {
@@ -163,7 +163,11 @@ export class ZetapushProjectService {
 	}
 
 	async connect() {
-		await this.client.connect().catch(err => console.log('connect: ', err));
-		await this.api.addMeToConversation().catch(err => console.log('addMeToConversation: ', err));
+		try {
+			await this.client.connect();
+			await this.api.addMeToConversation();
+		} catch (error) {
+			console.error(error);
+		}
 	}
 }
