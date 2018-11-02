@@ -29,6 +29,7 @@ export class MonitoringComponent implements OnInit {
 	xhr_callback(xhr: XMLHttpRequest, machine: Machine) {
 		return () => {
 			if (xhr.readyState == 4) {
+				machine.timestamp = Date.now() - machine.timestamp;
 				if (xhr.status !== 200)
 					machine.color = '#f15b3e';
 				else
@@ -38,7 +39,6 @@ export class MonitoringComponent implements OnInit {
 				else
 					machine.version = xhr.responseText;
 				machine.status = xhr.status;
-				machine.timestamp = Date.now() - machine.timestamp;
 			}
 		};
 	}
@@ -48,10 +48,10 @@ export class MonitoringComponent implements OnInit {
 
 		machine.color = 'orange';
 		machine.status = null;
-		machine.timestamp = Date.now();
 		xhr.onreadystatechange = this.xhr_callback(xhr, machine);
 		xhr.open('GET', machine.url, true);
 		xhr.send(null);
+		machine.timestamp = Date.now();
 	}
 
 	refreshStatus(select_machine?: string) {
