@@ -1,4 +1,4 @@
-import { Simple, Messaging, Groups, BasicAuthenticatedUser } from '@zetapush/platform-legacy';
+import { Messaging, Groups } from '@zetapush/platform-legacy';
 import { Injectable, Context } from '@zetapush/core'
 import { get_api_data } from './api';
 
@@ -26,8 +26,7 @@ export default class Api {
 
 	constructor(
 		private messaging: Messaging,
-		private groups: Groups,
-		private simple: Simple
+		private groups: Groups
 	) { }
 
 	async addMeToConversation() {
@@ -50,15 +49,6 @@ export default class Api {
 		});
 		console.log(data);
 		this.last_data = data;
-	}
-
-	async createUser(user_info: BasicAuthenticatedUser) {
-		try {
-			await this.simple.createUser(user_info);
-		}
-		catch(err) {
-			console.error('err: ', err);
-		}
 	}
 
 	get_last_data() {

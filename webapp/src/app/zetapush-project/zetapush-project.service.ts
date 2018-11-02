@@ -132,12 +132,6 @@ interface JiraIssue {
 	url: string;
 }
 
-interface Credentials {
-	email: string;
-	login: string;
-	password: string;
-}
-
 @Injectable({
 	providedIn: 'root'
 })
@@ -147,13 +141,11 @@ export class ZetapushProjectService {
 	api: ProxyService;
 	data: DataStruct[];
 	observer: Subject<DataStruct[]> = new Subject();
-	credentials: Credentials;
 
 	constructor() {
 		const config_file = require('../../../../worker/application.json');
 
 		this.client = new SmartClient(config_file.SmartClient);
-		this.credentials = config_file.SmartClient_credentials;
 		this.api = this.client.createProxyTaskService();
 	}
 
@@ -170,29 +162,8 @@ export class ZetapushProjectService {
 		});
 	}
 
-	async smart_connect() {
-		try {
-			await this.api.createUser(this.credentials);
-			await this.client.setCredentials({
-				login: this.credentials.login,
-				password: this.credentials.password
-			});
-			await this.client.connect();
-			await this.api.addMeToConversation();
-		}
-		catch(err) {
-			console.log(err);
-		}
-	}
-
 	async connect() {
-		try {
-			await this.client.connect();
-			if (!this.client.isStronglyAuthenticated())
-				await this.smart_connect();
-		}
-		catch(err) {
-			console.log(err);
-		}
+		await this.client.connect().catch(err => console.log('connect: ', err));
+		await this.api.addMeToConversation().catch(err => console.log('addMeToConversation: ', err));
 	}
 }
