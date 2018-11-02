@@ -70,7 +70,7 @@ async function fill_sprint_board(project, http)
 			continue;
 		for (var j = 0; j < res.length; j++) {
 			if (res[j].location.name === `${project[i].sprint.name} (${project[i].sprint.key})`) {
-				project[i].sprint.id = res[j].id;
+				project[i].sprint_id = res[j].id;
 				break;
 			}
 			if (j === res.length - 1)
@@ -197,11 +197,11 @@ module.exports = async function()
 	for (var i = 0; i < project.length; i++) {
 		var tmp = {};
 
-		if (project[i].sprint && Object.keys(project[i].sprint).length && project[i].sprint.id) {
+		if (project[i].sprint && Object.keys(project[i].sprint).length && project[i].sprint_id) {
 			tmp.sprint = {
 				name: project[i].sprint.name,
-				url: `https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${project[i].sprint.id}`,
-				sprint: await get_current_sprint(project[i].sprint, project[i].sprint.id, http)
+				url: `https://zetapush.atlassian.net/secure/RapidBoard.jspa?rapidView=${project[i].sprint_id}`,
+				sprint: await get_current_sprint(project[i].sprint, project[i].sprint_id, http)
 			};
 		}
 		if (project[i].tracker && Object.keys(project[i].tracker).length) {
