@@ -163,11 +163,9 @@ async function get_branch_array(local_url, branch_url, project_name)
 	if (!res || !res.data || !res.data.length)
 		return [];
 	res = res.data.filter(x => !x.pullRequest);
-	console.log(project_name);
-	console.log(branch_url);
-	process.exit(1);
 	for (var i = 0; i < res.length; i++) {
-		console.log('latestRun', res[i].name, res[i].latestRun);
+		if (!res[i].latestRun)
+			continue;
 		const name = res[i].name;
 		const id = res[i].latestRun.id;
 		const flow = await get_branch_flow(`${branch_url}/${name}/runs/${id}/nodes`);
