@@ -4,7 +4,7 @@ const { parse_time, get_config } = require('./utils');
 const jenkins_assets = 'https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/48x48/';
 
 const blue_url = 'blue/organizations/jenkins/ZetaPush%20Github%2F';
-const api_url = 'blue/rest/organizations/jenkins/pipelines/ZetaPush%20Github/pipelines/';
+const api_url = 'blue/rest/organizations/jenkins/pipelines';
 
 function http_error_handler(err)
 {
@@ -15,13 +15,40 @@ function http_error_handler(err)
 		console.error(err.errno, require('path').basename(__filename), 'Maybe check your internet connexion.');
 }
 
-async function get_repo_urls(jenkins_url)
+async function get_child_project(jenkins_url, project)
 {
-	const res = await axios.get(`${jenkins_url}/${api_url}`).catch(http_error_handler);
+	var res = await axios.get(`${jenkins_url}/${api_url}/${project.name}/pipelines`).catch(http_error_handler);
 
 	if (!res || !res.data || !res.data.length)
 		return [];
-	return res.data.map(x => `${jenkins_url}${x._links.self.href}`);
+	res = res.data.filter(x => {
+		for (var i = 0; i < project.child.length; i++)
+			if (project.child[i] === x.name)
+				return x;
+	});
+	return res.map(x => `${jenkins_url}${x._links.self.href}`);
+}
+
+async function get_repo_urls(jenkins_url, project)
+{
+	const res = await axios.get(`${jenkins_url}/${api_url}`).catch(http_error_handler);
+	var urls = [];
+
+	if (!res || !res.data || !res.data.length)
+		return [];
+	for (var i = 0; i < project.length; i++) {
+		for (var j = 0; j < res.data.length; j++)
+			if (res.data[j].name === project[i].name) {
+				if (project[i].child && project[i].child.length)
+					urls = urls.concat(await get_child_project(jenkins_url, project[i]));
+				else
+					urls.push(`${jenkins_url}${res.data[j]._links.self.href}`);
+				break;
+			}
+			if (j === project.length - 1)
+				console.error(`Project ${project[i].name} not found.`);
+	}
+	return urls;
 }
 
 function tree_flatter(tree)
@@ -136,7 +163,11 @@ async function get_branch_array(local_url, branch_url, project_name)
 	if (!res || !res.data || !res.data.length)
 		return [];
 	res = res.data.filter(x => !x.pullRequest);
+	console.log(project_name);
+	console.log(branch_url);
+	process.exit(1);
 	for (var i = 0; i < res.length; i++) {
+		console.log('latestRun', res[i].name, res[i].latestRun);
 		const name = res[i].name;
 		const id = res[i].latestRun.id;
 		const flow = await get_branch_flow(`${branch_url}/${name}/runs/${id}/nodes`);
@@ -173,7 +204,7 @@ module.exports = async function()
 {
 	var data = [];
 	const jenkins = get_config('jenkins');
-	const repo_urls = await get_repo_urls(jenkins.url);
+	const repo_urls = await get_repo_urls(jenkins.url, jenkins.project);
 
 	for (var i = 0; i < repo_urls.length; i++) {
 		const res = await axios.get(repo_urls[i]).catch(http_error_handler);
