@@ -3,7 +3,7 @@ const { parse_time, get_config } = require('./utils');
 
 const jenkins_assets = 'https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/48x48/';
 
-const blue_url = 'blue/organizations/jenkins/ZetaPush%20Github%2F';
+const blue_url = 'blue/organizations/jenkins/';
 const api_url = 'blue/rest/organizations/jenkins/pipelines';
 
 function http_error_handler(err)
@@ -214,7 +214,7 @@ module.exports = async function()
 		data.push({
 			name: res.data.displayName,
 			description: res.data.fullDisplayName,
-			url: `${jenkins.url}/${blue_url}${res.data.name}/activity`,
+			url: `${jenkins.url}/${blue_url}${res.data.fullName.replace(/\//, '%2F')}/activity`,
 			branches: await get_branch_array(jenkins.url, `${repo_urls[i]}branches`, res.data.name)
 		});
 	}
