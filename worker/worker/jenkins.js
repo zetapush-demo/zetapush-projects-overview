@@ -155,7 +155,7 @@ function get_icon_by_flow(flow)
 	return `${jenkins_assets}health-80plus.png`;
 }
 
-async function get_branch_array(local_url, branch_url, project_name)
+async function get_branch_array(project_url, branch_url)
 {
 	var branches = [];
 	var res = await axios.get(branch_url).catch(http_error_handler);
@@ -177,7 +177,7 @@ async function get_branch_array(local_url, branch_url, project_name)
 				end: parse_time(res[i].latestRun.endTime),
 				duration: new Date(res[i].latestRun.durationInMillis).toISOString().substr(11, 8),
 			},
-			url: `${local_url}/${blue_url}${project_name}/detail/${name}/${id}`,
+			url: `${project_url}/detail/${name}/${id}`,
 			icon: flow && get_icon_by_flow(flow),
 			result: res[i].latestRun.result,
 			state: res[i].latestRun.state,
@@ -206,16 +206,18 @@ module.exports = async function()
 
 	for (var i = 0; i < repo_urls.length; i++) {
 		const res = await axios.get(repo_urls[i]).catch(http_error_handler);
+		var url;
 
 		if (!res || !res.data) {
 			console.error(`Jenkins API return empty data on ${repo_urls[i]}...`);
 			continue;
 		}
+		project_url = `${jenkins.url}/${blue_url}${res.data.fullName.replace(/\//, '%2F')}`;
 		data.push({
 			name: res.data.displayName,
 			description: res.data.fullDisplayName,
-			url: `${jenkins.url}/${blue_url}${res.data.fullName.replace(/\//, '%2F')}/activity`,
-			branches: await get_branch_array(jenkins.url, `${repo_urls[i]}branches`, res.data.name)
+			url: `${project_url}/activity`,
+			branches: await get_branch_array(project_url, `${repo_urls[i]}branches`)
 		});
 	}
 	return data;
