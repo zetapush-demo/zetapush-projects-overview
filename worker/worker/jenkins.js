@@ -37,7 +37,7 @@ async function get_repo_urls(jenkins_url, project)
 	if (!res || !res.data || !res.data.length)
 		return [];
 	for (var i = 0; i < project.length; i++) {
-		for (var j = 0; j < res.data.length; j++)
+		for (var j = 0; j < res.data.length; j++) {
 			if (res.data[j].name === project[i].name) {
 				if (project[i].child && project[i].child.length)
 					urls = urls.concat(await get_child_project(jenkins_url, project[i]));
@@ -45,8 +45,9 @@ async function get_repo_urls(jenkins_url, project)
 					urls.push(`${jenkins_url}${res.data[j]._links.self.href}`);
 				break;
 			}
-			if (j === project.length - 1)
+			if (j === res.data.length - 1)
 				console.error(`Project ${project[i].name} not found.`);
+		}
 	}
 	return urls;
 }
@@ -206,7 +207,7 @@ module.exports = async function()
 
 	for (var i = 0; i < repo_urls.length; i++) {
 		const res = await axios.get(repo_urls[i]).catch(http_error_handler);
-		var url;
+		var project_url;
 
 		if (!res || !res.data) {
 			console.error(`Jenkins API return empty data on ${repo_urls[i]}...`);
