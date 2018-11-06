@@ -6,5 +6,6 @@
 </header>
 
 <main>
+	<mat-spinner *ngIf="!ready"></mat-spinner>
 	<router-outlet *ngIf="ready"> </router-outlet>
 </main>

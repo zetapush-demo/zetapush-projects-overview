@@ -31,6 +31,12 @@ h1 {
 	margin-top: -60px;
 }
 
+mat-spinner {
+	position: absolute;
+	top: 40%;
+	left: calc(50% - 50px);
+}
+
 main {
 	margin-top: $header_height;
 	height: calc(100% - #{$header_height});
