@@ -11,17 +11,21 @@ export default class Api {
 	requestContext: Context;
 
 	async onApplicationBootstrap() {
-		const { exists } = await this.groups.exists({
-			group: GROUP_ID
-		});
-		if (!exists)
-			await this.groups.createGroup({
+		try {
+			const { exists } = await this.groups.exists({
 				group: GROUP_ID
 			});
-		await this.sendMessage();
-		setInterval(async () => {
+			if (!exists)
+				await this.groups.createGroup({
+					group: GROUP_ID
+				});
 			await this.sendMessage();
-		}, 1000 * 60 * 15); // 15 minutes
+			setInterval(async () => {
+				await this.sendMessage();
+			}, 1000 * 60 * 15); // 15 minutes
+		} catch(error) {
+			console.error(error);
+		}
 	}
 
 	constructor(
@@ -30,25 +34,33 @@ export default class Api {
 	) { }
 
 	async addMeToConversation() {
-		await this.groups.addUser({
-			group: GROUP_ID,
-			user: this.requestContext.owner
-		});
+		try {
+			await this.groups.addUser({
+				group: GROUP_ID,
+				user: this.requestContext.owner
+			});
+		} catch(error) {
+			console.error(error);
+		}
 	}
 
 	async sendMessage() {
-		const group = await this.groups.groupUsers({
-			group: GROUP_ID
-		});
-		const users = group.users || [];
-		const data = await get_api_data();
+		try {
+			const group = await this.groups.groupUsers({
+				group: GROUP_ID
+			});
+			const users = group.users || [];
+			const data = await get_api_data();
 
-		this.messaging.send({
-			target: users,
-			data: { data }
-		});
-		console.log(data);
-		this.last_data = data;
+			this.messaging.send({
+				target: users,
+				data: { data }
+			});
+			console.log(data);
+			this.last_data = data;
+		} catch(error) {
+			console.error(error);
+		}
 	}
 
 	get_last_data() {
