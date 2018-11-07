@@ -204,7 +204,7 @@ var ignore_list = [];
 
 async function popup_on_new_build(branches, name)
 {
-	const in_progress_branch = branches.filter((x, y) => y < 1 || x.in_progress);
+	const in_progress_branch = branches.filter(x => x.in_progress);
 	const this_ignore = ignore_list.find(x => x.name === name);
 	const filter_branch = in_progress_branch.filter(x => !this_ignore || !this_ignore.branch.includes(x.name));
 
