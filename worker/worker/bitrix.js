@@ -33,7 +33,8 @@ exports.send_message_channel = async function send_message_channel(channel, mess
 		return await axios.post(url, `CHAT_ID=${channel_id}&MESSAGE=${message}`, config);
 }
 
-exports.send_message_user = async function send_message_user(email, message) {
+exports.send_message_user = async function send_message_user(email, message)
+{
 	const config = get_config('github').bitrix;
 	const url = `${config.url}/${config.id}/${config.token}/im.message.add`;
 	const channel_id = await get_user_id(email);
