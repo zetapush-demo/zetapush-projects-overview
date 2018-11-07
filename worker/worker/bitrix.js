@@ -20,7 +20,7 @@ async function get_channel_id(config, channel)
 	const data = `FIND=${channel}`;
 	const res = await axios.post(url, data).catch(err => console.error(err));
 
-	if (res && res.data && res.data.result && res.result.length)
+	if (res && res.data && res.data.result && res.data.result.length)
 		return res.data.result[0].id;
 }
 
