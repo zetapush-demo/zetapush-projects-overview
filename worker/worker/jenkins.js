@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { parse_time, get_config } = require('./utils');
+const { send_message_user } = require('./bitrix');
 
 const jenkins_assets = 'https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/48x48/';
 
@@ -199,6 +200,33 @@ async function get_branch_array(project_url, branch_url)
 	return branches;
 }
 
+var ignore_list = [];
+
+async function popup_on_new_build(branches, name)
+{
+	const in_progress_branch = branches.filter((x, y) => y < 1 || x.in_progress);
+	const this_ignore = ignore_list.find(x => x.name === name);
+	const filter_branch = in_progress_branch.filter(x => !this_ignore || !this_ignore.branch.includes(x.name));
+
+	if (filter_branch && filter_branch.length) {
+		for (var i = 0; i < filter_branch.length; i++)
+			await send_message_user('pacome.francon@zetapush.com', `New build !!\n${name} - ${filter_branch[i].name}`);
+		if (this_ignore && this_ignore.length)
+			this_ignore.branch = this_ignore.branch.concat(filter_branch.map(x => x.name));
+		else
+			ignore_list.push({
+				name: name,
+				branch: [ ...filter_branch.map(x => x.name) ]
+			});
+	}
+	if (!in_progress_branch || !in_progress_branch.length) {
+		const tmp = ignore_list.indexOf(this_ignore);
+
+		if (tmp !== -1)
+			ignore_list.splice(tmp, 1);
+	}
+}
+
 module.exports = async function()
 {
 	var data = [];
@@ -220,6 +248,7 @@ module.exports = async function()
 			url: `${project_url}/activity`,
 			branches: await get_branch_array(project_url, `${repo_urls[i]}branches`)
 		});
+		await popup_on_new_build(data[i].branches, res.data.displayName);
 	}
 	return data;
 }
