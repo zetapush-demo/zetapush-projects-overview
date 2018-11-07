@@ -17,7 +17,7 @@ async function get_user_id(config, email)
 async function get_channel_id(config, channel)
 {
 	const url = `${config.url}/${config.id}/${config.token}/im.search.chat.list`
-	const data = `FIND="${channel}"`;
+	const data = `FIND=${channel}`;
 	const res = await axios.post(url, data).catch(err => console.error(err));
 
 	if (res && res.data && res.data.result && res.result.length)

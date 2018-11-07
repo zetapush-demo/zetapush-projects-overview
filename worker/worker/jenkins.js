@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { parse_time, get_config } = require('./utils');
-const { send_message_user } = require('./bitrix');
+const { send_message_channel } = require('./bitrix');
 
 const jenkins_assets = 'https://raw.githubusercontent.com/jenkinsci/jenkins/master/war/src/main/webapp/images/48x48/';
 
@@ -204,13 +204,14 @@ var ignore_list = [];
 
 async function popup_on_new_build(branches, name)
 {
+	const config = get_config('bitrix');
 	const in_progress_branch = branches.filter(x => x.in_progress);
 	const this_ignore = ignore_list.find(x => x.name === name);
 	const filter_branch = in_progress_branch.filter(x => !this_ignore || !this_ignore.branch.includes(x.name));
 
 	if (filter_branch && filter_branch.length) {
 		for (var i = 0; i < filter_branch.length; i++)
-			await send_message_user('pacome.francon@zetapush.com', `New build !\n${name} - ${filter_branch[i].name}`);
+			await send_message_channel(config.channel, `New build !\n${name} - ${filter_branch[i].name}`);
 		if (this_ignore && this_ignore.length)
 			this_ignore.branch = this_ignore.branch.concat(filter_branch.map(x => x.name));
 		else

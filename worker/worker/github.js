@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { get_config, parse_time, obj_tab_filter, get_good_color } = require('./utils');
-const { send_message_user } = require('./bitrix');
+const { send_message_channel } = require('./bitrix');
 
 const api_url = 'https://api.github.com/repos';
 
@@ -101,13 +101,14 @@ var ignore_list = [];
 
 async function popup_on_new_data(delay, repo_name, all_data)
 {
+	const config = get_config('bitrix');
 	const gap = new Date().valueOf() - delay;
 	const last_timestamp = Math.max(...all_data.map(x => x.timestamp));
 	const popup_data = all_data.find(x => x.timestamp === last_timestamp && x.timestamp > gap);
 	const this_ignore = ignore_list.find(x => x.name === repo_name);
 
 	if (popup_data && (!this_ignore || !this_ignore.id.includes(popup_data.id))) {
-		await send_message_user('pacome.francon@zetapush.com', `New ${popup_data ? 'Pull request' : 'Issue'} !\n${repo_name} - ${popup_data.name}`);
+		await send_message_channel(config.channel, `New ${popup_data ? 'Pull request' : 'Issue'} !\n${repo_name} - ${popup_data.name}`);
 		if (this_ignore)
 			this_ignore.id.push(popup_data.id);
 		else
