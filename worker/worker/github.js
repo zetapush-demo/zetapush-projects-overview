@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { get_config, parse_time, obj_tab_filter, get_good_color } = require('./utils');
+const { send_message_user } = require('./bitrix');
 
 const api_url = 'https://api.github.com/repos';
 
@@ -96,6 +97,33 @@ async function get_data(config, api_search_field, repos, issues_nb)
 	return issues;
 }
 
+var ignore_list = [];
+
+async function popup_on_new_data(delay, repo_name, all_data)
+{
+	const gap = new Date().valueOf() - delay;
+	const last_timestamp = Math.max(...all_data.map(x => x.timestamp));
+	const popup_data = all_data.find(x => x.timestamp === last_timestamp && x.timestamp > gap);
+	const this_ignore = ignore_list.find(x => x.name === repo_name);
+
+	if (popup_data && (!this_ignore || !this_ignore.id.includes(popup_data.id))) {
+		await send_message_user('pacome.francon@zetapush.com', `${popup_data ? 'New Pull request !!' : 'New Issue !!'}\n${popup_data.name}`);
+		if (this_ignore)
+			this_ignore.id.push(popup_data.id);
+		else
+			ignore_list.push({
+				name: repo_name,
+				id: [ popup_data.id ]
+			});
+	}
+	if (!popup_data) {
+		const tmp = ignore_list.indexOf(this_ignore);
+
+		if (tmp !== -1)
+			ignore_list.splice(tmp, 1);
+	}
+}
+
 module.exports = async function()
 {
 	const config = get_config('github');
@@ -107,7 +135,7 @@ module.exports = async function()
 			get_tag(config, repo_list[i]),
 			get_data(config, 'issues', repo_list[i], repo_list[i].issues_nb),
 			get_data(config, 'pulls', repo_list[i], repo_list[i].issues_nb)
-		]).then(res => {
+		]).then(async (res) => {
 			data.push({
 				name: repo_list[i].name,
 				url: `https://github.com/${repo_list[i].owner}/${repo_list[i].name}`,
@@ -115,6 +143,7 @@ module.exports = async function()
 				issues: res[1],
 				pull_request: res[2]
 			});
+			await popup_on_new_data(1000 * 60 * 60 * 24 * 7 * 1, repo_list[i].name, res[1].concat(res[2])); // 1 week
 		});
 	}
 	return data;
