@@ -210,7 +210,7 @@ async function popup_on_new_build(branches, name)
 
 	if (filter_branch && filter_branch.length) {
 		for (var i = 0; i < filter_branch.length; i++)
-			await send_message_user('pacome.francon@zetapush.com', `New build !!\n${name} - ${filter_branch[i].name}`);
+			await send_message_user('pacome.francon@zetapush.com', `New build !\n${name} - ${filter_branch[i].name}`);
 		if (this_ignore && this_ignore.length)
 			this_ignore.branch = this_ignore.branch.concat(filter_branch.map(x => x.name));
 		else

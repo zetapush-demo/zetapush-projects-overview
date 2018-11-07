@@ -107,7 +107,7 @@ async function popup_on_new_data(delay, repo_name, all_data)
 	const this_ignore = ignore_list.find(x => x.name === repo_name);
 
 	if (popup_data && (!this_ignore || !this_ignore.id.includes(popup_data.id))) {
-		await send_message_user('pacome.francon@zetapush.com', `${popup_data ? 'New Pull request !!' : 'New Issue !!'}\n${popup_data.name}`);
+		await send_message_user('pacome.francon@zetapush.com', `New ${popup_data ? 'Pull request' : 'Issue'} !\n${repo_name} - ${popup_data.name}`);
 		if (this_ignore)
 			this_ignore.id.push(popup_data.id);
 		else
