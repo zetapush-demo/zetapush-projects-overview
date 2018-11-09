@@ -15,17 +15,15 @@ export class ZetapushProjectComponent implements OnInit {
 	) { }
 
 	on_get_data(tmp: DataStruct[]) {
-		if (!tmp)
-			return;
-		this.data = tmp;
-		console.log(this.data);
+		if (tmp && tmp.length) {
+			this.data = tmp;
+			console.log(this.data);
+		}
 	}
 
 	async ngOnInit() {
-		const tmp: any = await this.zetapush_service.get_last_data();
+		const tmp = await this.zetapush_service.get_last_data() as DataStruct[];
 
-		if (!tmp)
-			return;
 		this.on_get_data(tmp);
 		this.zetapush_service.observer.subscribe(
 			(data: DataStruct[]) => this.on_get_data(data)

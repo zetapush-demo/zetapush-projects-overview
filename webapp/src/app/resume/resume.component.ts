@@ -48,7 +48,7 @@ export class ResumeComponent implements OnInit {
 	}
 
 	on_get_data(tmp: DataStruct[]) {
-		if (!tmp)
+		if (!tmp || !tmp.length)
 			return;
 		const zetapush: DataStruct = tmp.find(x => x.name === 'zetapush');
 
@@ -75,10 +75,8 @@ export class ResumeComponent implements OnInit {
 
 	async ngOnInit() {
 		this.config_monitoring();
-		const tmp: any = await this.zetapush_service.get_last_data();
+		const tmp = await this.zetapush_service.get_last_data() as DataStruct[];
 
-		if (!tmp)
-			return;
 		this.on_get_data(tmp);
 		this.zetapush_service.observer.subscribe(
 			(data: DataStruct[]) => this.on_get_data(data)
