@@ -9,9 +9,9 @@
       "troubleshoot": "zeta troubleshoot"
    },
    "dependencies": {
-      "@zetapush/cli": "^0.35.5",
-      "@zetapush/platform-legacy": "^0.35.5",
+      "@zetapush/cli": "^0.37.1",
+      "@zetapush/platform-legacy": "^0.37.1",
       "axios": "^0.18.0",
-      "typescript": "^3.1.6"
+      "typescript": "^3.2.1"
    }
 }

@@ -249,7 +249,7 @@ module.exports = async function()
 			url: `${project_url}/activity`,
 			branches: await get_branch_array(project_url, `${repo_urls[i]}branches`)
 		});
-		await popup_on_new_build(data[i].branches, res.data.displayName);
+		// await popup_on_new_build(data[i].branches, res.data.displayName);
 	}
 	return data;
 }

@@ -144,7 +144,7 @@ module.exports = async function()
 				issues: res[1],
 				pull_request: res[2]
 			});
-			await popup_on_new_data(1000 * 60 * 60 * 24 * 7 * 1, repo_list[i].name, res[1].concat(res[2])); // 1 week
+			// await popup_on_new_data(1000 * 60 * 60 * 24 * 7 * 1, repo_list[i].name, res[1].concat(res[2])); // 1 week
 		});
 	}
 	return data;
