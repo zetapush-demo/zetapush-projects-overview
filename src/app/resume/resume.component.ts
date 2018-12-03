@@ -61,7 +61,7 @@ export class ResumeComponent implements OnInit {
 	}
 
 	config_monitoring() {
-		const config_file = require('../../../../worker/application.json');
+		const config_file = require('../../../application.json');
 		const interval = eval(config_file.monitoring_refresh);
 
 		if (!interval)

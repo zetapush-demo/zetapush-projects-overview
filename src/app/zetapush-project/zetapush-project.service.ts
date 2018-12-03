@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { SmartClient, ProxyService } from '@zetapush/client';
+import { SmartClient, ProxyService, ProxyTaskService } from '@zetapush/client';
 import { Messaging } from '@zetapush/platform-legacy/lib/';
 
 export interface DataStruct {
@@ -138,12 +138,12 @@ interface JiraIssue {
 export class ZetapushProjectService {
 
 	client: SmartClient;
-	api: ProxyService;
+	api: ProxyTaskService;
 	data: DataStruct[];
 	observer: Subject<DataStruct[]> = new Subject();
 
 	constructor() {
-		const config_file = require('../../../../worker/application.json');
+		const config_file = require('../../../application.json');
 
 		this.client = new SmartClient(config_file.SmartClient);
 		this.api = this.client.createProxyTaskService();
