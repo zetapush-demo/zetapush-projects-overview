@@ -1,4 +1,4 @@
-const { obj_tab_filter } = require('../worker/utils.js')
+const { obj_tab_filter } = require('../utils.js')
 
 describe('obj_tab_filter', () => {
 	const input = [

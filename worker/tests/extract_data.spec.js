@@ -1,4 +1,4 @@
-const { extract_data } = require('../worker/utils.js')
+const { extract_data } = require('../utils');
 
 describe('extract_data', () => {
 	const input = {
