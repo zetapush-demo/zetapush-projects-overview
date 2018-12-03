@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { SmartClient, ProxyService, ProxyTaskService } from '@zetapush/client';
+import { SmartClient, ProxyTaskService } from '@zetapush/client';
 import { Messaging } from '@zetapush/platform-legacy/lib/';
 
 export interface DataStruct {
