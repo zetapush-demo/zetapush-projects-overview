@@ -137,17 +137,10 @@ interface JiraIssue {
 })
 export class ZetapushProjectService {
 
-	client: SmartClient;
-	api: ProxyTaskService;
+	client: SmartClient = new SmartClient();
+	api: ProxyTaskService = this.client.createProxyTaskService();
 	data: DataStruct[];
 	observer: Subject<DataStruct[]> = new Subject();
-
-	constructor() {
-		const config_file = require('../../../application.json');
-
-		this.client = new SmartClient(config_file.SmartClient);
-		this.api = this.client.createProxyTaskService();
-	}
 
 	async get_last_data() {
 		return await this.api.get_last_data().catch(err => console.error(err));

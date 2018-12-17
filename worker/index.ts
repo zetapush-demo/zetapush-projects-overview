@@ -1,5 +1,5 @@
 import { Messaging, Groups } from '@zetapush/platform-legacy';
-import { Injectable, Context } from '@zetapush/core'
+import { Injectable, RequestContext } from '@zetapush/core'
 import { get_api_data } from './api';
 
 const GROUP_ID = `La philosophie et la bière c'est la même chose. Consommées, elles modifient toutes les perceptions que nous avons du monde.`.length.toString();
@@ -8,7 +8,7 @@ const GROUP_ID = `La philosophie et la bière c'est la même chose. Consommées,
 export default class Api {
 
 	last_data: object;
-	requestContext: Context;
+	requestContext: RequestContext;
 
 	async onApplicationBootstrap() {
 		try {
