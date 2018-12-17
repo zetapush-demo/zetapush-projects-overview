@@ -8,6 +8,12 @@ The goal of this project is to develop a dashboard for developers, to allow them
 npm install
 ```
 
+## Angular build
+
+```console
+npm run build -- --prod
+```
+
 ## Deployment
 
 Push your code on ZetaPush platform
