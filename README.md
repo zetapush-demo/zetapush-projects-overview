@@ -1,5 +1,7 @@
 # zetapush-projects-overview
 
+> Disclaimer : you can't build and run this project because ZetaPush platform is down, so the webapp can't render any data from the backend.
+
 The goal of this project is to develop a dashboard for developers, to allow them to have a simplified view of their projects through different tools (GitHub, Jenkins, Jira).
 
 ## Installation
