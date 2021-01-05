@@ -31,7 +31,7 @@
       "@zetapush/client": "^1.0.0",
       "@zetapush/cometd": "^1.0.0",
       "@zetapush/platform-legacy": "^1.0.0",
-      "axios": "^0.18.0",
+      "axios": "^0.21.1",
       "chart.js": "^2.7.3",
       "core-js": "^2.6.2",
       "github-markdown-css": "^2.10.0",
